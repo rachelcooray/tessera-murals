@@ -1,11 +1,13 @@
-import { Suspense } from "react";
 import { MuralExperience } from "@/components/MuralExperience";
+import { SEASONS } from "@/lib/seed";
 
-async function Season({ params }: { params: PageProps<"/seasons/[id]">["params"] }) {
-  const { id } = await params;
-  return <MuralExperience seasonId={id} />;
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return SEASONS.map((s) => ({ id: s.id }));
 }
 
-export default function Page(props: PageProps<"/seasons/[id]">) {
-  return <Suspense fallback={<div className="stage" />}><Season params={props.params} /></Suspense>;
+export default async function SeasonPage(props: PageProps<"/seasons/[id]">) {
+  const { id } = await props.params;
+  return <MuralExperience seasonId={id} />;
 }

@@ -8,3 +8,5 @@ This is the Phase 1 front-end prototype. It runs on sample data, and payment, AI
 npm install
 npm run dev
 ```
+
+Live at https://rachelcooray.github.io/tessera-murals/ (static export, deployed by GitHub Actions on every push to main).

@@ -95,7 +95,7 @@ export function TileCard({ tile, from, gift = false, onClose, notify }: { tile: 
           {view === "main" && (
             <div className="card__actions">
               <button className="btn" onClick={() => shareTile(tile, notify)}><Icon name="share" size={14} />Share</button>
-              <Link className="btn" href={`/t/${tile.id}`}>Tile page</Link>
+              <Link className="btn" href={`/t?id=${tile.id}`}>Tile page</Link>
               <button className="btn btn--quiet" style={{ flex: "0 0 auto" }} onClick={() => setView("report")}>Report</button>
             </div>
           )}

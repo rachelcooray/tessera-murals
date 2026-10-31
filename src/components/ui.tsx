@@ -110,7 +110,7 @@ export function Toast({ msg }: { msg: string | null }) {
 }
 
 export async function shareTile(t: Tile, notify: (m: string) => void) {
-  const url = `${window.location.origin}/t/${t.id}`;
+  const url = `${window.location.origin}${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/t/?id=${t.id}`;
   const title = `${t.displayName ?? "Anonymous"} on Tessera`;
   try {
     if (navigator.share) { await navigator.share({ title, text: t.phrase ?? "A tile on Tessera", url }); return; }

@@ -280,7 +280,7 @@ function Done({ result, gift, preview, spot }: { result: { id: string; status: s
       </p>
       <div className="box small" style={{ textAlign: "left", width: "100%" }}>
         <strong style={{ fontWeight: 500 }}>Prototype shortcut</strong>
-        <span className="muted">No email is sent yet. Approve it yourself in <Link href="/admin">Admin</Link>, then open <Link href={`/t/${result.id}`}>your tile page</Link>{gift ? <> or <Link href={`/t/${result.id}?gift=1`}>the gift link</Link></> : null}.</span>
+        <span className="muted">No email is sent yet. Approve it yourself in <Link href="/admin">Admin</Link>, then open <Link href={`/t?id=${result.id}`}>your tile page</Link>{gift ? <> or <Link href={`/t?id=${result.id}&gift=1`}>the gift link</Link></> : null}.</span>
       </div>
       <Link className="btn btn--primary btn--block" href={live ? `/?tile=${result.id}` : "/"}>Back to the mural</Link>
     </div>
