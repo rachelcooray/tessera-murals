@@ -12,7 +12,7 @@ import { addCredits, newTileId, submitTile, useCurrentSeason, useLocalState, use
 import type { Origin, Tile, VoiceClip } from "@/lib/types";
 import { Recorder } from "./Recorder";
 import { StripePay } from "./StripePay";
-import { Icon } from "./ui";
+import { closeDate, Icon, useClosesIn } from "./ui";
 
 type Step = "image" | "origin" | "words" | "voice" | "name" | "gift" | "place" | "pay" | "done";
 const LABEL: Record<Step, string> = { image: "Image", origin: "Origin", words: "Words", voice: "Voice", name: "Name", gift: "Gift", place: "Place", pay: "Pay", done: "Done" };
@@ -81,6 +81,7 @@ export function AddFlow({ preferSpot, startGift }: { preferSpot: { x: number; y:
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<{ id: string; status: string } | null>(null);
+  const closesIn = useClosesIn(season.closesAt);
 
   const steps: Step[] = ["image", "origin", "words", "voice", "name", ...(gift ? (["gift"] as Step[]) : []), "place", "pay", "done"];
   const idx = steps.indexOf(step);
@@ -170,6 +171,7 @@ export function AddFlow({ preferSpot, startGift }: { preferSpot: { x: number; y:
       <main className="flow__main">
         {step === "image" && <>
           <h1>What goes on your tile?</h1>
+          {closesIn && closesIn !== "closed" && <p className="urgent">Season {season.number} {closesIn}{season.closesAt ? ` (${closeDate(season.closesAt)})` : ""}. After that it’s frozen for good.</p>}
           <div className="choices choices--2">
             <button className="choice" aria-pressed={mode === "upload"} onClick={() => setMode("upload")}><Icon name="upload" size={22} />Upload a picture I made</button>
             <button className="choice" aria-pressed={mode === "ai"} onClick={() => setMode("ai")}><Icon name="ai" size={22} />Describe it, let AI make it</button>
@@ -281,6 +283,11 @@ export function AddFlow({ preferSpot, startGift }: { preferSpot: { x: number; y:
 
         {step === "pay" && <>
           <h1>How many squares?</h1>
+          <ul className="gets">
+            <li>Your square on the wall for good, kept in the gallery when the season closes</li>
+            <li>Your picture, words and voice, under your name or anonymous</li>
+            <li>A page and link for your tile to share, or to send as a gift</li>
+          </ul>
           {local.credits > 0 && (
             <div className="choices choices--2">
               <button className="choice" aria-pressed={useCredit} onClick={() => { setUseCredit(true); setIntent(null); }}><b>Use a credit</b>You have {local.credits}</button>

@@ -140,3 +140,30 @@ export function AboutPiece({ t, open = false }: { t: Tile; open?: boolean }) {
     </details>
   );
 }
+
+/** "closes in 6 days", updated live. Renders nothing until mounted so server and browser agree. */
+export function useClosesIn(closesAt: string | null): string | null {
+  const [now, setNow] = useState<number | null>(null);
+  useEffect(() => {
+    setNow(Date.now());
+    const id = setInterval(() => setNow(Date.now()), 30000);
+    return () => clearInterval(id);
+  }, []);
+  if (!closesAt || now === null) return null;
+  const ms = Date.parse(closesAt) - now;
+  if (ms <= 0) return "closed";
+  const days = Math.floor(ms / 86400000), hours = Math.floor(ms / 3600000), mins = Math.max(1, Math.floor(ms / 60000));
+  if (days >= 1) return `closes in ${days} day${days === 1 ? "" : "s"}`;
+  if (hours >= 1) return `closes in ${hours} hour${hours === 1 ? "" : "s"}`;
+  return `closes in ${mins} minute${mins === 1 ? "" : "s"}`;
+}
+
+export function closeDate(closesAt: string): string {
+  return new Date(closesAt).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "long" });
+}
+
+export const REASONS = ["Declare your love", "Show your talent", "Advertise your art"] as const;
+
+export function Reasons() {
+  return <p className="reasons">{REASONS.map((r) => <span key={r}>{r}</span>)}</p>;
+}

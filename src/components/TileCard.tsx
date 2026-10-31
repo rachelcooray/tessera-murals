@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { seasonNumber } from "@/lib/seasonLabel";
 import { addReport } from "@/lib/store";
 import { REPORT_REASONS, type Tile } from "@/lib/types";
 import { VoicePlayer } from "./VoicePlayer";
@@ -70,7 +71,7 @@ export function TileCard({ tile, from, gift = false, onClose, notify }: { tile: 
           )}
           {view === "main" ? (
             <div className="card__body">
-              <span className="eyebrow">Season {tile.seasonId}</span>
+              <span className="eyebrow">Season {seasonNumber(tile.seasonId)}</span>
               <h2 className="card__name">{name}</h2>
               <TileTitle t={tile} />
               <OriginLabel origin={tile.origin} />

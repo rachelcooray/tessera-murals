@@ -2,6 +2,7 @@
  * Phase 1 sample data. Deterministic, so server and browser agree.
  * Replaced by Supabase in Phase 2.
  */
+import { site } from "@/config/site";
 import { artPalette, type ArtKind, type ArtSpec } from "./art";
 import { mulberry32, pick, rnd } from "./rng";
 import type { Report, Season, Tile } from "./types";
@@ -9,9 +10,8 @@ import type { Report, Season, Tile } from "./types";
 export const N = 20;
 
 export const SEASONS: Season[] = [
-  { id: "0", number: 0, name: "The Pilot Wall", theme: "Anything at all", gridSize: N, status: "frozen", createdAt: "2026-04-01T09:00:00Z", frozenAt: "2026-06-02T18:40:00Z" },
-  { id: "1", number: 1, name: "First Light", theme: "Something you saw for the first time", gridSize: N, status: "open", createdAt: "2026-09-01T09:00:00Z", frozenAt: null },
-  { id: "2", number: 2, name: "Underwater Cities", theme: "Places beneath the surface", gridSize: N, status: "upcoming", createdAt: "2026-10-30T09:00:00Z", frozenAt: null },
+  { id: "1", number: 0, name: "First Light", theme: "Something you saw for the first time", gridSize: N, status: "open", createdAt: "2026-09-01T09:00:00Z", frozenAt: null, closesAt: site.seasonClosesAt },
+  { id: "2", number: 1, name: "Underwater Cities", theme: "Places beneath the surface", gridSize: N, status: "upcoming", createdAt: "2026-10-30T09:00:00Z", frozenAt: null, closesAt: null },
 ];
 
 const NAMES = [
@@ -147,12 +147,6 @@ function buildPending(approved: Tile[], now: number): Tile[] {
   });
 }
 
-function buildSeason0(): Tile[] {
-  const out: Tile[] = [];
-  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) out.push(sampleTile("0", x, y, 3, 0));
-  return out;
-}
-
 let cache: { tiles: Tile[]; reports: Report[] } | null = null;
 
 /** All seed tiles across seasons, plus seed reports. */
@@ -161,7 +155,7 @@ export function seedData(): { tiles: Tile[]; reports: Report[] } {
   const s1 = buildSeason1();
   // Pending dates are relative to a fixed "now" so server and client match; admin shows ages from the real clock.
   const pending = buildPending(s1, Date.parse("2026-10-30T09:00:00Z"));
-  const tiles = [...buildSeason0(), ...s1, ...pending];
+  const tiles = [...s1, ...pending];
   const reports: Report[] = [
     { id: "r-seed-1", tileId: s1[40].id, reason: "Wrong label (hand or AI)", note: "This looks AI-made to me, but it says by hand.", status: "open", createdAt: "2026-10-28T14:12:00Z" },
     { id: "r-seed-2", tileId: s1[118].id, reason: "Spam, link or advert", note: "I think there is a brand name in the corner.", status: "open", createdAt: "2026-10-29T08:03:00Z" },

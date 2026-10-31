@@ -7,7 +7,7 @@ import { markCelebrated, useLocalState, useSeasons, useSeasonTiles } from "@/lib
 import type { Season, Tile } from "@/lib/types";
 import { Mural, type MuralApi } from "./Mural";
 import { ClaimCard, TileCard } from "./TileCard";
-import { Header, Icon, Toast, useToast } from "./ui";
+import { closeDate, Header, Icon, Reasons, Toast, useClosesIn, useToast } from "./ui";
 
 function useAccent(tint: string | null) {
   useEffect(() => { document.documentElement.style.setProperty("--accent", tint ?? "#c9a24f"); }, [tint]);
@@ -17,7 +17,7 @@ function useAccent(tint: string | null) {
 export function MuralExperience({ seasonId, flyToId = null, gift = false }: { seasonId?: string; flyToId?: string | null; gift?: boolean }) {
   const seasons = useSeasons();
   const local = useLocalState();
-  const season: Season = (seasonId ? seasons.find((s) => s.id === seasonId) : seasons.find((s) => s.status === "open")) ?? seasons[1];
+  const season: Season = (seasonId ? seasons.find((s) => s.id === seasonId) : seasons.find((s) => s.status === "open")) ?? seasons[0];
   const frozen = season.status === "frozen";
   const tiles = useSeasonTiles(season.id);
   const approved = useMemo(() => tiles.filter((t) => t.status === "approved"), [tiles]);
@@ -50,6 +50,7 @@ export function MuralExperience({ seasonId, flyToId = null, gift = false }: { se
   const onOpen = useCallback((tile: Tile, rect: DOMRect) => { stopAll(); setOpen({ tile, rect, gift: false }); }, []);
   const onArrive = useCallback((tile: Tile, rect: DOMRect) => setOpen({ tile, rect, gift }), [gift]);
   const count = approved.length, total = season.gridSize * season.gridSize;
+  const closesIn = useClosesIn(frozen ? null : season.closesAt);
 
   return (
     <div className="stage">
@@ -62,16 +63,19 @@ export function MuralExperience({ seasonId, flyToId = null, gift = false }: { se
         {!frozen && !flyToId && (
           <div className={`intro${interacted ? " intro--gone" : ""}`}>
             <p className="intro__line">Every tile is a person. Add yours.</p>
+            <Reasons />
+            {closesIn && closesIn !== "closed" && <p className="urgent">The wall {closesIn}. Get your square up there.</p>}
             <div className="intro__actions">
               <Link className="btn btn--primary" href="/add">Add your tile, {money(singlePrice(local.prices))}</Link>
               <button className="btn" onClick={() => { setInteracted(true); api.current?.zoom(2); }}>Explore the mural</button>
             </div>
+            <Link href="/about#why" className="small" style={{ color: "var(--muted)" }}>What your dollar does</Link>
           </div>
         )}
         <div className="bar">
           <div>
             <div className="eyebrow">Season {season.number} · {season.name}{frozen ? " · frozen" : ""}</div>
-            <div className="serif" style={{ fontSize: 19, marginTop: 4 }}>{count} of {total} tiles{frozen ? "" : " placed"}</div>
+            <div className="serif" style={{ fontSize: 19, marginTop: 4 }}>{count} of {total} tiles{frozen ? "" : " placed"}{closesIn && !frozen ? <span className="urgent-inline"> · {closesIn}{season.closesAt ? `, ${closeDate(season.closesAt)}` : ""}</span> : null}</div>
             <div className="progress" aria-hidden="true"><i style={{ width: `${(count / total) * 100}%` }} /></div>
             {ambient?.phrase && <div className="chip" style={{ marginTop: 10 }}><Icon name="sound" size={13} />a voice, softly: <em>“{ambient.phrase}”</em></div>}
           </div>

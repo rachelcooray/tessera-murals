@@ -6,6 +6,7 @@ import { addCredits, approveTile, fillSeasonForDemo, hideTile, rejectTile, reset
 import { authConfigured, isAdminEmail, sendPasswordReset, signIn, signOut, updatePassword, useSession } from "@/lib/auth";
 import { paymentsLive, settlePayment } from "@/lib/payments";
 import { DEFAULT_TIERS, money, quote, SUGGESTED_TIERS, type Prices } from "@/lib/pricing";
+import { seasonNumber } from "@/lib/seasonLabel";
 import { REJECTION_REASONS, type Tile } from "@/lib/types";
 import { MuralExperience } from "./MuralExperience";
 import { VoicePlayer } from "./VoicePlayer";
@@ -59,7 +60,7 @@ export function TileView({ id, gift }: { id: string; gift: boolean }) {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={tileImage(tile)} alt={tileAlt(tile)} style={{ flex: "1 1 320px", maxWidth: 480, width: "100%", aspectRatio: "1", objectFit: "cover", boxShadow: "0 40px 80px rgba(0,0,0,.6), 0 0 0 1px var(--line)" }} />
             <div style={{ flex: "1 1 320px", display: "flex", flexDirection: "column", gap: 16 }}>
-              <span className="eyebrow">Season {tile.seasonId}</span>
+              <span className="eyebrow">Season {seasonNumber(tile.seasonId)}</span>
               <h1 style={{ fontSize: 44, lineHeight: 1.05 }}>{tile.displayName ?? "Anonymous"}</h1>
               <TileTitle t={tile} />
               <OriginLabel origin={tile.origin} />
@@ -92,7 +93,14 @@ export function SeasonsView() {
       <main className="container">
         <span className="eyebrow">The gallery</span>
         <h1 style={{ fontSize: "clamp(38px, 6vw, 56px)", margin: "12px 0", maxWidth: 680 }}>Finished walls, kept for good</h1>
-        <p className="lede" style={{ maxWidth: 620 }}>When a season fills its 400 tiles it is frozen and hung here. Every tile still opens; every voice still plays.</p>
+        <p className="lede" style={{ maxWidth: 620 }}>When a season closes it is frozen and hung here. Every tile still opens; every voice still plays.</p>
+        {!seasons.some((s) => s.status === "frozen") && (
+          <div className="box" style={{ marginTop: 32, maxWidth: 620 }}>
+            <span className="eyebrow">Nothing hanging yet</span>
+            <p className="serif" style={{ fontSize: 24, lineHeight: 1.35 }}>Season 0 is the very first wall. When it closes{seasons.find((s) => s.status === "open")?.closesAt ? ` on ${new Date(seasons.find((s) => s.status === "open")!.closesAt!).toLocaleDateString("en-GB", { day: "numeric", month: "long" })}` : ""}, it hangs here for good, with your tile on it if you add one in time.</p>
+            <Link className="btn btn--primary" href="/add" style={{ alignSelf: "flex-start" }}>Add your tile</Link>
+          </div>
+        )}
         <div className="seasons">
           {[...seasons].sort((a, b) => order(a.status) - order(b.status) || b.number - a.number).map((s) => {
             const st = tiles.filter((t) => t.seasonId === s.id);
@@ -101,7 +109,7 @@ export function SeasonsView() {
             const body = (<>
               <div style={{ opacity: s.status === "upcoming" ? 0.6 : 1 }}><MiniMural tiles={st} n={s.gridSize} /></div>
               <div className="plaque">
-                <span className="eyebrow">Season {s.number} · {s.status === "open" ? "Now open" : s.status === "frozen" ? `Frozen ${new Date(s.frozenAt!).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}` : "Opens when this season fills"}</span>
+                <span className="eyebrow">Season {s.number} · {s.status === "open" ? "Now open" : s.status === "frozen" ? `Frozen ${new Date(s.frozenAt!).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}` : "Opens when this season closes"}</span>
                 <span className="serif" style={{ fontSize: 28 }}>{s.name}</span>
                 <span className="small muted">{s.status === "upcoming" ? `Theme: ${s.theme}. Be one of the first.` : `${count} of ${s.gridSize ** 2} tiles · ${s.theme}`}</span>
               </div>
@@ -250,7 +258,7 @@ function Queue({ pending }: { pending: Tile[] }) {
               <span className="serif" style={{ fontSize: 22 }}>{t.displayName ?? "Anonymous"}{t.gift ? ` · gift for ${t.gift.recipient}` : ""}</span>
               <OriginLabel origin={t.origin} />
             </div>
-            <span className="small faint">Season {t.seasonId} · {placeLabel(t)} · {age < 1 ? `${Math.max(1, Math.round(age * 24))} hours ago` : `${Math.floor(age)} days ago`} · {payLabel(t)}{t.email ? ` · ${t.email}` : ""}</span>
+            <span className="small faint">Season {seasonNumber(t.seasonId)} · {placeLabel(t)} · {age < 1 ? `${Math.max(1, Math.round(age * 24))} hours ago` : `${Math.floor(age)} days ago`} · {payLabel(t)}{t.email ? ` · ${t.email}` : ""}</span>
             {t.phrase && <span className="serif italic" style={{ fontSize: 17 }}>“{t.phrase}”</span>}
             {t.prompt && <span className="small muted">Prompt: {t.prompt}</span>}
             {t.details && <span className="small muted">{[t.details.title && `Title: ${t.details.title}`, t.details.medium && `Made with: ${t.details.medium}`, t.details.credit && `Credit: ${t.details.credit}`].filter(Boolean).join(" · ")}</span>}
@@ -329,7 +337,7 @@ function SeasonsAdmin() {
         </div>
       );
     })}
-    <p className="small faint">A season freezes by itself when its last tile is approved. The next one opens automatically, and visitors see the season-end moment on the mural.</p>
+    <p className="small faint">A season freezes by itself on its closing date, or sooner if its last square is approved. The next one opens automatically, and visitors see the season-end moment on the mural.</p>
     <div><button className="btn" onClick={() => { if (confirm("Clear every local change: submissions, decisions, reports, prices?")) resetPrototype(); }}>Reset prototype data</button></div>
   </>);
 }

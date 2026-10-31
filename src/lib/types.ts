@@ -64,6 +64,8 @@ export interface Season {
   status: SeasonStatus;
   createdAt: string;
   frozenAt: string | null;
+  /** Deadline: the season freezes at this time even if squares are left. */
+  closesAt: string | null;
 }
 
 export interface Report {

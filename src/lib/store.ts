@@ -89,7 +89,12 @@ export function allTiles(s: LocalState): Tile[] {
 }
 
 export function seasonsWithState(s: LocalState): Season[] {
-  const out = SEASONS.map((season) => (s.frozen[season.id] ? { ...season, status: "frozen" as const, frozenAt: s.frozen[season.id] } : season));
+  const now = Date.now();
+  const out = SEASONS.map((season) => {
+    if (s.frozen[season.id]) return { ...season, status: "frozen" as const, frozenAt: s.frozen[season.id] };
+    if (season.status === "open" && season.closesAt && now > Date.parse(season.closesAt)) return { ...season, status: "frozen" as const, frozenAt: season.closesAt };
+    return season;
+  });
   // The first upcoming season after the last frozen one opens automatically.
   if (!out.some((x) => x.status === "open")) {
     const next = out.find((x) => x.status === "upcoming");

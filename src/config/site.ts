@@ -8,6 +8,8 @@ export const site = {
   contactEmail: "hello@tessera.example",
   location: "[City, Country]",
   gridSize: 20,
+  /** When the current season closes, even if not every square is taken. Change this to move the deadline. */
+  seasonClosesAt: "2026-11-07T23:59:00+05:30",
   currency: "usd",
   voice: { minSeconds: 10, maxSeconds: 20 },
   phraseMax: 80,

@@ -44,7 +44,7 @@ Pick two slots to test, for example 12:00 and 19:00 your time. Post Reels in one
   - 2 to 9s: voiceover: "Each tile is one person. A picture, a few words, their voice."
   - 9 to 14s: "When all 400 are filled, the wall is frozen and kept for good."
   - 14 to 17s: end card, "Comment TILE for the link."
-- **Caption:** Most of what we post disappears in a scroll. Tessera is the opposite: one wall, 400 tiles, each one a person who stays. Comment TILE and I'll send you the link when Season 1 opens.
+- **Caption:** Most of what we post disappears in a scroll. Tessera is the opposite: one wall, 400 tiles, each one a person who stays. Comment TILE and I'll send you the link when Season 0 opens.
 - **Hashtags:** #tessera #digitalart #collaborativeart #buildinpublic #artcommunity
 - **TikTok:** strong fit. Caption "a wall the internet can't scroll past" · #buildinpublic #digitalart #artok · put the hook on screen from frame one, cut voiceover gaps tighter.
 
@@ -79,7 +79,7 @@ Pick two slots to test, for example 12:00 and 19:00 your time. Post Reels in one
 
 ### Sat · Single post · "400 spots"
 - **Boards:** Carousel-CTA as a single image
-- **Caption:** Season 1 has 400 spots. When they're gone, they're gone. Comment TILE to get the link before it opens on {{launch date}}.
+- **Caption:** Season 0 has 400 spots. When they're gone, they're gone. Comment TILE to get the link before it opens on {{launch date}}.
 - **Hashtags:** #tessera #limitededition #digitalart #artproject #buildinpublic
 
 ---
@@ -93,7 +93,7 @@ Pick two slots to test, for example 12:00 and 19:00 your time. Post Reels in one
   1. This is what 400 strangers look like.
   2. Watch an empty wall fill up, one person at a time.
   3. 400 spots. Watch them go.
-- **Beats:** hook over the empty wall · timelapse with the counter running down · hold on the full wall, "Season 1 opens {{launch date}}" · end card.
+- **Beats:** hook over the empty wall · timelapse with the counter running down · hold on the full wall, "Season 0 opens {{launch date}}" · end card.
 - **Caption:** A preview of how a season fills, made with sample tiles. The real one starts empty on {{launch date}}. Comment TILE to be one of the first.
 - **Hashtags:** #tessera #timelapse #digitalart #collaborativeart #buildinpublic
 - **TikTok:** best fit of the week. #timelapse #satisfying #art · no voiceover, just music and the counter.
@@ -132,13 +132,13 @@ Pick two slots to test, for example 12:00 and 19:00 your time. Post Reels in one
 - **Hashtags:** #tessera #giftideas #birthdaygift #digitalart #meaningfulgifts
 - **TikTok:** good fit. #giftideas #birthday #fyp · open on the "A tile for you" moment.
 
-### Sun · Reel 7 · "Season 1 opens {{launch date}}"
+### Sun · Reel 7 · "Season 0 opens {{launch date}}"
 - **Boards:** Scene-Wake, Story-Spots (edit to "400 spots left"), Overlay-EndCard
 - **Hooks:**
   1. The wall opens {{launch date}}. 400 spots.
   2. Two weeks of building. Here's the wall.
   3. Be one of the first 400.
-- **Caption:** Season 1: First Light opens {{launch date}}. 400 spots, then it's frozen for good. Comment TILE and I'll send you the link the moment it opens.
+- **Caption:** Season 0: First Light opens {{launch date}}. 400 spots, then it's frozen for good. Comment TILE and I'll send you the link the moment it opens.
 - **Hashtags:** #tessera #launch #digitalart #buildinpublic #artproject
 
 ---
