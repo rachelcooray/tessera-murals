@@ -21,7 +21,7 @@ export default function About() {
           </div>
           <div>
             <div className="serif italic" style={{ fontSize: 26 }}>{site.creatorName}</div>
-            <div className="small muted">Creator of Tessera · <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a></div>
+            <div className="small muted"><a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a></div>
           </div>
         </article>
         <section id="why" style={{ flex: "1 1 100%", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 28, order: -1 }}>
@@ -81,7 +81,7 @@ export default function About() {
           </section>
           <section className="box" id="terms">
             <h2 style={{ fontSize: 26 }}>Terms</h2>
-            <p className="small muted">[Terms of use and privacy notice to be written before launch.] Tessera is run by {site.creatorName}, {site.location}.</p>
+            <p className="small muted">[Terms of use and privacy notice to be written before launch.] Tessera is run by one person, {site.location}.</p>
           </section>
         </aside>
       </main>

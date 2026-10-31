@@ -4,7 +4,8 @@
  */
 export const site = {
   name: "Tessera",
-  creatorName: "Rachel Cooray",
+  /** Shown as the maker. Put a name here when you are ready to be named. */
+  creatorName: "The maker of Tessera",
   contactEmail: "hello@tessera.example",
   location: "[City, Country]",
   gridSize: 20,

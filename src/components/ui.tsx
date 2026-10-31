@@ -69,7 +69,7 @@ export function Header({ current, overlay = false }: { current?: string; overlay
 export function Footer() {
   return (
     <footer className="footer">
-      <span>Tessera is made and run by {site.creatorName}. Prototype with sample data.</span>
+      <span>Tessera is made and run by one person. Prototype with sample data.</span>
       <nav aria-label="Legal">
         <a href={`mailto:${site.contactEmail}`}>Contact</a>
         <Link href="/about#terms">Terms</Link>
