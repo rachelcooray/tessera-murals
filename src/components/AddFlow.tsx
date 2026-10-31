@@ -5,11 +5,14 @@ import { site } from "@/config/site";
 import { artDataUrl, artPalette, type ArtKind, type ArtSpec } from "@/lib/art";
 import { extractPalette } from "@/lib/colour";
 import { suggestSpots, type Spot } from "@/lib/placement";
+import { createIntent, paymentsLive, type Intent } from "@/lib/payments";
+import { money, quote, sortedTiers } from "@/lib/pricing";
 import { hashString } from "@/lib/rng";
 import { addCredits, newTileId, submitTile, useCurrentSeason, useLocalState, useSeasonTiles } from "@/lib/store";
 import type { Origin, Tile, VoiceClip } from "@/lib/types";
 import { Recorder } from "./Recorder";
-import { Icon, placeLabel } from "./ui";
+import { StripePay } from "./StripePay";
+import { Icon } from "./ui";
 
 type Step = "image" | "origin" | "words" | "voice" | "name" | "gift" | "place" | "pay" | "done";
 const LABEL: Record<Step, string> = { image: "Image", origin: "Origin", words: "Words", voice: "Voice", name: "Name", gift: "Gift", place: "Place", pay: "Pay", done: "Done" };
@@ -36,8 +39,9 @@ async function processUpload(file: File): Promise<{ url: string; palette: string
 }
 
 /** Mock moderation for Phase 1. Real image, text and audio checks arrive in Phase 4. */
-function mockFlags(phrase: string): string[] {
-  return /https?:|www\.|\.com|@|\b(buy|sale|discount|follow me)\b/i.test(phrase) ? ["Phrase: possible link or advert."] : [];
+function mockFlags(phrase: string, note: string): string[] {
+  const ad = /https?:|www\.|\.com|@|\b(buy|sale|discount|follow me)\b/i;
+  return [...(ad.test(phrase) ? ["Phrase: possible link or advert."] : []), ...(ad.test(note) ? ["Note: possible link or advert."] : [])];
 }
 
 export function AddFlow({ preferSpot, startGift }: { preferSpot: { x: number; y: number } | null; startGift: boolean }) {
@@ -55,6 +59,12 @@ export function AddFlow({ preferSpot, startGift }: { preferSpot: { x: number; y:
   const [origin, setOrigin] = useState<Origin>("hand");
   const [phrase, setPhrase] = useState("");
   const [voice, setVoice] = useState<VoiceClip | null>(null);
+  const [more, setMore] = useState(false);
+  const [title, setTitle] = useState("");
+  const [medium, setMedium] = useState("");
+  const [note, setNote] = useState("");
+  const [credit, setCredit] = useState("");
+  const creditOk = !credit.trim() || /^@?[A-Za-z0-9._]{1,30}$/.test(credit.trim());
   const [named, setNamed] = useState(true);
   const [name, setName] = useState("");
   const [gift, setGift] = useState(startGift);
@@ -62,7 +72,12 @@ export function AddFlow({ preferSpot, startGift }: { preferSpot: { x: number; y:
   const [occasion, setOccasion] = useState("");
   const [giftNote, setGiftNote] = useState<VoiceClip | null>(null);
   const [spot, setSpot] = useState<Spot | null>(null);
-  const [plan, setPlan] = useState<"single" | "bundle" | "credit">(local.credits > 0 ? "credit" : "single");
+  const [qty, setQty] = useState(1);
+  const [other, setOther] = useState(false);
+  const [useCredit, setUseCredit] = useState(false);
+  const [intent, setIntent] = useState<Intent | null>(null);
+  const [tileId] = useState(() => newTileId(season.id));
+  const [busyPay, setBusyPay] = useState(false);
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<{ id: string; status: string } | null>(null);
@@ -92,28 +107,49 @@ export function AddFlow({ preferSpot, startGift }: { preferSpot: { x: number; y:
     }, 1300);
   };
 
-  const submit = () => {
+  const freeSpots = season.gridSize ** 2 - seasonTiles.length;
+  const maxQty = Math.max(1, Math.min(local.prices.maxPerOrder, freeSpots));
+  const q = quote(qty, local.prices);
+  const paidWithCredit = useCredit && local.credits > 0;
+
+  const check = (): boolean => {
+    if (!chosen) return false;
+    if (!/^\S+@\S+\.\S+$/.test(email)) { setError("Please add an email so we can send your tile link."); return false; }
+    if (seasonTiles.some((t) => t.x === chosen.x && t.y === chosen.y)) { setError("Someone has just taken that spot. Please pick another."); setSpot(null); setStep("place"); return false; }
+    return true;
+  };
+
+  const finalize = (intentId: string | null, amount: number) => {
     if (!chosen) return;
-    if (!/^\S+@\S+\.\S+$/.test(email)) { setError("Please add an email so we can send your tile link."); return; }
-    if (seasonTiles.some((t) => t.x === chosen.x && t.y === chosen.y)) { setError("Someone has just taken that spot. Please pick another."); setSpot(null); setStep("place"); return; }
-    const p = local.prices;
+    const kind = paidWithCredit ? "credit" : qty === 1 ? "hold" : "charge";
     const tile: Tile = {
-      id: newTileId(season.id), seasonId: season.id, x: chosen.x, y: chosen.y, art: imageUrl ? null : art, imageUrl,
-      phrase: phrase.trim() || null, voice, transcript: null, displayName: named ? name.trim() || null : null,
+      id: tileId, seasonId: season.id, x: chosen.x, y: chosen.y, art: imageUrl ? null : art, imageUrl,
+      phrase: phrase.trim() || null, voice,
+      details: title.trim() || medium.trim() || note.trim() || credit.trim() ? { title: title.trim() || null, medium: medium.trim() || null, note: note.trim() || null, credit: credit.trim() ? "@" + credit.trim().replace(/^@/, "") : null } : null, transcript: null, displayName: named ? name.trim() || null : null,
       origin: generated ? "ai" : origin, prompt: generated ? prompt.trim() : null, palette, status: "pending", rejectionReason: null,
       gift: gift ? { recipient: recipient.trim(), occasion: occasion.trim(), from: named ? name.trim() || null : null, note: giftNote, noteTranscript: null } : null,
-      createdAt: new Date().toISOString(), approvedAt: null, flags: mockFlags(phrase), contentCredentials: imageUrl ? null : "Generated inside Tessera",
-      payment: { kind: plan === "credit" ? "credit" : "hold", amount: plan === "bundle" ? p.bundlePrice : p.single }, email,
+      createdAt: new Date().toISOString(), approvedAt: null, flags: mockFlags(phrase, note), contentCredentials: imageUrl ? null : "Generated inside Tessera",
+      payment: { kind, amount: paidWithCredit ? 0 : amount, quantity: paidWithCredit ? 1 : qty, ...(intentId ? { intentId } : {}), mock: !intentId && !paidWithCredit }, email,
     };
-    if (plan === "bundle") addCredits(p.bundleCount - 1);
-    if (plan === "credit") addCredits(-1);
+    if (paidWithCredit) addCredits(-1);
+    else if (qty > 1) addCredits(qty - 1);
     const status = submitTile(tile);
     setResult({ id: tile.id, status });
     setStep("done");
   };
 
+  const pay = async () => {
+    setError(null);
+    if (!check()) return;
+    if (paidWithCredit || !paymentsLive) { finalize(null, q.total); return; }
+    setBusyPay(true);
+    try { setIntent(await createIntent(qty, email, tileId)); }
+    catch (e) { setError(e instanceof Error ? e.message : "Payments are unavailable right now."); }
+    setBusyPay(false);
+  };
+
   const canNext: Partial<Record<Step, boolean>> = {
-    image: hasImage && !busy, words: phrase.length <= site.phraseMax, name: !named || name.trim().length > 0,
+    image: hasImage && !busy, words: phrase.length <= site.phraseMax && creditOk, name: !named || name.trim().length > 0,
     gift: recipient.trim().length > 0 && occasion.trim().length > 0, place: !!chosen,
   };
   const total = steps.length - 1;
@@ -186,6 +222,16 @@ export function AddFlow({ preferSpot, startGift }: { preferSpot: { x: number; y:
           <div className="field"><label htmlFor="phrase">Your phrase</label>
             <input id="phrase" className="input input--serif" value={phrase} maxLength={site.phraseMax} placeholder="for the lighthouse keeper I never met" onChange={(e) => setPhrase(e.target.value)} />
             <span className="counter">{phrase.length} / {site.phraseMax}</span></div>
+          <details className="more" open={more} onToggle={(e) => setMore((e.target as HTMLDetailsElement).open)}>
+            <summary>Add more about this piece <span className="faint">(optional)</span></summary>
+            <div style={{ display: "flex", flexDirection: "column", gap: 18, paddingTop: 16 }}>
+              <div className="field"><label htmlFor="title">Title</label><input id="title" className="input" maxLength={site.details.titleMax} value={title} placeholder="Low tide" onChange={(e) => setTitle(e.target.value)} /></div>
+              <div className="field"><label htmlFor="medium">Made with</label><input id="medium" className="input" maxLength={site.details.mediumMax} value={medium} placeholder="Gouache on paper, or the tool you used" onChange={(e) => setMedium(e.target.value)} /></div>
+              <div className="field"><label htmlFor="note">The story behind it</label><textarea id="note" className="textarea" maxLength={site.details.noteMax} value={note} placeholder="What it is, why you made it, who it’s for" onChange={(e) => setNote(e.target.value)} /><span className="counter">{note.length} / {site.details.noteMax}</span></div>
+              <div className="field"><label htmlFor="credit">Credit, so people can find you</label><input id="credit" className="input" maxLength={site.details.creditMax + 1} value={credit} placeholder="@yourname" onChange={(e) => setCredit(e.target.value)} />
+                {creditOk ? <span className="small faint">Shown as plain text, not a link.</span> : <span className="error">Just a handle, like @yourname. No links.</span>}</div>
+            </div>
+          </details>
         </>}
 
         {step === "voice" && <>
@@ -217,7 +263,7 @@ export function AddFlow({ preferSpot, startGift }: { preferSpot: { x: number; y:
 
         {step === "place" && <>
           <h1>Three spots where your tile belongs</h1>
-          <p className="muted small">We compared its colours with the tiles already on the wall. Pick one. It is held for you while your tile is reviewed.</p>
+          <p className="muted small">The squares with a gold border fit your colours best. Tap one. It is held for you while your tile is reviewed.</p>
           <div className="spotgrid" role="group" aria-label="Season mural with suggested spots">
             {Array.from({ length: season.gridSize ** 2 }, (_, i) => {
               const x = i % season.gridSize, y = Math.floor(i / season.gridSize);
@@ -225,41 +271,64 @@ export function AddFlow({ preferSpot, startGift }: { preferSpot: { x: number; y:
               const k = spots.findIndex((s) => s.x === x && s.y === y);
               if (k >= 0) {
                 const on = chosen?.x === x && chosen?.y === y;
-                return <button key={i} className="cand" aria-pressed={on} aria-label={`Choose ${placeLabel({ x, y })}`} onClick={() => setSpot(spots[k])} style={on ? { backgroundImage: `url("${imageUrl ?? (art ? artDataUrl(art) : "")}")` } : undefined} />;
+                return <button key={i} className="cand" aria-pressed={on} aria-label={`Suggested spot ${k + 1} of ${spots.length}`} onClick={() => setSpot(spots[k])} style={on ? { backgroundImage: `url("${imageUrl ?? (art ? artDataUrl(art) : "")}")` } : undefined} />;
               }
               return <i key={i} className={t ? "" : "free"} style={t ? { background: t.status === "approved" ? t.palette[0] : "rgba(201,162,79,.15)", opacity: 0.8 } : undefined} />;
             })}
           </div>
-          <div className="choices">
-            {spots.map((s) => (
-              <button key={`${s.x}-${s.y}`} className="choice" style={{ minHeight: 64 }} aria-pressed={chosen?.x === s.x && chosen?.y === s.y} onClick={() => setSpot(s)}>
-                <b style={{ fontSize: 18 }}>{placeLabel(s).replace(/^r/, "R")}</b>{s.why}
-              </button>
-            ))}
-          </div>
+          <p className="small muted" aria-live="polite">{chosen?.why}</p>
         </>}
 
         {step === "pay" && <>
-          <h1>{local.prices.single === 1 ? "One dollar" : `$${local.prices.single}`} for a spot that lasts</h1>
-          <div className="choices choices--2">
-            {local.credits > 0 && <button className="choice" aria-pressed={plan === "credit"} onClick={() => setPlan("credit")}><b>1 credit</b>You have {local.credits}</button>}
-            <button className="choice" aria-pressed={plan === "single"} onClick={() => setPlan("single")}><b>${local.prices.single}</b>This tile</button>
-            <button className="choice" aria-pressed={plan === "bundle"} onClick={() => setPlan("bundle")}><b>${local.prices.bundlePrice}</b>{local.prices.bundleCount} tiles as credits, for gifts and friends</button>
-          </div>
+          <h1>How many squares?</h1>
+          {local.credits > 0 && (
+            <div className="choices choices--2">
+              <button className="choice" aria-pressed={useCredit} onClick={() => { setUseCredit(true); setIntent(null); }}><b>Use a credit</b>You have {local.credits}</button>
+              <button className="choice" aria-pressed={!useCredit} onClick={() => { setUseCredit(false); setIntent(null); }}><b>Buy squares</b>Pay by card</button>
+            </div>
+          )}
+          {!paidWithCredit && <>
+            <div className="qty" role="group" aria-label="Number of squares">
+              {sortedTiers(local.prices).filter((t) => t.n <= maxQty).map((t) => {
+                const tq = quote(t.n, local.prices);
+                return (
+                  <button key={t.n} className="choice qty__opt" aria-pressed={!other && qty === t.n} onClick={() => { setOther(false); setQty(t.n); setIntent(null); }}>
+                    <b>{t.n}</b><span>{money(tq.total)}</span>{tq.savingPct > 0 && <em>save {tq.savingPct}%</em>}
+                  </button>
+                );
+              })}
+              <button className="choice qty__opt" aria-pressed={other} onClick={() => { setOther(true); setIntent(null); }}><b>Other</b><span>any number</span></button>
+            </div>
+            {other && (
+              <div className="field"><label htmlFor="qty">Squares, up to {maxQty}</label>
+                <input id="qty" className="input" type="number" inputMode="numeric" min={1} max={maxQty} value={qty}
+                  onChange={(e) => { setQty(Math.max(1, Math.min(maxQty, Math.floor(Number(e.target.value) || 1)))); setIntent(null); }} /></div>
+            )}
+            <div className="box" style={{ background: "var(--card)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                <span className="serif" style={{ fontSize: 22 }}>{qty} square{qty === 1 ? "" : "s"}</span>
+                <span className="serif" style={{ fontSize: 30 }}>{money(q.total)}</span>
+              </div>
+              <span className="small muted">{money(q.perSquare)} each{q.saving > 0 ? ` · you save ${money(q.saving)} (${q.savingPct}%)` : ""}</span>
+              {qty > 1 && <span className="small muted">This tile uses one. The other {qty - 1} become credits for later, or to gift.</span>}
+            </div>
+          </>}
           <div className="field"><label htmlFor="email">Email, for your tile link</label><input id="email" type="email" autoComplete="email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} /></div>
-          {plan !== "credit" && <div className="box small faint" style={{ borderStyle: "dashed" }}>Card details go here. Prototype: payment is not taken yet; Stripe arrives in Phase 3.</div>}
-          <div className="note"><Icon name="lock" />Your card is only held, not charged, until a person approves your tile. If it isn’t approved, the hold is released and you pay nothing.</div>
+          {!paidWithCredit && (paymentsLive
+            ? (intent ? <StripePay clientSecret={intent.clientSecret} label={qty === 1 ? `Hold ${money(intent.amount)} and submit` : `Pay ${money(intent.amount)} and submit`} onPaid={(id) => finalize(id, intent.amount)} /> : null)
+            : <div className="box small faint" style={{ borderStyle: "dashed" }}>Test mode: no card is charged. Stripe switches on once the payments server is set up.</div>)}
+          <div className="note"><Icon name="lock" />{paidWithCredit ? "Your credit is only used once your tile is approved." : qty === 1 ? "Your card is only held, not charged, until a person approves your tile. If it isn’t approved, the hold is released and you pay nothing." : "Squares are charged now. If this tile isn’t approved, its square goes back to you as a credit."}</div>
           {error && <p className="error" role="alert">{error}</p>}
         </>}
 
-        {step === "done" && result && <Done result={result} gift={gift} preview={imageUrl ?? (art ? artDataUrl(art) : "")} spot={chosen} />}
+        {step === "done" && result && <Done result={result} gift={gift} preview={imageUrl ?? (art ? artDataUrl(art) : "")} />}
       </main>
 
       {step !== "done" && (
         <div className="flow__actions">
-          {step === "pay" ? <button className="btn btn--primary btn--block" onClick={submit}>{plan === "credit" ? "Use 1 credit and submit" : plan === "bundle" ? `Pay $${local.prices.bundlePrice} and submit` : `Hold $${local.prices.single} and submit`}</button>
-            : <button className="btn btn--primary btn--block" disabled={canNext[step] === false} onClick={() => { if (step === "place" && chosen) setSpot(chosen); go(1); }}>{step === "place" && chosen ? `Hold ${placeLabel(chosen)} for me` : "Continue"}</button>}
-          {(step === "words" || step === "voice") && <button className="btn btn--quiet" onClick={() => { if (step === "words") setPhrase(""); else setVoice(null); go(1); }}>Skip</button>}
+          {step === "pay" ? (intent && !paidWithCredit ? null : <button className="btn btn--primary btn--block" disabled={busyPay} onClick={pay}>{busyPay ? "Working…" : paidWithCredit ? "Use 1 credit and submit" : paymentsLive ? "Continue to payment" : qty === 1 ? `Hold ${money(q.total)} and submit` : `Pay ${money(q.total)} and submit`}</button>)
+            : <button className="btn btn--primary btn--block" disabled={canNext[step] === false} onClick={() => { if (step === "place" && chosen) setSpot(chosen); go(1); }}>{step === "place" && chosen ? "Hold this spot for me" : "Continue"}</button>}
+          {(step === "words" || step === "voice") && <button className="btn btn--quiet" onClick={() => { if (step === "words") { setPhrase(""); setTitle(""); setMedium(""); setNote(""); setCredit(""); } else setVoice(null); go(1); }}>Skip</button>}
           {error && step !== "pay" && <p className="error" role="alert">{error}</p>}
         </div>
       )}
@@ -267,7 +336,7 @@ export function AddFlow({ preferSpot, startGift }: { preferSpot: { x: number; y:
   );
 }
 
-function Done({ result, gift, preview, spot }: { result: { id: string; status: string }; gift: boolean; preview: string; spot: Spot | null }) {
+function Done({ result, gift, preview }: { result: { id: string; status: string }; gift: boolean; preview: string }) {
   const live = result.status === "approved";
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 20, textAlign: "center", paddingTop: 40 }}>
@@ -276,7 +345,7 @@ function Done({ result, gift, preview, spot }: { result: { id: string; status: s
       <span className="eyebrow">{live ? "Approved" : "Submitted"}</span>
       <h1>{live ? "Your tile is on the wall" : "Your tile is being reviewed"}</h1>
       <p className="muted" style={{ maxWidth: 340, lineHeight: 1.7 }}>
-        {live ? "It glows softly for a little while so you can find it." : `Usually within a day. ${spot ? placeLabel(spot).replace(/^r/, "R") : "Your spot"} is held for you. If it isn’t approved, the hold on your card is released and you won’t be charged.`}
+        {live ? "It glows softly for a little while so you can find it." : `Usually within a day. Your spot is held for you. If it isn’t approved, the hold on your card is released and you won’t be charged.`}
       </p>
       <div className="box small" style={{ textAlign: "left", width: "100%" }}>
         <strong style={{ fontWeight: 500 }}>Prototype shortcut</strong>

@@ -3,10 +3,13 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { site } from "@/config/site";
 import { addCredits, approveTile, fillSeasonForDemo, hideTile, rejectTile, resetPrototype, setAutoApprove, setOrigin, setPrices, setReportStatus, useAllTiles, useLocalState, useReports, useSeasons, useTile } from "@/lib/store";
+import { authConfigured, isAdminEmail, sendPasswordReset, signIn, signOut, updatePassword, useSession } from "@/lib/auth";
+import { paymentsLive, settlePayment } from "@/lib/payments";
+import { DEFAULT_TIERS, money, quote, SUGGESTED_TIERS, type Prices } from "@/lib/pricing";
 import { REJECTION_REASONS, type Tile } from "@/lib/types";
 import { MuralExperience } from "./MuralExperience";
 import { VoicePlayer } from "./VoicePlayer";
-import { Footer, Header, Icon, Mark, OriginLabel, placeLabel, shareTile, tileAlt, tileImage, Toast, useToast } from "./ui";
+import { AboutPiece, Footer, Header, Icon, Mark, OriginLabel, placeLabel, shareTile, tileAlt, tileImage, TileTitle, Toast, useToast } from "./ui";
 
 export function MiniMural({ tiles, n = 20, mark }: { tiles: Tile[]; n?: number; mark?: { x: number; y: number } }) {
   const grid = new Map(tiles.map((t) => [t.y * n + t.x, t]));
@@ -56,11 +59,13 @@ export function TileView({ id, gift }: { id: string; gift: boolean }) {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={tileImage(tile)} alt={tileAlt(tile)} style={{ flex: "1 1 320px", maxWidth: 480, width: "100%", aspectRatio: "1", objectFit: "cover", boxShadow: "0 40px 80px rgba(0,0,0,.6), 0 0 0 1px var(--line)" }} />
             <div style={{ flex: "1 1 320px", display: "flex", flexDirection: "column", gap: 16 }}>
-              <span className="eyebrow">Season {tile.seasonId} · {placeLabel(tile)}</span>
+              <span className="eyebrow">Season {tile.seasonId}</span>
               <h1 style={{ fontSize: 44, lineHeight: 1.05 }}>{tile.displayName ?? "Anonymous"}</h1>
+              <TileTitle t={tile} />
               <OriginLabel origin={tile.origin} />
               {tile.phrase && <p className="card__phrase">“{tile.phrase}”</p>}
               {tile.voice && <VoicePlayer clip={tile.voice} transcript={tile.transcript} />}
+              <AboutPiece t={tile} open />
               <div style={{ maxWidth: 200 }}><span className="eyebrow" style={{ display: "block", marginBottom: 8 }}>Where it sits</span><MiniMural tiles={all.filter((t) => t.seasonId === tile.seasonId)} mark={tile} /></div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 8 }}>
                 <Link className="btn btn--primary" href={`/?tile=${tile.id}`}>See it on the mural</Link>
@@ -115,13 +120,27 @@ const order = (s: string) => (s === "open" ? 0 : s === "frozen" ? 1 : 2);
 type Tab = "queue" | "reports" | "seasons" | "prices";
 export function AdminView() {
   const mounted = useMounted();
+  const { session, ready, recovery, endRecovery } = useSession();
   const [tab, setTab] = useState<Tab>("queue");
   const tiles = useAllTiles();
   const reports = useReports();
   const local = useLocalState();
   const pending = tiles.filter((t) => t.status === "pending").sort((a, b) => a.createdAt.localeCompare(b.createdAt));
   const openReports = reports.filter((r) => r.status === "open");
-  if (!mounted) return null;
+  if (!mounted || !ready) return null;
+  if (authConfigured) {
+    if (!session) return <SignIn />;
+    if (recovery) return <SignIn recovery onDone={endRecovery} />;
+    if (!isAdminEmail(session.user.email)) return (
+      <main className="page" style={{ alignItems: "center", justifyContent: "center", padding: 20 }}>
+        <div className="box" style={{ width: "min(420px, 100%)", background: "var(--card)" }}>
+          <h1 style={{ fontSize: 30 }}>This account isn’t an admin</h1>
+          <p className="small muted">Signed in as {session.user.email}.</p>
+          <button className="btn" onClick={() => signOut()}>Sign out</button>
+        </div>
+      </main>
+    );
+  }
   return (
     <div className="admin">
       <nav className="admin__nav" aria-label="Admin">
@@ -136,9 +155,15 @@ export function AdminView() {
           </div>
           <span className="small faint">{local.autoApprove ? "Tiles with no flags go straight onto the wall." : "Off. Every tile waits for you."}</span>
         </div>
+        {session && (
+          <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 4 }}>
+            <span className="small faint" style={{ overflowWrap: "anywhere" }}>{session.user.email}</span>
+            <button className="btn btn--quiet" style={{ minHeight: 36, padding: 0, justifyContent: "flex-start" }} onClick={() => signOut()}>Sign out</button>
+          </div>
+        )}
       </nav>
       <main className="admin__main">
-        <p className="banner">Prototype: this page is not protected yet and all changes live only in this browser. Sign-in and a real database arrive in Phase 2.</p>
+        <p className="banner">{authConfigured ? "Signed in. Tiles, reports and prices still live only in this browser until the Phase 2 database." : "Sign-in is off until Supabase is connected (see docs/admin-signin.md), so anyone with this link can open this page. Changes only affect this browser."}{paymentsLive ? "" : " Payments are in test mode: no card is charged."}</p>
         {tab === "queue" && <Queue pending={pending} />}
         {tab === "reports" && <Reports />}
         {tab === "seasons" && <SeasonsAdmin />}
@@ -150,8 +175,61 @@ export function AdminView() {
 
 function ageDays(iso: string) { return (Date.now() - Date.parse(iso)) / 86400000; }
 
+function payLabel(t: Tile): string {
+  const p = t.payment;
+  if (!p) return "no payment";
+  const test = p.mock ? " (test)" : "";
+  if (p.kind === "credit") return "1 credit";
+  if (p.kind === "charge") return `${money(p.amount)} paid for ${p.quantity ?? 1} squares${test}`;
+  return `${money(p.amount)} held${test}`;
+}
+
+function SignIn({ recovery = false, onDone }: { recovery?: boolean; onDone?: () => void }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault(); setBusy(true); setMsg(null);
+    try {
+      if (recovery) { await updatePassword(password); onDone?.(); }
+      else await signIn(email.trim(), password);
+    } catch (err) { setMsg({ ok: false, text: err instanceof Error ? err.message : "Sign-in failed." }); }
+    setBusy(false);
+  };
+  const reset = async () => {
+    if (!email.trim()) { setMsg({ ok: false, text: "Type your email first." }); return; }
+    try { await sendPasswordReset(email.trim()); setMsg({ ok: true, text: "If that email is an admin, a reset link is on its way." }); }
+    catch (err) { setMsg({ ok: false, text: err instanceof Error ? err.message : "Couldn’t send the email." }); }
+  };
+  return (
+    <main className="page" style={{ alignItems: "center", justifyContent: "center", padding: 20 }}>
+      <form onSubmit={submit} className="box" style={{ width: "min(420px, 100%)", background: "var(--card)", gap: 18 }}>
+        <Link href="/" className="wordmark"><Mark size={18} /><span style={{ fontSize: 19 }}>TESSERA</span></Link>
+        <h1 style={{ fontSize: 32 }}>{recovery ? "Choose a new password" : "Admin sign in"}</h1>
+        {!recovery && <div className="field"><label htmlFor="em">Email</label><input id="em" className="input" type="email" autoComplete="username" required value={email} onChange={(e) => setEmail(e.target.value)} /></div>}
+        <div className="field"><label htmlFor="pw">{recovery ? "New password" : "Password"}</label><input id="pw" className="input" type="password" autoComplete={recovery ? "new-password" : "current-password"} required minLength={recovery ? 10 : 1} value={password} onChange={(e) => setPassword(e.target.value)} /></div>
+        {msg && <p className={msg.ok ? "small muted" : "error"} role="alert">{msg.text}</p>}
+        <button className="btn btn--primary btn--block" type="submit" disabled={busy}>{busy ? "Working…" : recovery ? "Save password" : "Sign in"}</button>
+        {!recovery && <button type="button" className="btn btn--quiet" onClick={reset}>Forgot password</button>}
+      </form>
+    </main>
+  );
+}
+
 function Queue({ pending }: { pending: Tile[] }) {
   const [rejecting, setRejecting] = useState<string | null>(null);
+  const [busy, setBusy] = useState<string | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+  /** A single-square hold is captured on approval and released on rejection. Multi-square orders were already charged. */
+  const settle = async (t: Tile, action: "capture" | "cancel") => {
+    const p = t.payment;
+    if (!p || p.kind !== "hold" || !p.intentId || p.mock) return true;
+    setBusy(t.id); setErr(null);
+    try { await settlePayment(action, p.intentId); return true; }
+    catch (e) { setErr(`${t.displayName ?? "Anonymous"}: ${e instanceof Error ? e.message : "payment error"}`); return false; }
+    finally { setBusy(null); }
+  };
   const [reason, setReason] = useState<string>(REJECTION_REASONS[0]);
   const late = pending.filter((t) => ageDays(t.createdAt) > site.holdWarningDays).length;
   return (<>
@@ -159,6 +237,7 @@ function Queue({ pending }: { pending: Tile[] }) {
       <h1 style={{ fontSize: 36 }}>Moderation queue</h1>
       <p className="small muted">{pending.length} waiting{late ? ` · ${late} pending more than ${site.holdWarningDays} days, card hold expires soon` : ""}</p>
     </div>
+    {err && <p className="error" role="alert">{err}</p>}
     {!pending.length && <p className="muted">Nothing waiting. The wall is quiet.</p>}
     {pending.map((t) => {
       const age = ageDays(t.createdAt), isLate = age > site.holdWarningDays;
@@ -171,9 +250,11 @@ function Queue({ pending }: { pending: Tile[] }) {
               <span className="serif" style={{ fontSize: 22 }}>{t.displayName ?? "Anonymous"}{t.gift ? ` · gift for ${t.gift.recipient}` : ""}</span>
               <OriginLabel origin={t.origin} />
             </div>
-            <span className="small faint">Season {t.seasonId} · {placeLabel(t)} · {age < 1 ? `${Math.max(1, Math.round(age * 24))} hours ago` : `${Math.floor(age)} days ago`} · {t.payment?.kind === "credit" ? "1 credit" : `$${t.payment?.amount ?? 1} held`}{t.email ? ` · ${t.email}` : ""}</span>
+            <span className="small faint">Season {t.seasonId} · {placeLabel(t)} · {age < 1 ? `${Math.max(1, Math.round(age * 24))} hours ago` : `${Math.floor(age)} days ago`} · {payLabel(t)}{t.email ? ` · ${t.email}` : ""}</span>
             {t.phrase && <span className="serif italic" style={{ fontSize: 17 }}>“{t.phrase}”</span>}
             {t.prompt && <span className="small muted">Prompt: {t.prompt}</span>}
+            {t.details && <span className="small muted">{[t.details.title && `Title: ${t.details.title}`, t.details.medium && `Made with: ${t.details.medium}`, t.details.credit && `Credit: ${t.details.credit}`].filter(Boolean).join(" · ")}</span>}
+            {t.details?.note && <span className="small muted">Note: “{t.details.note}”</span>}
             {t.transcript && <span className="small muted">Transcript: “{t.transcript}”</span>}
             {t.voice && <VoicePlayer clip={t.voice} />}
             {t.gift?.note && <><span className="small muted">Gift note for {t.gift.recipient}:</span><VoicePlayer clip={t.gift.note} transcript={t.gift.noteTranscript} gift /></>}
@@ -188,12 +269,12 @@ function Queue({ pending }: { pending: Tile[] }) {
                 <select className="input" style={{ flex: "1 1 240px" }} value={reason} onChange={(e) => setReason(e.target.value)} aria-label="Reason for rejection">
                   {REJECTION_REASONS.map((r) => <option key={r}>{r}</option>)}
                 </select>
-                <button className="btn" onClick={() => { rejectTile(t.id, reason); setRejecting(null); }}>Reject and release hold</button>
+                <button className="btn" disabled={busy === t.id} onClick={async () => { if (await settle(t, "cancel")) { rejectTile(t.id, reason); setRejecting(null); } }}>Reject and release hold</button>
               </div>
             )}
           </div>
           <div className="qrow__acts">
-            <button className="btn btn--primary" onClick={() => approveTile(t.id)}>Approve</button>
+            <button className="btn btn--primary" disabled={busy === t.id} onClick={async () => { if (await settle(t, "capture")) approveTile(t.id); }}>{busy === t.id ? "Working…" : "Approve"}</button>
             <button className="btn" onClick={() => setRejecting(rejecting === t.id ? null : t.id)}>Reject…</button>
             <button className="btn btn--quiet" onClick={() => setOrigin(t.id, t.origin === "hand" ? "ai" : "hand")}>Fix label</button>
           </div>
@@ -255,16 +336,39 @@ function SeasonsAdmin() {
 
 function PricesAdmin() {
   const local = useLocalState();
-  const [p, setP] = useState(local.prices);
+  const [p, setP] = useState<Prices>(local.prices);
   const [toast, notify] = useToast();
+  const rows = [...p.tiers].sort((a, b) => a.n - b.n);
+  const setRow = (i: number, key: "n" | "price", v: number) => setP({ ...p, tiers: rows.map((r, k) => (k === i ? { ...r, [key]: v } : r)) });
   return (<>
     <h1 style={{ fontSize: 36 }}>Prices and credits</h1>
-    <form style={{ display: "grid", gap: 16, maxWidth: 420 }} onSubmit={(e) => { e.preventDefault(); setPrices(p); notify("Prices saved"); }}>
-      <div className="field"><label htmlFor="ps">Price per tile ($)</label><input id="ps" className="input" type="number" min={0.5} step={0.5} value={p.single} onChange={(e) => setP({ ...p, single: Number(e.target.value) })} /></div>
-      <div className="field"><label htmlFor="bc">Tiles in a bundle</label><input id="bc" className="input" type="number" min={2} value={p.bundleCount} onChange={(e) => setP({ ...p, bundleCount: Number(e.target.value) })} /></div>
-      <div className="field"><label htmlFor="bp">Bundle price ($)</label><input id="bp" className="input" type="number" min={1} value={p.bundlePrice} onChange={(e) => setP({ ...p, bundlePrice: Number(e.target.value) })} /></div>
-      <button className="btn btn--primary" type="submit">Save prices</button>
-    </form>
+    <p className="small muted" style={{ maxWidth: 680 }}>Buyers pick how many squares they want. Counts between rows pay the per-square rate of the row below. One square is held on the card until approval; more than one is charged now and the extras become credits. Net is after Stripe’s standard card fee of 2.9% plus 30 cents, so check your own Stripe pricing.</p>
+    <div style={{ overflowX: "auto" }}>
+      <table className="small" style={{ borderCollapse: "collapse", minWidth: 680 }}>
+        <thead><tr style={{ textAlign: "left", color: "var(--muted)" }}>{["Squares", "Price ($)", "Each", "Saving", "Stripe fee", "You keep", "Keep per square", ""].map((h) => <th key={h} style={{ padding: "8px 12px", fontWeight: 500 }}>{h}</th>)}</tr></thead>
+        <tbody>
+          {rows.map((r, i) => { const q = quote(r.n, p); return (
+            <tr key={i} style={{ borderTop: "1px solid var(--line)" }}>
+              <td style={{ padding: "6px 12px" }}><input aria-label="Squares" className="input" style={{ width: 80, padding: 8 }} type="number" min={1} value={r.n} onChange={(e) => setRow(i, "n", Math.max(1, Math.floor(Number(e.target.value) || 1)))} /></td>
+              <td style={{ padding: "6px 12px" }}><input aria-label="Price" className="input" style={{ width: 100, padding: 8 }} type="number" min={0.5} step={0.05} value={r.price} onChange={(e) => setRow(i, "price", Number(e.target.value) || 0)} /></td>
+              <td style={{ padding: "6px 12px" }}>{money(q.perSquare)}</td>
+              <td style={{ padding: "6px 12px" }}>{q.savingPct}%</td>
+              <td style={{ padding: "6px 12px" }}>{money(q.fee)}</td>
+              <td style={{ padding: "6px 12px" }}>{money(q.net)}</td>
+              <td style={{ padding: "6px 12px", color: q.netPerSquare < quote(1, p).netPerSquare ? "var(--oxblood-ink)" : "var(--ink)" }}>{money(q.netPerSquare)}</td>
+              <td style={{ padding: "6px 12px" }}>{rows.length > 1 && <button className="btn btn--quiet" style={{ minHeight: 32, padding: 0 }} onClick={() => setP({ ...p, tiers: rows.filter((_, k) => k !== i) })}>Remove</button>}</td>
+            </tr>); })}
+        </tbody>
+      </table>
+    </div>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+      <button className="btn" onClick={() => setP({ ...p, tiers: [...rows, { n: (rows[rows.length - 1]?.n ?? 0) + 5, price: 1 }] })}>Add a row</button>
+      <button className="btn" onClick={() => setP({ ...p, tiers: DEFAULT_TIERS })}>Your prices</button>
+      <button className="btn" onClick={() => setP({ ...p, tiers: SUGGESTED_TIERS })}>Suggested ladder</button>
+    </div>
+    <div className="field" style={{ maxWidth: 240 }}><label htmlFor="max">Most squares per order</label><input id="max" className="input" type="number" min={1} max={100} value={p.maxPerOrder} onChange={(e) => setP({ ...p, maxPerOrder: Math.max(1, Math.floor(Number(e.target.value) || 1)) })} /></div>
+    <div><button className="btn btn--primary" onClick={() => { setPrices(p); notify("Prices saved"); }}>Save prices</button></div>
+    {paymentsLive && <p className="banner">These prices change what visitors see. The amount charged comes from the PRICE_TIERS setting on the payments server, so update it to match.</p>}
     <p className="small muted">This browser holds {local.credits} credits. <button className="btn btn--quiet" style={{ minHeight: 32, padding: 0 }} onClick={() => addCredits(-local.credits)}>Clear</button></p>
     <Toast msg={toast} />
   </>);

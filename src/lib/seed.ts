@@ -104,6 +104,7 @@ function buildSeason1(): Tile[] {
   Object.assign(priya, {
     art: { kind: "horizon", seed: 4242, h: 212, s: 48, l: 40 } satisfies ArtSpec,
     displayName: "Priya Nair", origin: "hand", prompt: null, phrase: "for mum, who loved the sea",
+    details: { title: "Low tide", medium: "Gouache on paper", note: "Sample tile. Painted from memory of the beach we went to every August.", credit: "@sample.artist" },
   });
   priya.palette = artPalette(priya.art!);
   const gift = out.find((t) => t.id === "1-302")!;

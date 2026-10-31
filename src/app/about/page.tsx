@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Footer, Header } from "@/components/ui";
 import { site } from "@/config/site";
+import { DEFAULT_PRICES, money, quote } from "@/lib/pricing";
 
 export const metadata: Metadata = { title: "About" };
 
@@ -30,7 +31,7 @@ export default function About() {
               <li>Choose a picture you made, or describe one and let AI make it.</li>
               <li>Add a phrase and a {site.voice.minSeconds} to {site.voice.maxSeconds} second voice message, if you like.</li>
               <li>Pick one of three spots where it fits best.</li>
-              <li>Pay ${site.defaultPrices.single}. Your card is only held until a person approves your tile.</li>
+              <li>Pay {money(quote(1, DEFAULT_PRICES).total)} for one square, or buy more for less each: {money(quote(10, DEFAULT_PRICES).total)} for ten. A single square is only held on your card until a person approves it.</li>
               <li>When 400 tiles are placed, the season is frozen for good and a new one begins.</li>
             </ol>
           </section>

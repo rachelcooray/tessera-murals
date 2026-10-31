@@ -14,6 +14,14 @@ export interface Gift {
   noteTranscript: string | null;
 }
 
+/** Optional extras an artist can add. All plain text; nothing is turned into a link. */
+export interface TileDetails {
+  title: string | null;
+  medium: string | null;
+  note: string | null;
+  credit: string | null;
+}
+
 export interface Tile {
   id: string;
   seasonId: string;
@@ -24,6 +32,7 @@ export interface Tile {
   /** Uploaded image as a data URL (Phase 1 keeps uploads in the browser). */
   imageUrl: string | null;
   phrase: string | null;
+  details?: TileDetails | null;
   voice: VoiceClip | null;
   transcript: string | null;
   /** null means Anonymous. */
@@ -39,7 +48,8 @@ export interface Tile {
   /** Mock moderation output shown in admin. */
   flags: string[];
   contentCredentials: string | null;
-  payment: { kind: "hold" | "credit"; amount: number } | null;
+  /** hold: one square, card held until approval. charge: a multi-square order, paid now as credits. credit: paid with a credit. */
+  payment: { kind: "hold" | "charge" | "credit"; amount: number; quantity?: number; intentId?: string; mock?: boolean } | null;
   email: string | null;
 }
 
@@ -65,11 +75,7 @@ export interface Report {
   createdAt: string;
 }
 
-export interface Prices {
-  single: number;
-  bundleCount: number;
-  bundlePrice: number;
-}
+export type { Prices } from "./pricing";
 
 export const REPORT_REASONS = [
   "Sexual content or nudity",

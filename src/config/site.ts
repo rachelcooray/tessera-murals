@@ -1,6 +1,6 @@
 /**
  * Site-wide settings. Edit these before launch.
- * Prices here are defaults; the admin Prices tab overrides them (stored locally in Phase 1).
+ * Square prices live in src/lib/pricing.ts and the payments server function.
  */
 export const site = {
   name: "Tessera",
@@ -8,8 +8,9 @@ export const site = {
   contactEmail: "hello@tessera.example",
   location: "[City, Country]",
   gridSize: 20,
-  defaultPrices: { single: 1, bundleCount: 10, bundlePrice: 10, currency: "USD" },
+  currency: "usd",
   voice: { minSeconds: 10, maxSeconds: 20 },
   phraseMax: 80,
+  details: { titleMax: 60, mediumMax: 60, noteMax: 400, creditMax: 30 },
   holdWarningDays: 5,
 };

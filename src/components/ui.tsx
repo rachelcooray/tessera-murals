@@ -120,3 +120,23 @@ export async function shareTile(t: Tile, notify: (m: string) => void) {
     /* share sheet dismissed */
   }
 }
+
+/** Optional artist extras. The title shows on its own line; the rest folds away. */
+export function TileTitle({ t }: { t: Tile }) {
+  return t.details?.title ? <span className="serif italic" style={{ fontSize: 22, color: "var(--muted)" }}>{t.details.title}</span> : null;
+}
+
+export function AboutPiece({ t, open = false }: { t: Tile; open?: boolean }) {
+  const d = t.details;
+  if (!d || !(d.medium || d.note || d.credit)) return null;
+  return (
+    <details className="more" open={open}>
+      <summary>About this piece</summary>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10, paddingTop: 12 }}>
+        {d.medium && <p className="small"><span className="faint">Made with </span>{d.medium}</p>}
+        {d.note && <p className="small muted" style={{ whiteSpace: "pre-line" }}>{d.note}</p>}
+        {d.credit && <p className="small"><span className="faint">Find the artist </span>{d.credit}</p>}
+      </div>
+    </details>
+  );
+}

@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { play, stopAll } from "@/lib/audio";
+import { money, singlePrice } from "@/lib/pricing";
 import { markCelebrated, useLocalState, useSeasons, useSeasonTiles } from "@/lib/store";
 import type { Season, Tile } from "@/lib/types";
 import { Mural, type MuralApi } from "./Mural";
@@ -62,7 +63,7 @@ export function MuralExperience({ seasonId, flyToId = null, gift = false }: { se
           <div className={`intro${interacted ? " intro--gone" : ""}`}>
             <p className="intro__line">Every tile is a person. Add yours.</p>
             <div className="intro__actions">
-              <Link className="btn btn--primary" href="/add">Add your tile, ${local.prices.single}</Link>
+              <Link className="btn btn--primary" href="/add">Add your tile, {money(singlePrice(local.prices))}</Link>
               <button className="btn" onClick={() => { setInteracted(true); api.current?.zoom(2); }}>Explore the mural</button>
             </div>
           </div>

@@ -4,7 +4,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { addReport } from "@/lib/store";
 import { REPORT_REASONS, type Tile } from "@/lib/types";
 import { VoicePlayer } from "./VoicePlayer";
-import { Icon, OriginLabel, placeLabel, shareTile, tileAlt, tileImage } from "./ui";
+import { AboutPiece, Icon, OriginLabel, shareTile, tileAlt, tileImage, TileTitle } from "./ui";
 
 /** A tile lifted out of the wall. Animates from the tile's rect to the card and back. */
 export function TileCard({ tile, from, gift = false, onClose, notify }: { tile: Tile; from: DOMRect | null; gift?: boolean; onClose: () => void; notify: (m: string) => void }) {
@@ -70,11 +70,13 @@ export function TileCard({ tile, from, gift = false, onClose, notify }: { tile: 
           )}
           {view === "main" ? (
             <div className="card__body">
-              <span className="eyebrow">Season {tile.seasonId} · {placeLabel(tile)}</span>
+              <span className="eyebrow">Season {tile.seasonId}</span>
               <h2 className="card__name">{name}</h2>
+              <TileTitle t={tile} />
               <OriginLabel origin={tile.origin} />
               {tile.phrase && <p className="card__phrase">“{tile.phrase}”</p>}
               {clip && <VoicePlayer clip={clip} transcript={words} gift={!!giftMode} autoPlay={!!giftMode} label={giftMode ? `message from ${tile.gift!.from ?? name}` : "voice message"} />}
+              <AboutPiece t={tile} />
             </div>
           ) : (
             <form className="card__body" onSubmit={(e) => { e.preventDefault(); addReport(tile.id, reason, note.trim()); notify("Thank you. It will be looked at."); setView("main"); }}>
@@ -110,7 +112,7 @@ export function ClaimCard({ x, y, onClose }: { x: number; y: number; onClose: ()
     <div className="overlay overlay--in" role="dialog" aria-modal="true" aria-label="Empty spot">
       <button className="overlay__dim" aria-label="Close" tabIndex={-1} onClick={onClose} />
       <div className="box" style={{ position: "relative", background: "var(--card)", width: "min(420px, 92vw)", gap: 16 }}>
-        <span className="eyebrow">{placeLabel({ x, y })}</span>
+        <span className="eyebrow">An empty square</span>
         <h2 style={{ fontSize: 30 }}>This spot is free</h2>
         <p className="small muted">Put something here: a picture you made, or one you describe. It stays on the wall for good.</p>
         <Link className="btn btn--primary" href={`/add?spot=${x},${y}`} autoFocus>Claim this spot</Link>

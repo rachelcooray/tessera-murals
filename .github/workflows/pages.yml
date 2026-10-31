@@ -27,6 +27,11 @@ jobs:
       - run: npm run build
         env:
           PAGES_BASE_PATH: /${{ github.event.repository.name }}
+          NEXT_PUBLIC_PAYMENTS_URL: ${{ vars.PAYMENTS_URL }}
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ vars.STRIPE_PUBLISHABLE_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_ADMIN_EMAILS: ${{ vars.ADMIN_EMAILS }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out

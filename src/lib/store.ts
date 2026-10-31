@@ -5,7 +5,7 @@
  * with Supabase calls behind the same functions.
  */
 import { useMemo, useSyncExternalStore } from "react";
-import { site } from "@/config/site";
+import { DEFAULT_PRICES } from "./pricing";
 import { N, SEASONS, sampleTile, seedData } from "./seed";
 import type { Origin, Prices, Report, Season, Tile, TileStatus } from "./types";
 
@@ -28,7 +28,7 @@ export interface LocalState {
 const KEY = "tessera:v1";
 const DEFAULT: LocalState = {
   v: 1, submissions: [], decisions: {}, reports: [], reportStatus: {},
-  prices: { single: site.defaultPrices.single, bundleCount: site.defaultPrices.bundleCount, bundlePrice: site.defaultPrices.bundlePrice },
+  prices: DEFAULT_PRICES,
   credits: 0, autoApprove: false, frozen: {}, celebrated: [], ambientMuted: false,
 };
 
@@ -40,6 +40,8 @@ function load(): LocalState {
   try {
     const raw = typeof window !== "undefined" ? window.localStorage.getItem(KEY) : null;
     state = raw ? { ...DEFAULT, ...(JSON.parse(raw) as Partial<LocalState>) } : DEFAULT;
+    // Older saved prices used a different shape.
+    if (!Array.isArray((state.prices as { tiers?: unknown }).tiers)) state = { ...state, prices: DEFAULT_PRICES };
     // Drop any voice clip that isn't a real recording (older sample data).
     const real = (v: unknown) => (v && (v as { kind?: string }).kind === "data" ? (v as Tile["voice"]) : null);
     state = { ...state, submissions: state.submissions.map((t) => ({ ...t, voice: real(t.voice), gift: t.gift ? { ...t.gift, note: real(t.gift.note) } : null })) };

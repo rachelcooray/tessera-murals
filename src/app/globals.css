@@ -175,8 +175,8 @@ p { margin: 0; }
 .spotgrid { display: grid; grid-template-columns: repeat(20, 1fr); gap: 2px; padding: 8px; background: var(--backing); box-shadow: 0 0 0 1px var(--line); }
 .spotgrid i, .spotgrid button { aspect-ratio: 1; display: block; border: 0; padding: 0; min-width: 0; }
 .spotgrid .free { background: rgba(239,227,204,.035); }
-.spotgrid .cand { background: rgba(201,162,79,.3); animation: glow 2.2s ease-in-out infinite; position: relative; z-index: 1; }
-.spotgrid .cand[aria-pressed="true"] { animation: none; box-shadow: 0 0 0 2px var(--ink), 0 0 14px 4px rgba(239,227,204,.5); background-size: cover; }
+.spotgrid .cand { background: rgba(201,162,79,.12); box-shadow: inset 0 0 0 3px var(--gold); cursor: pointer; }
+.spotgrid .cand[aria-pressed="true"] { box-shadow: inset 0 0 0 3px var(--ink); background-size: cover; }
 @keyframes glow { 50% { box-shadow: 0 0 0 2px var(--gold), 0 0 16px 5px rgba(201,162,79,.7); } }
 
 /* admin */
@@ -205,3 +205,17 @@ p { margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+
+/* square quantity picker */
+.qty { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
+.qty__opt { min-height: 96px; align-items: center; text-align: center; gap: 2px; padding: 12px 8px; }
+.qty__opt b { font-size: 30px; line-height: 1; }
+.qty__opt span { font-size: 14px; }
+.qty__opt em { font-style: normal; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+
+/* optional details disclosure */
+.more { border-top: 1px solid var(--line); padding-top: 12px; }
+.more summary { cursor: pointer; min-height: 32px; display: flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); list-style: none; }
+.more summary::-webkit-details-marker { display: none; }
+.more summary::before { content: "+"; font-size: 16px; color: var(--accent); width: 12px; }
+.more[open] summary::before { content: "−"; }
