@@ -21,7 +21,7 @@ export function createIntent(quantity: number, email: string, tileRef: string): 
 }
 
 /** Capture or release a hold. Sends the signed-in admin's session; the server checks it. */
-export async function settlePayment(action: "capture" | "cancel", intentId: string): Promise<{ status: string }> {
+export async function settlePayment(action: "capture" | "cancel", intentId: string, approvedCount?: number): Promise<{ status: string }> {
   const { accessToken } = await import("./auth");
-  return post(action, { intentId }, { authorization: `Bearer ${await accessToken()}` });
+  return post(action, { intentId, approvedCount }, { authorization: `Bearer ${await accessToken()}` });
 }

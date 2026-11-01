@@ -2,9 +2,9 @@
 //   supabase functions deploy payments --no-verify-jwt
 // Routes: POST /create, POST /capture, POST /cancel, POST /webhook
 //
-// One square: a card hold (manual capture), captured when a person approves the tile,
-// cancelled when they reject it. More than one square: charged straight away; the
-// extra squares become credits.
+// Every order is one card hold (manual capture) covering all its squares. When every tile
+// in the order has been reviewed, Admin captures the price for the approved count only,
+// or cancels the hold if none were approved.
 
 const STRIPE_KEY = Deno.env.get("STRIPE_SECRET_KEY") ?? "";
 // Supabase provides these two automatically inside Edge Functions.
@@ -42,10 +42,12 @@ function json(body: unknown, status: number, origin: string | null): Response {
   return new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json", ...cors(origin) } });
 }
 
-async function stripe(path: string, params: Record<string, string> = {}, idempotencyKey?: string) {
+async function stripe(path: string, params: Record<string, string> | null = {}, idempotencyKey?: string) {
   const headers: Record<string, string> = { Authorization: `Bearer ${STRIPE_KEY}`, "Content-Type": "application/x-www-form-urlencoded" };
   if (idempotencyKey) headers["Idempotency-Key"] = idempotencyKey;
-  const res = await fetch(`https://api.stripe.com/v1/${path}`, { method: "POST", headers, body: new URLSearchParams(params) });
+  const res = params === null
+    ? await fetch(`https://api.stripe.com/v1/${path}`, { headers })
+    : await fetch(`https://api.stripe.com/v1/${path}`, { method: "POST", headers, body: new URLSearchParams(params) });
   const data = await res.json();
   if (!res.ok) throw new Error(data?.error?.message ?? `Stripe error ${res.status}`);
   return data;
@@ -94,27 +96,34 @@ Deno.serve(async (req) => {
       const tileRef = String(body.tileRef ?? "").slice(0, 80);
       if (!Number.isInteger(quantity) || quantity < 1 || quantity > MAX_PER_ORDER) return json({ error: "Choose between 1 and " + MAX_PER_ORDER + " squares" }, 400, origin);
       if (!/^\S+@\S+\.\S+$/.test(email) || email.length > 200) return json({ error: "A valid email is needed" }, 400, origin);
-      const manual = quantity === 1;
       const pi = await stripe("payment_intents", {
         amount: String(priceCents(quantity)),
         currency: CURRENCY,
         "payment_method_types[]": "card",
-        capture_method: manual ? "manual" : "automatic",
+        capture_method: "manual",
         receipt_email: email,
         description: `Tessera: ${quantity} square${quantity === 1 ? "" : "s"}`,
         "metadata[quantity]": String(quantity),
         "metadata[tile_ref]": tileRef,
       }, tileRef ? `create-${tileRef}-${quantity}` : undefined);
-      return json({ clientSecret: pi.client_secret, intentId: pi.id, amount: pi.amount / 100, capture: manual ? "manual" : "automatic" }, 200, origin);
+      return json({ clientSecret: pi.client_secret, intentId: pi.id, amount: pi.amount / 100, capture: "manual" }, 200, origin);
     }
 
     if (route === "capture" || route === "cancel") {
       if (!(await isAdmin(req))) return json({ error: "Sign in as an admin to do this" }, 401, origin);
-      const { intentId } = await req.json();
+      const { intentId, approvedCount } = await req.json();
       if (!/^pi_[A-Za-z0-9]+$/.test(String(intentId))) return json({ error: "Bad payment id" }, 400, origin);
-      const pi = route === "capture"
-        ? await stripe(`payment_intents/${intentId}/capture`)
-        : await stripe(`payment_intents/${intentId}/cancel`, { cancellation_reason: "abandoned" });
+      let pi;
+      if (route === "capture") {
+        const held = await stripe(`payment_intents/${intentId}`, null);
+        const ordered = Number(held.metadata?.quantity ?? 1);
+        const approved = Math.max(1, Math.min(ordered, Math.floor(Number(approvedCount ?? ordered))));
+        // Charge the price for the approved count, never more than was held.
+        const amount = Math.min(held.amount_capturable ?? held.amount, priceCents(approved));
+        pi = await stripe(`payment_intents/${intentId}/capture`, approved < ordered ? { amount_to_capture: String(amount) } : {});
+      } else {
+        pi = await stripe(`payment_intents/${intentId}/cancel`, { cancellation_reason: "abandoned" });
+      }
       return json({ status: pi.status }, 200, origin);
     }
 

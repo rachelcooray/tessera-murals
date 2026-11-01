@@ -228,3 +228,8 @@ p { margin: 0; }
 .urgent-inline { font-family: var(--sans); font-size: 13px; color: var(--accent); }
 .gets { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 13.5px; line-height: 1.5; color: var(--muted); }
 @media (min-width: 860px) { .reasons { justify-content: center; } }
+
+/* multi-square orders */
+.spotgrid .mine { background-size: cover; box-shadow: inset 0 0 0 2px var(--ink); opacity: .9; }
+.pay-tiles { display: flex; flex-wrap: wrap; gap: 8px; }
+.pay-tiles img { width: 64px; height: 64px; object-fit: cover; box-shadow: 0 0 0 1px var(--line), 0 12px 24px rgba(0,0,0,.5); }

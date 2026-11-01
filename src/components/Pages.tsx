@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { site } from "@/config/site";
-import { addCredits, approveTile, fillSeasonForDemo, hideTile, rejectTile, resetPrototype, setAutoApprove, setOrigin, setPrices, setReportStatus, useAllTiles, useLocalState, useReports, useSeasons, useTile } from "@/lib/store";
+import { approveTile, fillSeasonForDemo, hideTile, rejectTile, resetPrototype, setAutoApprove, setOrigin, setPrices, setReportStatus, useAllTiles, useLocalState, useReports, useSeasons, useTile } from "@/lib/store";
 import { authConfigured, isAdminEmail, sendPasswordReset, signIn, signOut, updatePassword, useSession } from "@/lib/auth";
 import { paymentsLive, settlePayment } from "@/lib/payments";
 import { DEFAULT_TIERS, money, quote, SUGGESTED_TIERS, type Prices } from "@/lib/pricing";
@@ -153,7 +153,7 @@ export function AdminView() {
     <div className="admin">
       <nav className="admin__nav" aria-label="Admin">
         <Link href="/" className="wordmark" style={{ marginBottom: 20 }}><Mark size={18} /><span style={{ fontSize: 19 }}>TESSERA</span></Link>
-        {([["queue", "Queue", pending.length], ["reports", "Reports", openReports.length], ["seasons", "Seasons", null], ["prices", "Prices and credits", null]] as const).map(([k, l, c]) => (
+        {([["queue", "Queue", pending.length], ["reports", "Reports", openReports.length], ["seasons", "Seasons", null], ["prices", "Prices", null]] as const).map(([k, l, c]) => (
           <button key={k} aria-current={tab === k} onClick={() => setTab(k)}><span>{l}</span>{c !== null && <span className="small" style={{ color: "var(--accent)" }}>{c}</span>}</button>
         ))}
         <div className="box" style={{ marginTop: 24, padding: 14 }}>
@@ -182,14 +182,25 @@ export function AdminView() {
 }
 
 function ageDays(iso: string) { return (Date.now() - Date.parse(iso)) / 86400000; }
+function ageText(days: number) {
+  const h = Math.round(days * 24);
+  if (h < 1) return "just now";
+  if (days < 1) return `${h} hour${h === 1 ? "" : "s"} ago`;
+  const d = Math.floor(days);
+  return `${d} day${d === 1 ? "" : "s"} ago`;
+}
 
-function payLabel(t: Tile): string {
+function payLabel(t: Tile, all: Tile[]): string {
   const p = t.payment;
   if (!p) return "no payment";
   const test = p.mock ? " (test)" : "";
   if (p.kind === "credit") return "1 credit";
   if (p.kind === "charge") return `${money(p.amount)} paid for ${p.quantity ?? 1} squares${test}`;
-  return `${money(p.amount)} held${test}`;
+  const n = p.quantity ?? 1;
+  if (n === 1 || !p.orderId) return `${money(p.amount)} held${test}`;
+  const order = all.filter((x) => x.payment?.orderId === p.orderId);
+  const done = order.filter((x) => x.status !== "pending").length;
+  return `${money(p.amount)} held for ${n} squares, ${done} of ${n} reviewed${test}`;
 }
 
 function SignIn({ recovery = false, onDone }: { recovery?: boolean; onDone?: () => void }) {
@@ -229,12 +240,19 @@ function Queue({ pending }: { pending: Tile[] }) {
   const [rejecting, setRejecting] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
-  /** A single-square hold is captured on approval and released on rejection. Multi-square orders were already charged. */
-  const settle = async (t: Tile, action: "capture" | "cancel") => {
+  const all = useAllTiles();
+  /**
+   * An order's hold is settled when its last tile is reviewed: capture the price for the
+   * approved count, or release the hold if none were approved. Earlier decisions just wait.
+   */
+  const settle = async (t: Tile, approving: boolean) => {
     const p = t.payment;
     if (!p || p.kind !== "hold" || !p.intentId || p.mock) return true;
+    const siblings = p.orderId ? all.filter((x) => x.payment?.orderId === p.orderId && x.id !== t.id) : [];
+    if (siblings.some((x) => x.status === "pending")) return true;
+    const approved = siblings.filter((x) => x.status === "approved").length + (approving ? 1 : 0);
     setBusy(t.id); setErr(null);
-    try { await settlePayment(action, p.intentId); return true; }
+    try { if (approved > 0) await settlePayment("capture", p.intentId, approved); else await settlePayment("cancel", p.intentId); return true; }
     catch (e) { setErr(`${t.displayName ?? "Anonymous"}: ${e instanceof Error ? e.message : "payment error"}`); return false; }
     finally { setBusy(null); }
   };
@@ -258,7 +276,7 @@ function Queue({ pending }: { pending: Tile[] }) {
               <span className="serif" style={{ fontSize: 22 }}>{t.displayName ?? "Anonymous"}{t.gift ? ` · gift for ${t.gift.recipient}` : ""}</span>
               <OriginLabel origin={t.origin} />
             </div>
-            <span className="small faint">Season {seasonNumber(t.seasonId)} · {placeLabel(t)} · {age < 1 ? `${Math.max(1, Math.round(age * 24))} hours ago` : `${Math.floor(age)} days ago`} · {payLabel(t)}{t.email ? ` · ${t.email}` : ""}</span>
+            <span className="small faint">Season {seasonNumber(t.seasonId)} · {placeLabel(t)} · {ageText(age)} · {payLabel(t, all)}{t.email ? ` · ${t.email}` : ""}</span>
             {t.phrase && <span className="serif italic" style={{ fontSize: 17 }}>“{t.phrase}”</span>}
             {t.prompt && <span className="small muted">Prompt: {t.prompt}</span>}
             {t.details && <span className="small muted">{[t.details.title && `Title: ${t.details.title}`, t.details.medium && `Made with: ${t.details.medium}`, t.details.credit && `Credit: ${t.details.credit}`].filter(Boolean).join(" · ")}</span>}
@@ -277,19 +295,19 @@ function Queue({ pending }: { pending: Tile[] }) {
                 <select className="input" style={{ flex: "1 1 240px" }} value={reason} onChange={(e) => setReason(e.target.value)} aria-label="Reason for rejection">
                   {REJECTION_REASONS.map((r) => <option key={r}>{r}</option>)}
                 </select>
-                <button className="btn" disabled={busy === t.id} onClick={async () => { if (await settle(t, "cancel")) { rejectTile(t.id, reason); setRejecting(null); } }}>Reject and release hold</button>
+                <button className="btn" disabled={busy === t.id} onClick={async () => { if (await settle(t, false)) { rejectTile(t.id, reason); setRejecting(null); } }}>Reject and release hold</button>
               </div>
             )}
           </div>
           <div className="qrow__acts">
-            <button className="btn btn--primary" disabled={busy === t.id} onClick={async () => { if (await settle(t, "capture")) approveTile(t.id); }}>{busy === t.id ? "Working…" : "Approve"}</button>
+            <button className="btn btn--primary" disabled={busy === t.id} onClick={async () => { if (await settle(t, true)) approveTile(t.id); }}>{busy === t.id ? "Working…" : "Approve"}</button>
             <button className="btn" onClick={() => setRejecting(rejecting === t.id ? null : t.id)}>Reject…</button>
             <button className="btn btn--quiet" onClick={() => setOrigin(t.id, t.origin === "hand" ? "ai" : "hand")}>Fix label</button>
           </div>
         </article>
       );
     })}
-    <p className="small faint">Approve captures the card hold and lights the tile with a soft glow. Reject releases the hold, frees the spot and emails the reason. Prototype: no money moves and no email is sent yet.</p>
+    <p className="small faint">Approve lights the tile with a soft glow; reject frees its spot. When the last tile of an order is reviewed, the hold is captured for the approved tiles only, or released if none were approved. Prototype: no email is sent yet.</p>
   </>);
 }
 
@@ -349,8 +367,8 @@ function PricesAdmin() {
   const rows = [...p.tiers].sort((a, b) => a.n - b.n);
   const setRow = (i: number, key: "n" | "price", v: number) => setP({ ...p, tiers: rows.map((r, k) => (k === i ? { ...r, [key]: v } : r)) });
   return (<>
-    <h1 style={{ fontSize: 36 }}>Prices and credits</h1>
-    <p className="small muted" style={{ maxWidth: 680 }}>Buyers pick how many squares they want. Counts between rows pay the per-square rate of the row below. One square is held on the card until approval; more than one is charged now and the extras become credits. Net is after Stripe’s standard card fee of 2.9% plus 30 cents, so check your own Stripe pricing.</p>
+    <h1 style={{ fontSize: 36 }}>Prices</h1>
+    <p className="small muted" style={{ maxWidth: 680 }}>Buyers pick how many squares they want and make a tile for each one. Counts between rows pay the per-square rate of the row below. The whole order is held on the card; once every tile is reviewed, only the approved ones are charged, at the price for that many. Net is after Stripe’s standard card fee of 2.9% plus 30 cents, so check your own Stripe pricing.</p>
     <div style={{ overflowX: "auto" }}>
       <table className="small" style={{ borderCollapse: "collapse", minWidth: 680 }}>
         <thead><tr style={{ textAlign: "left", color: "var(--muted)" }}>{["Squares", "Price ($)", "Each", "Saving", "Stripe fee", "You keep", "Keep per square", ""].map((h) => <th key={h} style={{ padding: "8px 12px", fontWeight: 500 }}>{h}</th>)}</tr></thead>
@@ -377,7 +395,6 @@ function PricesAdmin() {
     <div className="field" style={{ maxWidth: 240 }}><label htmlFor="max">Most squares per order</label><input id="max" className="input" type="number" min={1} max={100} value={p.maxPerOrder} onChange={(e) => setP({ ...p, maxPerOrder: Math.max(1, Math.floor(Number(e.target.value) || 1)) })} /></div>
     <div><button className="btn btn--primary" onClick={() => { setPrices(p); notify("Prices saved"); }}>Save prices</button></div>
     {paymentsLive && <p className="banner">These prices change what visitors see. The amount charged comes from the PRICE_TIERS setting on the payments server, so update it to match.</p>}
-    <p className="small muted">This browser holds {local.credits} credits. <button className="btn btn--quiet" style={{ minHeight: 32, padding: 0 }} onClick={() => addCredits(-local.credits)}>Clear</button></p>
     <Toast msg={toast} />
   </>);
 }

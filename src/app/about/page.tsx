@@ -62,7 +62,7 @@ export default function About() {
               <li>Choose a picture you made, or describe one and let AI make it.</li>
               <li>Add a phrase and a {site.voice.minSeconds} to {site.voice.maxSeconds} second voice message, if you like.</li>
               <li>Pick one of three spots where it fits best.</li>
-              <li>Pay {money(quote(1, DEFAULT_PRICES).total)} for one square, or buy more for less each: {money(quote(10, DEFAULT_PRICES).total)} for ten. A single square is only held on your card until a person approves it.</li>
+              <li>Pay {money(quote(1, DEFAULT_PRICES).total)} for one square, or buy more for less each: {money(quote(10, DEFAULT_PRICES).total)} for ten. You make a tile for every square you buy. Your card is only held until each one is reviewed, and you only pay for the ones that are approved.</li>
               <li>When the season closes, or all 400 squares are taken, it is frozen for good and a new one begins.</li>
             </ol>
           </section>

@@ -3,8 +3,10 @@
 Until the two public settings in step 4 are set, the site runs in **test mode**: no card is charged and orders are marked "(test)" in Admin.
 
 ## How charging works
-- **One square:** the card is *held* (Stripe manual capture). Admin approval captures it; rejection releases it. Holds expire after about 7 days, which is why Admin flags anything pending over 5.
-- **More than one square:** charged straight away. The tile uses one square; the rest become credits.
+- A buyer chooses how many squares, then makes a tile for every one before paying. Nothing is bought and left empty.
+- The whole order is one card **hold** (Stripe manual capture) for the order total.
+- Each tile is reviewed on its own. When the last tile of an order is reviewed, Admin captures the price for the approved count only (for example, 3 of 5 approved pays the 3-square price), or releases the hold if none were approved.
+- Holds expire after about 7 days, which is why Admin flags anything pending over 5.
 - **Prices:** `src/lib/pricing.ts` sets what visitors see. The server charges from its own `PRICE_TIERS` setting, so keep the two in step.
 
 ## 1. Stripe
@@ -59,4 +61,4 @@ Push or re-run the Pages workflow. For local runs, put the same two values in `.
 - One square: Stripe dashboard shows "Uncaptured". Sign in to Admin (see admin-signin.md), approve, and it becomes "Succeeded". Reject and it becomes "Canceled".
 
 ## Known gaps until Phase 2
-- Credits live in the buyer's browser, so they can be lost or edited. Phase 2 moves them to the database.
+- Orders and review status live in each browser until Phase 2, so settle orders from the same browser you review in.

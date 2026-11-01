@@ -48,8 +48,12 @@ export interface Tile {
   /** Mock moderation output shown in admin. */
   flags: string[];
   contentCredentials: string | null;
-  /** hold: one square, card held until approval. charge: a multi-square order, paid now as credits. credit: paid with a credit. */
-  payment: { kind: "hold" | "charge" | "credit"; amount: number; quantity?: number; intentId?: string; mock?: boolean } | null;
+  /**
+   * Every order is one card hold covering all its squares (amount = the order total).
+   * When every tile in the order has been reviewed, only the approved ones are captured.
+   * "charge" and "credit" only appear on data saved by older versions.
+   */
+  payment: { kind: "hold" | "charge" | "credit"; amount: number; quantity?: number; orderId?: string; intentId?: string; mock?: boolean } | null;
   email: string | null;
 }
 
