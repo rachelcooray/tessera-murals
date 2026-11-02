@@ -25,3 +25,8 @@ export async function settlePayment(action: "capture" | "cancel", intentId: stri
   const { accessToken } = await import("./auth");
   return post(action, { intentId, approvedCount }, { authorization: `Bearer ${await accessToken()}` });
 }
+
+/** One payment for a whole mosaic, charged straight away. The server sets the price from the tier id. */
+export function createMosaicIntent(tierId: string, email: string, ref: string): Promise<Intent> {
+  return post<Intent>("create-mosaic", { tierId, email, ref });
+}

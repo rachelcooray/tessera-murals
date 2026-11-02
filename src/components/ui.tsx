@@ -35,10 +35,10 @@ export function Mark({ size = 20 }: { size?: number }) {
 }
 
 export function Wordmark() {
-  return <Link href="/" className="wordmark" aria-label="Tessera, back to the mural"><Mark /><span>TESSERA</span></Link>;
+  return <Link href="/wall" className="wordmark" aria-label="Tessera, back to the mural"><Mark /><span>TESSERA</span></Link>;
 }
 
-const NAV = [["/", "Mural"], ["/seasons", "Past seasons"], ["/about", "About"]] as const;
+const NAV = [["/wall", "Season 0 wall"], ["/seasons", "Past seasons"], ["/", "Hidden mosaics"]] as const;
 
 export function Header({ current, overlay = false }: { current?: string; overlay?: boolean }) {
   const s = useLocalState();

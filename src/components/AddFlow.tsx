@@ -192,7 +192,7 @@ export function AddFlow({ preferSpot, startGift }: { preferSpot: { x: number; y:
           <div className="flow__top">
             {step !== "count" ? <button className="flow__back" onClick={() => go(-1)}><Icon name="back" size={14} />{where}</button>
               : <span className="eyebrow">How many squares</span>}
-            <Link href="/" className="icon-btn" aria-label="Leave and return to the mural"><Icon name="close" /></Link>
+            <Link href="/wall" className="icon-btn" aria-label="Leave and return to the mural"><Icon name="close" /></Link>
           </div>
           <div className="flow__progress" aria-hidden="true"><i style={{ width: `${(unit / totalUnits) * 100}%` }} /></div>
         </>
@@ -402,7 +402,7 @@ function Done({ result, gift, previews }: { result: { ids: string[]; status: str
         <strong style={{ fontWeight: 500 }}>Prototype shortcut</strong>
         <span className="muted">No email is sent yet. Approve {n > 1 ? "them" : "it"} yourself in <Link href="/admin">Admin</Link>, then open <Link href={`/t?id=${result.ids[0]}`}>your tile page</Link>{gift ? <> or <Link href={`/t?id=${result.ids[0]}&gift=1`}>the gift link</Link></> : null}.</span>
       </div>
-      <Link className="btn btn--primary btn--block" href={live ? `/?tile=${result.ids[0]}` : "/"}>Back to the mural</Link>
+      <Link className="btn btn--primary btn--block" href={live ? `/wall?tile=${result.ids[0]}` : "/wall"}>Back to the mural</Link>
     </div>
   );
 }

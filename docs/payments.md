@@ -62,3 +62,12 @@ Push or re-run the Pages workflow. For local runs, put the same two values in `.
 
 ## Known gaps until Phase 2
 - Orders and review status live in each browser until Phase 2, so settle orders from the same browser you review in.
+
+## Commissioned mosaics
+Mosaic orders use `POST /create-mosaic`: one normal card payment for the whole order, captured straight away (no hold). The server charges from its own `MOSAIC_TIERS` secret, in cents, so keep it in step with `src/config/mosaic.ts`:
+
+```bash
+supabase secrets set MOSAIC_TIERS='{"small":4900,"medium":14900,"large":29900}'
+```
+
+Redeploy the function after pulling this change. Contributors never pay, so there is nothing to refund for them. Artist payouts are tracked in the ledger and approved by hand; no money moves until a payout provider is added.
