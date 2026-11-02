@@ -1,6 +1,6 @@
 // Tessera payments. Supabase Edge Function (Deno). Deploy with:
 //   supabase functions deploy payments --no-verify-jwt
-// Routes: POST /create, POST /capture, POST /cancel, POST /webhook
+// Routes: POST /create, POST /create-mosaic, POST /capture, POST /cancel, POST /webhook
 //
 // Every order is one card hold (manual capture) covering all its squares. When every tile
 // in the order has been reviewed, Admin captures the price for the approved count only,
@@ -20,6 +20,10 @@ type Tier = { n: number; price: number };
 // Keep in step with src/lib/pricing.ts. Override without redeploying code via the PRICE_TIERS secret.
 const TIERS: Tier[] = JSON.parse(Deno.env.get("PRICE_TIERS") ?? '[{"n":1,"price":1},{"n":2,"price":1.9},{"n":3,"price":2.7},{"n":4,"price":3.6},{"n":5,"price":4.5},{"n":10,"price":7}]')
   .sort((a: Tier, b: Tier) => a.n - b.n);
+
+// Commissioned mosaics: one charge per order, captured straight away. Keep in step with src/config/mosaic.ts,
+// or override with the MOSAIC_TIERS secret, e.g. {"small":4900,"medium":14900,"large":29900} (cents).
+const MOSAIC_TIERS: Record<string, number> = JSON.parse(Deno.env.get("MOSAIC_TIERS") ?? '{"small":4900,"medium":14900,"large":29900}');
 
 function priceCents(n: number): number {
   const exact = TIERS.find((t) => t.n === n);
@@ -107,6 +111,27 @@ Deno.serve(async (req) => {
         "metadata[tile_ref]": tileRef,
       }, tileRef ? `create-${tileRef}-${quantity}` : undefined);
       return json({ clientSecret: pi.client_secret, intentId: pi.id, amount: pi.amount / 100, capture: "manual" }, 200, origin);
+    }
+
+    if (route === "create-mosaic") {
+      const body = await req.json();
+      const tierId = String(body.tierId ?? "");
+      const email = String(body.email ?? "").trim();
+      const ref = String(body.ref ?? "").slice(0, 80);
+      const amount = MOSAIC_TIERS[tierId];
+      if (!Number.isInteger(amount) || amount <= 0) return json({ error: "Unknown mosaic size" }, 400, origin);
+      if (!/^\S+@\S+\.\S+$/.test(email) || email.length > 200) return json({ error: "A valid email is needed" }, 400, origin);
+      const pi = await stripe("payment_intents", {
+        amount: String(amount),
+        currency: CURRENCY,
+        "payment_method_types[]": "card",
+        receipt_email: email,
+        description: `Tessera mosaic: ${tierId}`,
+        "metadata[kind]": "mosaic",
+        "metadata[tier]": tierId,
+        "metadata[ref]": ref,
+      }, ref ? `mosaic-${ref}` : undefined);
+      return json({ clientSecret: pi.client_secret, intentId: pi.id, amount: pi.amount / 100, capture: "automatic" }, 200, origin);
     }
 
     if (route === "capture" || route === "cancel") {

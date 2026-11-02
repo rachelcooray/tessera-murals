@@ -1,6 +1,5 @@
-import { Suspense } from "react";
-import { HomeRoute } from "@/components/Routes";
+import { MosaicHome } from "@/components/mosaic/Home";
 
 export default function Page() {
-  return <Suspense fallback={<div className="stage" />}><HomeRoute /></Suspense>;
+  return <MosaicHome />;
 }

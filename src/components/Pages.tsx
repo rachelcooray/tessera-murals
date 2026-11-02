@@ -46,7 +46,7 @@ export function TileView({ id, gift }: { id: string; gift: boolean }) {
           <div className="box" style={{ maxWidth: 520 }}>
             <h1 style={{ fontSize: 34 }}>{mounted ? "This tile isn’t on the wall" : "Finding this tile…"}</h1>
             {mounted && <p className="muted">It may have been removed, or the link is incomplete.</p>}
-            <Link className="btn btn--primary" href="/">See the mural</Link>
+            <Link className="btn btn--primary" href="/wall">See the mural</Link>
           </div>
         ) : tile.status === "pending" ? (
           <div className="box" style={{ maxWidth: 520 }}>
@@ -69,7 +69,7 @@ export function TileView({ id, gift }: { id: string; gift: boolean }) {
               <AboutPiece t={tile} open />
               <div style={{ maxWidth: 200 }}><span className="eyebrow" style={{ display: "block", marginBottom: 8 }}>Where it sits</span><MiniMural tiles={all.filter((t) => t.seasonId === tile.seasonId)} mark={tile} /></div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 8 }}>
-                <Link className="btn btn--primary" href={`/?tile=${tile.id}`}>See it on the mural</Link>
+                <Link className="btn btn--primary" href={`/wall?tile=${tile.id}`}>See it on the mural</Link>
                 <button className="btn" onClick={() => shareTile(tile, notify)}><Icon name="share" size={14} />Share</button>
                 <Link className="btn" href="/add">Add yours</Link>
               </div>
