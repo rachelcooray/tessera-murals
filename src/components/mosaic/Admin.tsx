@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { durationLabel } from "@/lib/mosaic/paint/effort";
 import { useMemo, useState } from "react";
 import { artistCap as cap, mosaicConfig, tileCount } from "@/config/mosaic";
 import { authConfigured, isAdminEmail, useSession } from "@/lib/auth";
@@ -59,7 +60,9 @@ function Review({ queue, notify }: { queue: MosaicTile[]; notify: (m: string) =>
         if (!m) return null;
         const slot = m.slots[t.slot];
         const checks: [boolean, string][] = [
-          [t.flags.every((f) => !/AI|generation|Credentials/i.test(f)), t.flags.some((f) => /AI|generation|Credentials/i.test(f)) ? `AI check: ${t.flags.filter((f) => /AI|generation|Credentials|Midjourney|DALL|Diffusion|Firefly|OpenAI|Google/i.test(f)).join("; ")}` : "AI check: no AI markers in the file"],
+          t.painted
+            ? [!t.flags.some((f) => /little painting/i.test(f)), `Painted on Tessera: ${t.painted.strokes} strokes, ${durationLabel(t.painted.activeMs)}, ${t.painted.inputs.join(" and ") || "unknown input"}`]
+            : [t.flags.every((f) => !/AI|generation|Credentials/i.test(f)), t.flags.some((f) => /AI|generation|Credentials/i.test(f)) ? `AI check: ${t.flags.filter((f) => /AI|generation|Credentials|Midjourney|DALL|Diffusion|Firefly|OpenAI|Google/i.test(f)).join("; ")}` : "AI check: no AI markers in the file"],
           [t.match >= mosaicConfig.minColourMatch, `Colour match ${Math.round(t.match * 100)}%${t.tint ? `, tinted ${Math.round(t.tint * 100)}%` : ""}`],
           [true, "Duplicate check passed at upload"],
         ];
@@ -71,7 +74,7 @@ function Review({ queue, notify }: { queue: MosaicTile[]; notify: (m: string) =>
               <span className="eyebrow">{m.title} · slot {t.slot + 1}</span>
               <span className="serif" style={{ fontSize: 22 }}>{t.name ?? "Anonymous"}</span>
               <span className="small muted row" style={{ gap: 8 }}><Swatch hex={slot.hex} /> Slot colour {slot.hex.toUpperCase()} · {t.source === "artist" ? `Tessera artist, ${artistTileCount(s, m.id, t.contributorId)} of ${capFor(m)} tiles` : "Customer’s circle"} · {t.medium}</span>
-              <div className="tags">{checks.map(([ok, label]) => <span key={label} className={`tag${ok ? "" : " tag--warn"}`}>{label}</span>)}{t.flags.filter((f) => !/AI|generation|Credentials|Colour match/i.test(f)).map((f) => <span key={f} className="tag tag--warn">{f}</span>)}</div>
+              <div className="tags">{checks.map(([ok, label]) => <span key={label} className={`tag${ok ? "" : " tag--warn"}`}>{label}</span>)}{t.flags.filter((f) => !/AI|generation|Credentials|Colour match|little painting/i.test(f)).map((f) => <span key={f} className="tag tag--warn">{f}</span>)}</div>
               <label className="small muted" htmlFor={`r-${t.id}`}>If rejecting, why</label>
               <select id={`r-${t.id}`} className="input" style={{ padding: "8px 10px", fontSize: 14 }} value={r} onChange={(e) => setReason({ ...reason, [t.id]: e.target.value })}>{TILE_REJECTION_REASONS.map((x) => <option key={x}>{x}</option>)}</select>
             </div>

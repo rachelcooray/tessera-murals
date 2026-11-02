@@ -58,11 +58,15 @@ export interface MosaicTile {
   tint: number;
   hash: string | null;
   flags: string[];
+  /** Set when the tile was painted in Tessera's paint tool: a summary of the strokes, not the strokes themselves. */
+  painted?: PaintedSummary | null;
   status: MosaicTileStatus;
   rejectionReason: string | null;
   createdAt: string;
   reviewedAt: string | null;
 }
+
+export interface PaintedSummary { strokes: number; activeMs: number; inputs: string[]; tools: string[] }
 
 export interface Claim { mosaicId: string; slot: number; contributorId: string; source: "circle" | "artist"; at: string }
 

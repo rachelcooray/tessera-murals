@@ -74,6 +74,17 @@ export const mosaicConfig = {
    */
   features: { voiceClips: false },
 
+  /** The in-browser paint tool. */
+  paint: {
+    /** Working canvas size in pixels. The saved tile is downscaled to storage.tilePx until Phase 2 adds server storage. */
+    canvasPx: 1024,
+    maxLayers: 10,
+    undoSteps: 40,
+    /** A painted tile with fewer strokes or less time than this is flagged for the reviewer. */
+    minStrokes: 5,
+    minSeconds: 20,
+  },
+
   /** Image sizes kept in the browser while there is no server storage. */
   storage: { targetPx: 256, tilePx: 128, jpegQuality: 0.78 },
 } as const;
