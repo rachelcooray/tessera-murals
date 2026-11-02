@@ -79,20 +79,23 @@ function drawFrame(ctx: CanvasRenderingContext2D, mos: HTMLCanvasElement, m: Mos
   ctx.drawImage(mos, sx, sy, size, size, 40, BOX_Y, BOX, BOX);
 
   ctx.textAlign = "center";
+  const css = getComputedStyle(document.body);
+  const serif = css.getPropertyValue("--serif").trim() || "Georgia, serif";
+  const sans = css.getPropertyValue("--sans").trim() || "system-ui, sans-serif";
   const fade = (a: number, b: number) => clamp((p - a) / (b - a));
   ctx.fillStyle = `rgba(201,162,79,${0.4 + 0.6 * (1 - fade(0.3, 0.42))})`;
-  ctx.font = "500 26px 'Instrument Sans', system-ui, sans-serif";
+  ctx.font = `500 26px ${sans}`;
   ctx.fillText("TESSERA  ·  A HIDDEN MOSAIC", W / 2, 190);
   const early = p < 0.42;
   ctx.fillStyle = `rgba(239,227,204,${early ? 1 - fade(0.3, 0.42) : fade(0.55, 0.7)})`;
-  ctx.font = "italic 64px Fraunces, Georgia, serif";
+  ctx.font = `italic 64px ${serif}`;
   ctx.fillText(early ? "This is one tile." : "Together, they made this.", W / 2, 300);
   const end = fade(0.8, 0.92);
   ctx.fillStyle = `rgba(239,227,204,${end})`;
-  ctx.font = "92px Fraunces, Georgia, serif";
+  ctx.font = `92px ${serif}`;
   ctx.fillText(m.title, W / 2, 1600, W - 80);
   ctx.fillStyle = `rgba(168,154,132,${end})`;
-  ctx.font = "30px 'Instrument Sans', system-ui, sans-serif";
+  ctx.font = `30px ${sans}`;
   ctx.fillText(`${m.cols * m.rows} tiles by ${contributors} people, one colour each`, W / 2, 1670, W - 80);
 }
 

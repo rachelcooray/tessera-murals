@@ -10,7 +10,7 @@ const appearance: Appearance = {
   theme: "night",
   variables: {
     colorPrimary: "#C9A24F", colorBackground: "#17120E", colorText: "#EFE3CC", colorTextSecondary: "#A89A84",
-    colorDanger: "#C8665A", fontFamily: "Instrument Sans, system-ui, sans-serif", borderRadius: "0px", spacingUnit: "4px",
+    colorDanger: "#C8665A", fontFamily: "Geist, system-ui, sans-serif", borderRadius: "0px", spacingUnit: "4px",
   },
   rules: { ".Input": { border: "1px solid #3B2F25", boxShadow: "none" }, ".Input:focus": { border: "1px solid #C9A24F", boxShadow: "none" } },
 };
