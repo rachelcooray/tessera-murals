@@ -32,7 +32,8 @@ Live at https://rachelcooray.github.io/tessera-murals/ (static export, deployed 
 
 - `src/config/mosaic.ts`: every setting (sizes and prices, tint, studio fill timing, pool %, cap, favourites, hold days, payout minimum, rate limit). Change numbers here.
 - `src/lib/mosaic/`: pure logic (`colours`, `checks`, `pool`, `ledger`, `payouts`) plus the browser store and image helpers.
-- `src/components/mosaic/`: the pages.
+- `src/components/mosaic/`: the pages. `Paint.tsx` is the in-browser paint tool.
+- `src/lib/mosaic/paint/`: the paint engine (layers, brushes, tools, undo), brush presets, flood fill, the stroke record and unsent drafts (IndexedDB).
 - `tests/`: unit tests, run with Node's built-in test runner (no extra packages).
 
 ## Not done yet (Phase 2)
