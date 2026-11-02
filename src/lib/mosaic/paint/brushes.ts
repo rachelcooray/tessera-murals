@@ -5,7 +5,7 @@ import { hexToRgb, rgbToHex, rgbToHsl, hslToRgb, type RGB } from "../../colour.t
 import type { SlotColour } from "../colours.ts";
 
 /** How a brush lays down paint. */
-export type Texture = "smooth" | "grain" | "scatter" | "spray" | "bristle";
+export type Texture = "smooth" | "grain" | "scatter" | "spray" | "bristle" | "nib" | "pixel";
 
 export interface BrushPreset {
   id: string;
@@ -26,33 +26,56 @@ export interface BrushPreset {
   pressureOpacity: boolean;
   /** 0 to 1. Steadies the line. */
   smoothing: number;
+  /** 0 to 1. Random change in size, and in opacity, from dab to dab. */
+  sizeJitter: number;
+  opacityJitter: number;
+  /** 0 to 2. How far dabs stray from the line, as a share of the size. */
+  scatter: number;
+  /** Pixels over which the start of a stroke grows to full size. */
+  taper: number;
+  /** 0 to 1. How much the brush picks up and mixes the paint already on the layer. */
+  wet: number;
+  /** "glow" adds light instead of covering. */
+  mode: "normal" | "glow";
 }
 
-const b = (set: string, id: string, name: string, size: number, opacity: number, hardness: number, flow: number, spacing: number, texture: Texture, pressureSize = true, pressureOpacity = false, smoothing = 0.3): BrushPreset =>
-  ({ id, name, set, size, opacity, hardness, flow, spacing, texture, pressureSize, pressureOpacity, smoothing });
+type Extra = Partial<Pick<BrushPreset, "sizeJitter" | "opacityJitter" | "scatter" | "taper" | "wet" | "mode">>;
+
+const b = (set: string, id: string, name: string, size: number, opacity: number, hardness: number, flow: number, spacing: number, texture: Texture, pressureSize = true, pressureOpacity = false, smoothing = 0.3, extra: Extra = {}): BrushPreset =>
+  ({ id, name, set, size, opacity, hardness, flow, spacing, texture, pressureSize, pressureOpacity, smoothing, sizeJitter: 0, opacityJitter: 0, scatter: 0, taper: 0, wet: 0, mode: "normal", ...extra });
 
 export const BRUSHES: BrushPreset[] = [
   b("Sketching", "pencil-hb", "Pencil HB", 6, 0.9, 0.8, 0.6, 0.15, "grain", true, true, 0.2),
   b("Sketching", "pencil-6b", "6B pencil", 12, 0.85, 0.6, 0.55, 0.15, "grain", true, true, 0.2),
+  b("Sketching", "natural-pencil", "Natural pencil", 9, 0.9, 0.7, 0.5, 0.12, "grain", true, true, 0.25, { opacityJitter: 0.3, taper: 30 }),
+  b("Sketching", "pixel-pencil", "Pixel pencil", 2, 1, 1, 1, 0.3, "pixel", false, false, 0),
   b("Sketching", "graphite", "Graphite", 20, 0.6, 0.4, 0.35, 0.12, "grain", true, true, 0.25),
-  b("Inking", "ink-pen", "Ink pen", 10, 1, 1, 1, 0.08, "smooth", true, false, 0.5),
+  b("Inking", "ink-pen", "Ink pen", 10, 1, 1, 1, 0.08, "smooth", true, false, 0.5, { taper: 40 }),
   b("Inking", "fineliner", "Fineliner", 5, 1, 1, 1, 0.08, "smooth", false, false, 0.5),
-  b("Inking", "brush-pen", "Brush pen", 22, 1, 0.9, 1, 0.06, "smooth", true, false, 0.55),
+  b("Inking", "brush-pen", "Brush pen", 22, 1, 0.9, 1, 0.06, "smooth", true, false, 0.55, { taper: 60 }),
+  b("Inking", "calligraphy-pen", "Calligraphy pen", 20, 1, 1, 1, 0.05, "nib", false, false, 0.45),
+  b("Inking", "calligraphy-brush", "Calligraphy brush", 40, 1, 0.9, 1, 0.05, "nib", true, false, 0.5, { taper: 50 }),
   b("Painting", "oil", "Oil", 48, 1, 0.7, 0.9, 0.08, "bristle", true, false, 0.3),
+  b("Painting", "wet-oil", "Wet oil", 52, 1, 0.7, 0.9, 0.06, "bristle", true, false, 0.3, { wet: 0.55 }),
   b("Painting", "gouache", "Gouache", 40, 0.95, 0.85, 0.85, 0.1, "smooth", true, false, 0.3),
   b("Painting", "acrylic", "Acrylic", 36, 1, 0.75, 0.9, 0.08, "bristle", true, false, 0.3),
+  b("Painting", "palette-knife", "Palette knife", 56, 1, 0.95, 1, 0.04, "smooth", false, false, 0.4, { wet: 0.35 }),
   b("Watercolour", "wet-wash", "Wet wash", 72, 0.5, 0.1, 0.25, 0.12, "smooth", true, true, 0.4),
-  b("Watercolour", "bleed", "Bleed", 96, 0.35, 0, 0.15, 0.12, "smooth", false, true, 0.4),
+  b("Watercolour", "wet-watercolour", "Wet mixing", 64, 0.55, 0.2, 0.3, 0.1, "smooth", true, true, 0.4, { wet: 0.6 }),
+  b("Watercolour", "bleed", "Bleed", 96, 0.35, 0, 0.15, 0.12, "smooth", false, true, 0.4, { sizeJitter: 0.3 }),
   b("Watercolour", "dry-brush", "Dry brush", 44, 0.6, 0.5, 0.5, 0.1, "scatter", true, true, 0.3),
   b("Airbrush", "air-soft", "Soft", 90, 0.3, 0, 0.08, 0.1, "smooth", false, true, 0.2),
   b("Airbrush", "air-hard", "Hard", 40, 0.8, 0.7, 0.2, 0.1, "smooth", false, true, 0.2),
-  b("Airbrush", "spray", "Spray", 70, 0.8, 0.5, 0.5, 0.2, "spray", false, true, 0.1),
+  b("Airbrush", "spray", "Spray can", 70, 0.8, 0.5, 0.5, 0.2, "spray", false, true, 0.1),
   b("Texture", "crayon", "Crayon", 26, 0.85, 0.7, 0.7, 0.12, "scatter", true, false, 0.2),
-  b("Texture", "charcoal", "Charcoal", 34, 0.75, 0.5, 0.55, 0.12, "grain", true, true, 0.2),
+  b("Texture", "charcoal", "Charcoal", 34, 0.75, 0.5, 0.55, 0.12, "grain", true, true, 0.2, { opacityJitter: 0.25 }),
   b("Texture", "chalk", "Chalk", 30, 0.7, 0.6, 0.5, 0.14, "scatter", true, false, 0.2),
   b("Marker", "felt-tip", "Felt tip", 18, 0.85, 0.9, 0.9, 0.06, "smooth", false, false, 0.4),
   b("Marker", "highlighter", "Highlighter", 40, 0.4, 0.95, 1, 0.05, "smooth", false, false, 0.5),
   b("Marker", "paint-marker", "Paint marker", 22, 1, 0.95, 1, 0.06, "smooth", false, false, 0.45),
+  b("Effects", "glow", "Glow", 50, 0.7, 0, 0.35, 0.1, "smooth", true, false, 0.35, { mode: "glow" }),
+  b("Effects", "splatter", "Splatter", 60, 1, 1, 0.9, 0.6, "smooth", true, false, 0.1, { sizeJitter: 0.9, scatter: 1.4 }),
+  b("Effects", "confetti", "Confetti", 24, 1, 1, 1, 1.2, "smooth", false, false, 0, { sizeJitter: 0.7, opacityJitter: 0.4, scatter: 2 }),
 ];
 
 export const BRUSH_SETS: string[] = [...new Set(BRUSHES.map((x) => x.set))];
@@ -104,4 +127,17 @@ export function hsvToHex(h: number, s: number, v: number): string {
 
 export function isHex(s: string): boolean {
   return /^#?[0-9a-f]{6}$/i.test(s.trim());
+}
+
+/** Colours that go with `hex` by the usual colour-wheel rules. */
+export function harmony(hex: string, kind: "complementary" | "analogous" | "triadic" | "split" | "tetradic"): string[] {
+  const [h, sat, l] = rgbToHsl(hexToRgb(hex));
+  const at = (d: number) => rgbToHex(hslToRgb(h + d, sat, l));
+  switch (kind) {
+    case "complementary": return [hex, at(180)];
+    case "analogous": return [at(-30), hex, at(30)];
+    case "triadic": return [hex, at(120), at(240)];
+    case "split": return [hex, at(150), at(210)];
+    default: return [hex, at(90), at(180), at(270)];
+  }
 }

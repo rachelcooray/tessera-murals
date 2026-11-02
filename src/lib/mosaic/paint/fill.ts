@@ -45,3 +45,17 @@ export function maskCount(mask: Uint8Array): number {
   for (let i = 0; i < mask.length; i++) n += mask[i];
   return n;
 }
+
+/** Every pixel anywhere whose colour is within `tolerance` of the pixel at (x, y): a fill that isn't limited to touching pixels. */
+export function colourMask(data: ArrayLike<number>, width: number, height: number, x: number, y: number, tolerance: number): Uint8Array {
+  const mask = new Uint8Array(width * height);
+  x = Math.floor(x); y = Math.floor(y);
+  if (x < 0 || y < 0 || x >= width || y >= height) return mask;
+  const i0 = (y * width + x) * 4;
+  const r0 = data[i0], g0 = data[i0 + 1], b0 = data[i0 + 2], a0 = data[i0 + 3];
+  for (let p = 0; p < mask.length; p++) {
+    const i = p * 4;
+    if (Math.abs(data[i] - r0) <= tolerance && Math.abs(data[i + 1] - g0) <= tolerance && Math.abs(data[i + 2] - b0) <= tolerance && Math.abs(data[i + 3] - a0) <= tolerance) mask[p] = 1;
+  }
+  return mask;
+}
