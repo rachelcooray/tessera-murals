@@ -74,21 +74,38 @@ To set a cover: open the highlight → Edit highlight → Edit cover → pick th
 
 ---
 
-## The launch grid
+## The launch grid: one hidden mosaic
 
-Post these six on launch day, in this order, a few minutes apart. Instagram shows the newest first, so the top row ends up being Reel 1, Carousel 2 and Carousel 1.
+The first nine posts make **one picture together**: a sunset mosaic, split into nine pieces. Each post's cover is one numbered piece. As you post, the picture builds. Once all nine are up, the profile shows the whole thing, the way a Tessera mosaic is revealed. See `marketing/instagram/grid/profile-mockup.png`.
 
 ```
- newest  ┌──────────────┬──────────────┬──────────────┐
-         │ 6 Reel 1     │ 5 Carousel 2 │ 4 Carousel 1 │   pin all three
-         ├──────────────┼──────────────┼──────────────┤
-         │ 3 Reel 2     │ 2 Sizes      │ 1 Carousel 3 │
- oldest  └──────────────┴──────────────┴──────────────┘
+ newest  ┌──────────────────┬──────────────────┬──────────────────┐
+         │ 9 Painted blind  │ 8 Paint on your  │ 7 How it works   │
+         │   (Reel 1)       │   phone (carousel)│   (carousel)     │
+         ├──────────────────┼──────────────────┼──────────────────┤
+         │ 6 Gift ideas     │ 5 Paint a tile   │ 4 Always on time │
+         │   (carousel)     │   (Reel 3)       │   (studio fill)  │
+         ├──────────────────┼──────────────────┼──────────────────┤
+         │ 3 Questions      │ 2 Sizes          │ 1 The reveal     │
+ oldest  │   (carousel)     │   (single)       │   (Reel 2)       │
+         └──────────────────┴──────────────────┴──────────────────┘
 ```
 
-If Carousel 3 and Sizes aren't made yet, launch with four (Reel 2, Carousel 1, Carousel 2, Reel 1) and add the other two in week 1.
+The piece files are in `marketing/instagram/grid/`, named by post number (`grid-1-the-reveal.png` to `grid-9-painted-blind.png`). Each is 1080×1440 (3:4), the shape Instagram's profile grid uses.
 
-**Pin** Reel 1, Carousel 1 and Carousel 2 to the top of the grid (open the post → ⋯ → Pin to your profile).
+**How each kind of post uses its piece:**
+- **Carousel:** the piece is slide 1, then the carousel's own slides follow. Instagram fits every slide to the first one's shape, which trims a sliver off the sides of the other slides. Their margins are wide enough that nothing important is lost.
+- **Single post:** the piece is slide 1, and the actual post (for example the Sizes card) is slide 2. Swiping reveals it.
+- **Reel:** post the video, then tap **Edit cover → Add from camera roll** and choose the piece. The grid shows the cover, not the video.
+
+**Rules that keep the picture whole:**
+1. **Post in number order, 1 to 9.** Post 1 ends up bottom-right and post 9 top-left.
+2. **Ideally post all nine on launch day,** a few minutes apart, so nobody sees half a picture. If you can't, post them in rows of three.
+3. **Don't pin anything.** Pinned posts jump to the front and break the picture. (This replaces the pinning advice from earlier.)
+4. **After the nine, post in threes.** Each new post pushes the grid along by one, so single posts shift the picture out of line. Adding a full row of three at a time keeps it aligned. The second row of three can be a new strip, for example three gift ideas.
+5. **Never delete one of the nine.** Archive it instead if you must, though even that shifts the grid.
+
+**Still to make for the nine:** the Sizes card, Questions slides, Studio fill card and Gift ideas slides (texts below), plus your Reel 3 screen recording.
 
 ---
 
@@ -99,7 +116,7 @@ Post at the same two times each day to start, for example 12:00 and 19:30 your t
 | Day | Feed post | Stories |
 |---|---|---|
 | **Week 1** | | |
-| Mon | Launch grid (6 posts) | "We're live" + share Reel 1 |
+| Mon | Launch grid (9 posts, see above) | "We're live" + share Reel 1 |
 | Tue | none | Poll: "Would you paint a square blind?" |
 | Wed | Reel 3 · Painting a tile | Share Reel 3 + "Tap the link to join" |
 | Thu | none | Question: "Who would you make one for?" |
@@ -127,6 +144,8 @@ Only post what's ready. A missed day is better than a rushed post.
 ---
 
 ## The posts
+
+The launch grid uses these as: grid 1 = Post 3 (Reel 2), grid 2 = Post 2 (Sizes), grid 3 = Post 1 (Questions), grid 4 = Post 8 (Studio fill), grid 5 = Post 7 (Reel 3), grid 6 = Post 10 (Gift ideas), grid 7 = Post 4 (Carousel 1), grid 8 = Post 5 (Carousel 2), grid 9 = Post 6 (Reel 1). Post them in grid order, 1 to 9, on launch day.
 
 Hashtags: 3 to 5 per post, in the caption. Alt text: Edit post → Advanced settings → Write alt text (or "Accessibility" when posting). Always add it; it helps search too.
 
@@ -170,7 +189,7 @@ Hashtags: 3 to 5 per post, in the caption. Alt text: Edit post → Advanced sett
 **Hashtags:** #reveal #mosaic #art #weddinggift #tessera
 **Alt text:** A single painted square zooms out to reveal a whole mosaic of two people against a sunset over the sea. Text: Until the reveal.
 
-### Post 4 · Carousel 1 · How a hidden mosaic works (launch grid, pinned)
+### Post 4 · Carousel 1 · How a hidden mosaic works (launch grid)
 
 **Slides:** From the canvas, row 1 (6 slides).
 
@@ -187,7 +206,7 @@ Hashtags: 3 to 5 per post, in the caption. Alt text: Edit post → Advanced sett
 **Hashtags:** #howitworks #mosaic #giftideas #weddinggift #tessera
 **Alt text:** Six slides explaining Tessera: upload a photo, each guest gets one colour, they paint a square by hand, and the whole picture is revealed on the day. Prices from 49 dollars.
 
-### Post 5 · Carousel 2 · Paint it on your phone (launch grid, pinned)
+### Post 5 · Carousel 2 · Paint it on your phone (launch grid)
 
 **Slides:** From the canvas, row 2 (5 slides).
 
@@ -203,7 +222,7 @@ Hashtags: 3 to 5 per post, in the caption. Alt text: Edit post → Advanced sett
 **Hashtags:** #digitalpainting #mosaic #art #giftideas #tessera
 **Alt text:** Five slides showing Tessera's paint tool on a phone: the slot colour on the canvas, the brushes and tools, simple doodles that work as tiles, and a note that every square is painted by a person.
 
-### Post 6 · Reel 1 · Painted blind (launch grid, pinned, newest)
+### Post 6 · Reel 1 · Painted blind (launch grid, grid piece 9)
 
 **File:** `tessera-reel-instagram.mp4` · **Cover:** the full mosaic frame.
 
