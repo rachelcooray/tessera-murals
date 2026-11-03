@@ -1,0 +1,356 @@
+# Tessera on Instagram · page plan and posts
+
+Everything you need to create the account, set up the profile, launch a grid that looks finished on day one, and post for three weeks. Every post below has its caption, hashtags, alt text and the file or design it uses.
+
+Goal for the first three weeks: **people joining the founding mosaics list.** Every post ends on the same ask: *Join the list, link in bio.*
+
+---
+
+## What's ready, and where it is
+
+| Asset | File or design | Status |
+|---|---|---|
+| Profile picture | `marketing/instagram/profile-picture.png` | Ready |
+| Highlight covers (6) | `marketing/instagram/highlight-*.png` | Ready |
+| Reel 1 · Painted blind (46 s, voiced) | `marketing/instagram/tessera-reel-instagram.mp4` | Ready |
+| Reel 2 · The reveal (16 s, voiced) | `marketing/instagram/tessera-reel-reveal.mp4` | Ready |
+| Carousel 1 · How a hidden mosaic works (6 slides) | Design canvas "Tessera Instagram", row 1 | Ready, export from the canvas |
+| Carousel 2 · Paint it on your phone (5 slides) | Design canvas, row 2 | Ready, export from the canvas |
+| Carousel 3 · Questions people ask (5 slides) | Design canvas, row 3 | To make |
+| Post · Sizes | Design canvas, row 4 | To make |
+| Post · Studio fill | Design canvas, row 4 | To make |
+| Post · Founding mosaics open | Design canvas, row 4 | To make once you have a date |
+| Reel 3 · Painting a tile | Screen recording on your phone | You record it (steps below) |
+| Stories | Design canvas, row 5, plus Instagram's own stickers | Partly to make |
+
+**Do not post the pitch Reel** (`marketing/tessera-pitch-reel.mp4`) on Instagram. It talks about money and what's built, which is for investors and family. Reel 1 is the customer cut of the same video.
+
+---
+
+## Before you start: decide these
+
+1. **Handle.** Try these in order and take the first one that's free: `@tessera.mosaics`, `@tesseramosaics`, `@tessera.studio`, `@hiddenmosaics`, `@tessera.hq`. Use the same one on TikTok and Facebook if you can.
+2. **Waiting list link.** A simple form is enough (Google Forms, Tally or similar) asking for name, email and "What would you make one for?". This is the link in your bio.
+3. **Launch date for founding mosaics.** Only needed for week 3. Until then, say "soon".
+4. **Prices.** Every post quotes $49, $149 and $299, which are the site's placeholder prices. Confirm them first.
+
+Replace `@[HANDLE]` on the designs with your real handle before exporting.
+
+---
+
+## Create the account (about 20 minutes, on your phone)
+
+1. **Make a separate account, not your personal one.** In the Instagram app, open your profile, tap your username at the top, then **Add account** → **Create new account**. Use an email you'll keep for Tessera.
+2. **Name and handle.** Name: `Tessera · Hidden mosaics` (the name field is searchable, so the words help people find you). Handle: the one you chose above.
+3. **Profile picture.** Upload `profile-picture.png`.
+4. **Switch to a professional account.** Settings → Account type and tools → Switch to professional account. Choose **Business**, category **Art** or **Gift shop**. This gives you insights, a contact button and scheduling. Instagram moves these menus around now and then, so if a step looks different, search the settings for "professional".
+5. **Bio.** Paste this (it's under the 150-character limit):
+
+   > Your photo, made from other people's art.
+   > Everyone paints one square. Nobody sees it until the reveal.
+   > Founding mosaics ↓
+
+6. **Link.** Edit profile → Links → add your waiting list link, titled "Join the founding list".
+7. **Contact button.** Add your Tessera email so people can tap Email.
+8. **Turn on two-factor authentication** (Settings → Accounts Centre → Password and security). Losing a brand account is painful.
+9. **Don't follow anyone or invite friends yet.** Post the launch grid first (below) so the page looks complete when people arrive.
+
+---
+
+## Highlights (the circles under the bio)
+
+Create these from Stories after you post them. Use the cover files in `marketing/instagram/`.
+
+| Highlight | Cover | What goes in it |
+|---|---|---|
+| How it works | `highlight-how-it-works.png` | The four steps as Stories, plus Carousel 1 shared to Stories |
+| Reveals | `highlight-reveals.png` | Reel 2, and every real reveal later (with permission) |
+| Paint | `highlight-paint.png` | Reel 3 and paint tool tips |
+| Sizes | `highlight-sizes.png` | The Sizes post shared to Stories |
+| Questions | `highlight-questions.png` | Carousel 3 and answers to questions people send |
+| Artists | `highlight-artists.png` | The "Artists wanted" Story, once payouts are ready |
+
+To set a cover: open the highlight → Edit highlight → Edit cover → pick the PNG from your photos.
+
+---
+
+## The launch grid
+
+Post these six on launch day, in this order, a few minutes apart. Instagram shows the newest first, so the top row ends up being Reel 1, Carousel 2 and Carousel 1.
+
+```
+ newest  ┌──────────────┬──────────────┬──────────────┐
+         │ 6 Reel 1     │ 5 Carousel 2 │ 4 Carousel 1 │   pin all three
+         ├──────────────┼──────────────┼──────────────┤
+         │ 3 Reel 2     │ 2 Sizes      │ 1 Carousel 3 │
+ oldest  └──────────────┴──────────────┴──────────────┘
+```
+
+If Carousel 3 and Sizes aren't made yet, launch with four (Reel 2, Carousel 1, Carousel 2, Reel 1) and add the other two in week 1.
+
+**Pin** Reel 1, Carousel 1 and Carousel 2 to the top of the grid (open the post → ⋯ → Pin to your profile).
+
+---
+
+## Three-week calendar
+
+Post at the same two times each day to start, for example 12:00 and 19:30 your time. After week 1, keep whichever slot gets more saves and shares.
+
+| Day | Feed post | Stories |
+|---|---|---|
+| **Week 1** | | |
+| Mon | Launch grid (6 posts) | "We're live" + share Reel 1 |
+| Tue | none | Poll: "Would you paint a square blind?" |
+| Wed | Reel 3 · Painting a tile | Share Reel 3 + "Tap the link to join" |
+| Thu | none | Question: "Who would you make one for?" |
+| Fri | Post · Studio fill | Best answers from Thursday |
+| Sat | none | Share Carousel 1 |
+| Sun | none | "Questions? Ask here" sticker |
+| **Week 2** | | |
+| Mon | Reel 2 again as a Trial Reel, or a new reveal clip | Share it |
+| Tue | Carousel · Gift ideas (see post 10) | Slider: "How much would this make them cry?" |
+| Wed | none | Behind the scenes: a short screen recording of the site |
+| Thu | Reel 4 · Speed paint (needs a real artist clip) | Share it |
+| Fri | none | Answer three questions from Sunday |
+| Sat | Single · A tile close-up | Share it |
+| Sun | none | "Join the list" link sticker |
+| **Week 3** | | |
+| Mon | Post · Founding mosaics open (with the date) | Countdown sticker to the date |
+| Tue | Carousel 3 again, refreshed, or a new FAQ | Link sticker |
+| Wed | Reel 5 · "The last tile" (cut from Reel 2) | Share it |
+| Thu | none | Countdown + "Reply with who you'd make one for" |
+| Fri | Reel 1 shared again as a Story, not a new post | Link sticker |
+| Sun | Post · "The list opens" | Countdown + link |
+
+Only post what's ready. A missed day is better than a rushed post.
+
+---
+
+## The posts
+
+Hashtags: 3 to 5 per post, in the caption. Alt text: Edit post → Advanced settings → Write alt text (or "Accessibility" when posting). Always add it; it helps search too.
+
+### Post 1 · Carousel 3 · Questions people ask (launch grid)
+
+**Slides:** Cover "Questions people ask" · "Can guests see the picture? No. Each one sees their square and its colour." · "What if people don't join? Tessera artists fill open squares, and anything still empty two days before your date gets a clearly labelled studio fill." · "Can people use AI? No. Every tile is made by a person and checked by a person." · "Do guests pay? Never. You get the finished mosaic, the reveal video and a link to every tile."
+
+**Caption:**
+> The questions everyone asks first. Anything else? Ask in the comments and we'll answer every one.
+>
+> Founding mosaics: join the list, link in bio.
+
+**Hashtags:** #tessera #mosaic #giftideas #weddinggift #faq
+**Alt text:** Five slides answering common questions: guests never see the picture, artists fill empty squares, no AI images, and guests never pay.
+
+### Post 2 · Sizes (launch grid)
+
+**Image:** Three cards: Small, 100 tiles, $49, for a family or a small team · Medium, 400 tiles, $149, for a wedding or a big birthday · Large, 1,024 tiles, $299, for a company or a community.
+
+**Caption:**
+> Three sizes. Small for a family, medium for a wedding, large for a whole company or community.
+>
+> Contributors never pay. Every size comes with a private invite link, the reveal video and a link to every tile.
+>
+> Join the list for a founding mosaic, link in bio.
+
+**Hashtags:** #tessera #mosaic #giftideas #weddingideas
+**Alt text:** Three price cards: Small, 100 tiles, 49 dollars. Medium, 400 tiles, 149 dollars. Large, 1,024 tiles, 299 dollars.
+
+### Post 3 · Reel 2 · The reveal (launch grid)
+
+**File:** `tessera-reel-reveal.mp4` · **Cover:** the frame with the whole mosaic (choose it when posting).
+
+**Caption:**
+> Every square was painted by someone who only knew their colour. Then the camera pulls back.
+>
+> (This one's a sample we made to show how it works.)
+>
+> Founding mosaics open soon. Link in bio.
+
+**Hashtags:** #reveal #mosaic #art #weddinggift #tessera
+**Alt text:** A single painted square zooms out to reveal a whole mosaic of two people against a sunset over the sea. Text: Until the reveal.
+
+### Post 4 · Carousel 1 · How a hidden mosaic works (launch grid, pinned)
+
+**Slides:** From the canvas, row 1 (6 slides).
+
+**Caption:**
+> How a hidden mosaic works, in four steps:
+>
+> 1. You upload one photo. Only you see it whole.
+> 2. Each guest gets one square and one colour. Never the picture.
+> 3. They paint anything in it, by hand. Friends first, then Tessera artists fill the rest.
+> 4. On your date, it's revealed. One tile, then the whole picture.
+>
+> Save this for the next wedding, big birthday or leaving do. Founding mosaics: link in bio.
+
+**Hashtags:** #howitworks #mosaic #giftideas #weddinggift #tessera
+**Alt text:** Six slides explaining Tessera: upload a photo, each guest gets one colour, they paint a square by hand, and the whole picture is revealed on the day. Prices from 49 dollars.
+
+### Post 5 · Carousel 2 · Paint it on your phone (launch grid, pinned)
+
+**Slides:** From the canvas, row 2 (5 slides).
+
+**Caption:**
+> No paper, no scanner. Your guests can paint their square right on their phone: watercolour that mixes, oils, ink, pencils, layers and an undo button for everything.
+>
+> Can't draw? A heart or your initials works perfectly. Tiny details disappear at tile size anyway.
+>
+> Or paint on paper and upload a photo. Either way, every square is made by a person.
+>
+> Join the list, link in bio.
+
+**Hashtags:** #digitalpainting #mosaic #art #giftideas #tessera
+**Alt text:** Five slides showing Tessera's paint tool on a phone: the slot colour on the canvas, the brushes and tools, simple doodles that work as tiles, and a note that every square is painted by a person.
+
+### Post 6 · Reel 1 · Painted blind (launch grid, pinned, newest)
+
+**File:** `tessera-reel-instagram.mp4` · **Cover:** the full mosaic frame.
+
+**Caption:**
+> 400 people, one colour each, and nobody sees the picture until the reveal.
+>
+> Tessera turns one photo into a picture painted by everyone who loves them. Weddings, big birthdays, anniversaries, teams, and families remembering someone.
+>
+> Founding mosaics open soon. Join the list, link in bio.
+>
+> (The mosaic in this video is a sample.)
+
+**Hashtags:** #mosaic #weddinggift #giftideas #collaborativeart #tessera
+**Alt text:** A painted square zooms out to a full sunset mosaic, then the steps of Tessera: upload a photo, everyone gets one colour, they paint it by hand, and it's revealed on the day. Ends with: founding mosaics open soon, link in bio.
+
+### Post 7 · Reel 3 · Painting a tile (week 1, Wed)
+
+**How to record it (10 minutes):** Open the live site on your phone, start a mosaic in test mode, open your own invite link and tap **Paint it here**. Turn on screen recording. Paint a simple tile (a sun and some waves is quick), using two or three colours, then tap Done. Trim to 15 to 25 seconds. Add on-screen text in the Instagram editor: "Your square. Your colour." at the start, "Painted on your phone" in the middle, "Join the list · link in bio" at the end.
+
+**Caption:**
+> One square, one colour, about a minute. This is what your guests see when they open their link.
+>
+> Join the list for a founding mosaic, link in bio.
+
+**Hashtags:** #speedpaint #digitalart #mosaic #satisfying #tessera
+**Alt text:** A phone screen recording of someone painting a small sunset in their square on Tessera's paint tool.
+
+### Post 8 · Studio fill (week 1, Fri)
+
+**Image:** A mosaic with a few squares marked with stripes as studio fill, and the line "It always finishes on time."
+
+**Caption:**
+> What if some guests never paint their square? Tessera artists pick up open squares first. Anything still empty two days before your date gets a studio fill, clearly marked so you know which ones they are.
+>
+> Your mosaic always finishes on time. Link in bio.
+
+**Hashtags:** #mosaic #giftideas #weddingplanning #tessera
+**Alt text:** A mosaic with a handful of squares marked with diagonal stripes. Text: It always finishes on time.
+
+### Post 9 · Reel 4 · Speed paint (week 2, Thu)
+
+**Needs:** a real artist (or you) painting a tile on paper in one colour, filmed from above, with their permission. Speed it up to about 20 seconds.
+
+**On-screen text:** "My colour was this." → "I don't know what it's part of." → "I'll find out on the reveal day."
+
+**Caption:**
+> One colour, a few minutes, one square of someone's wedding. The artist doesn't know what it's part of yet.
+>
+> Join the list, link in bio.
+
+**Hashtags:** #speedpaint #artistsoninstagram #painting #mosaic #tessera
+**Alt text:** Time-lapse of a hand painting a small square in shades of one colour.
+
+### Post 10 · Carousel · Gift ideas (week 2, Tue)
+
+**Slides (to make, same style as the others):**
+1. "Five gifts you can't buy in a shop"
+2. "A wedding, painted by every guest"
+3. "Fifty years married, painted by the grandchildren"
+4. "A retirement, painted by the whole office"
+5. "A birthday, painted by everyone who couldn't be there"
+6. "Join the list · link in bio"
+
+**Caption:**
+> For the person who says they don't want anything. Save this for the next big date on the calendar.
+>
+> Link in bio.
+
+**Hashtags:** #giftideas #anniversarygift #retirementgift #weddinggift #tessera
+**Alt text:** Six slides of gift ideas: a wedding, a 50th anniversary, a retirement and a birthday, each painted by the people who love them.
+
+### Post 11 · Single · A tile close-up (week 2, Sat)
+
+**Image:** One painted tile filling the frame (export a tile from the paint tool with "Save a copy", or crop slide 4 of Carousel 1).
+
+**Caption:**
+> Every mosaic is made of squares like this one. Up close, each is its own little painting.
+>
+> Link in bio.
+
+**Hashtags:** #painting #mosaic #art #tessera
+**Alt text:** A close-up of a single painted square: a sun over waves in warm apricot tones.
+
+### Post 12 · Founding mosaics open (week 3, Mon)
+
+**Only post once you have a date.** Image: "Founding mosaics open [DATE]" over the faded mosaic.
+
+**Caption:**
+> Founding mosaics open on [DATE]. If you've been saving this for a wedding, a big birthday or a goodbye, now's the time.
+>
+> The list hears first. Link in bio.
+
+**Hashtags:** #mosaic #weddinggift #giftideas #tessera
+**Alt text:** Text over a faded mosaic: Founding mosaics open, with the date.
+
+---
+
+## Stories, ready to post
+
+| Story | Sticker to add in Instagram | Design |
+|---|---|---|
+| "We're live" | Link sticker → waiting list | Share Reel 1 to your Story |
+| "Would you paint a square blind?" | Poll: "Yes" / "Show me first" | Canvas row 5 (Poll) |
+| "Who would you make one for?" | Question sticker | Canvas row 5 (Question) |
+| "Founding mosaics open soon" | Countdown + link sticker | Canvas row 5 (Countdown) |
+| "Artists wanted" | Link sticker | Canvas row 5. **Hold until artist payouts are ready.** |
+
+Reply to every Story reply. Share the best Question answers (cover the person's name if they'd rather).
+
+---
+
+## Replies and DMs
+
+Save these as quick replies (Settings → Business tools → Saved replies), so a shortcut fills them in:
+
+- **/price:** "Sizes start at $49 for 100 tiles. A wedding size is 400 tiles for $149. Guests never pay. Join the list here: [LINK]"
+- **/ai:** "No AI. Every tile is made by a person and checked by a person before it goes in."
+- **/empty:** "Tessera artists fill open squares, and anything still empty two days before your date gets a clearly labelled studio fill. It always finishes on time."
+- **/how:** "You upload a photo, invite people with a private link, each gets one square and one colour, and the whole picture is revealed on your date."
+
+Rude comments: reply once, kindly, or not at all. Never argue.
+
+---
+
+## Every day, 15 minutes
+
+1. Reply to every comment and DM.
+2. Post one Story, even a simple one.
+3. Spend 10 minutes commenting thoughtfully on posts from wedding planners, gift accounts and artists you like. Real comments, not "nice post".
+
+## Every Sunday, 10 minutes
+
+Check Insights for the week and write down:
+- List sign-ups (from your form)
+- Followers
+- The post with the most saves and shares
+- The Reel with the best 3-second hold (how many people kept watching past the start)
+
+Next week, make more of whatever won.
+
+---
+
+## Rules for every post
+
+- No made-up customers, quotes, numbers or reviews. The sample mosaic is called a sample.
+- Show someone's tile, face or photo only with their written permission.
+- No AI-made images, ever. That's the whole promise.
+- Plain, warm words. No hype.
+- 3 to 5 hashtags. Captions on every video.
+- Don't promise artist payouts by a date until payouts exist.
