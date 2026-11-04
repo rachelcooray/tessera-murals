@@ -16,9 +16,12 @@ Goal for the first three weeks: **people joining the founding mosaics list.** Ev
 | Reel 2 · The reveal (16 s, voiced) | `marketing/instagram/tessera-reel-reveal.mp4` | Ready |
 | Carousel 1 · How a hidden mosaic works (6 slides) | Design canvas "Tessera Instagram", row 1 | Ready, export from the canvas |
 | Carousel 2 · Paint it on your phone (5 slides) | Design canvas, row 2 | Ready, export from the canvas |
-| Carousel 3 · Questions people ask (5 slides) | Design canvas, row 3 | To make |
-| Post · Sizes | Design canvas, row 4 | To make |
-| Post · Paint as many as you like | Design canvas, row 4 | To make |
+| Carousel 3 · Questions people ask (5 slides) | `grid/grid-3-questions.png` + `posts/3-questions-slide-2..5.png` | Ready |
+| Post · Sizes | `grid/grid-2-sizes.png` + `posts/2-sizes-slide-2.png` | Ready |
+| Post · Paint as many as you like | `grid/grid-4-paint-as-many.png` + `posts/4-paint-as-many-slide-2.png` | Ready |
+| Carousel · Gift ideas (6 slides) | `grid/grid-6-gift-ideas.png` + `posts/6-gift-ideas-slide-2..6.png` | Ready |
+| Reel · Watch it fill (18 s, voiced) | `tessera-reel-fill.mp4` | Ready |
+| Reel · Guess what it is (17 s, voiced) | `tessera-reel-guess.mp4` | Ready |
 | Post · Founding mosaics open | Design canvas, row 4 | To make once you have a date |
 | Reel 3 · Painting a tile | Screen recording on your phone | You record it (steps below) |
 | Stories | Design canvas, row 5, plus Instagram's own stickers | Partly to make |
@@ -105,7 +108,7 @@ The piece files are in `marketing/instagram/grid/`, named by post number (`grid-
 4. **After the nine, post in threes.** Each new post pushes the grid along by one, so single posts shift the picture out of line. Adding a full row of three at a time keeps it aligned. The second row of three can be a new strip, for example three gift ideas.
 5. **Never delete one of the nine.** Archive it instead if you must, though even that shifts the grid.
 
-**Still to make for the nine:** the Sizes card, Questions slides, "Paint as many" card and Gift ideas slides (texts below), plus your Reel 3 screen recording.
+**All nine are ready** except your Reel 3 screen recording. For each post, upload the grid piece first, then its slides from `posts/`.
 
 ---
 
@@ -317,6 +320,73 @@ Hashtags: 3 to 5 per post, in the caption. Alt text: Edit post → Advanced sett
 
 **Hashtags:** #mosaic #weddinggift #giftideas #tessera
 **Alt text:** Text over a faded mosaic: Founding mosaics open, with the date.
+
+---
+
+## Content bank: weeks 4 to 8
+
+Post 4 to 5 times a week: two Reels, one or two carousels, one single. Post in rows of three to keep the grid tidy (see the launch grid rules). Every idea below is ready to write up; files marked **ready** already exist.
+
+### Reels
+
+| # | Hook (first 2 seconds) | What's on screen | Caption |
+|---|---|---|---|
+| R1 | "10,000 squares." | **Ready:** `tessera-reel-fill.mp4`. The picture fills square by square | Each square painted by someone who never saw the picture. Founding mosaics: link in bio. |
+| R2 | "Guess what it is." | **Ready:** `tessera-reel-guess.mp4`. Half-filled, then the answer | Reply with your guess before you watch to the end. |
+| R3 | "Paint a square in 60 seconds." | Screen recording: open an invite, paint a heart, Done | No art skills needed. This is what your guests see. |
+| R4 | "5 squares anyone can paint." | Screen recording of five quick tiles: heart, initials, stripes, a sun, dots | Save this for the guest who says "I can't draw". |
+| R5 | "Your colour is this one." | One slot colour fills the screen, then a hand paints in it | Every guest gets one colour, never the picture. |
+| R6 | "How sharp is 20,000 squares?" | The site's size preview with your own photo, at each size | From 20,000 squares you can tell exactly who's in the picture. |
+| R7 | "Where is your square?" | The tile page: "Find this tile" zooming in on one square | Every guest gets a link to their own square in the finished piece. |
+| R8 | "I built this because…" | You, voice only, over the paint tool. Why you made Tessera | (Your own story, in your words. Keep it under 30 seconds.) |
+| R9 | "The reveal, slowed down." | The site's reveal video at half speed with soft music | One tile, then the whole picture. |
+| R10 | "Wedding guestbook, but better." | Text over the reveal: guestbook pages vs. a painted picture | Instead of signing a book, every guest paints a square. |
+
+### Carousels
+
+| # | Title slide | Slides | Caption |
+|---|---|---|---|
+| C1 | "Which size is right for you?" | Landscape → Small · Two faces → Medium · Group photo → Large · Big group or big print → Grand | Save this before you order. |
+| C2 | "How to pick the perfect photo" | Faces close up · Simple background · Good light · Crop tight · Avoid tiny details | The photo matters as much as the size. |
+| C3 | "5 tiles anyone can paint" | Heart · Initials · Three stripes · A sun · Dots | No art skills needed. Send this to your guests. |
+| C4 | "What your guests see" | The invite link · Their colour · The paint tool · Done · The reveal day | Nothing to download. Just a link. |
+| C5 | "Gifts for long-distance love" | Friends abroad · Grandparents far away · A team spread across countries | Everyone paints from wherever they are. |
+| C6 | "A memorial, painted together" | A favourite photo · Family and friends each paint · Revealed on the day you choose | Write it gently. No hooks, no countdowns. |
+| C7 | "Why it's hidden" | Surprise · Everyone sees it at once · The reveal moment | Nobody sees the picture until the day. That's the point. |
+| C8 | "Behind a square" | One tile, its colour, who painted it, where it sits in the picture | Every square has a story. (Use a real tile only with permission.) |
+
+### Singles
+
+| # | Image | Caption |
+|---|---|---|
+| S1 | A close-up crop of nine painted squares | Up close, every square is its own little painting. |
+| S2 | One slot colour, full frame, with "Your colour" | This is all a guest sees. |
+| S3 | The four sizes as one card | From $45 for 10,000 squares. Link in bio. |
+| S4 | Quote card: "Instead of a card everyone signs, a picture everyone paints." | For the next leaving do. |
+| S5 | A countdown card: "Order by [DATE] for [OCCASION]" | Mosaics take 3 or 6 weeks. Plan ahead. |
+
+### Stories (one a day, rotate these)
+
+- Poll: "Would you paint a square blind?" Yes / Show me first
+- Quiz: "How many squares in a Medium?" 1,000 / 5,000 / 20,000
+- Slider on a slot colour: "How hard is this colour to paint?"
+- Question: "Who would you make one for?" Share the best answers
+- "This or that": wedding or birthday · paint on phone or paper
+- Behind the build: a 10-second screen recording of something you improved this week
+- Link sticker to the list, every other day
+
+### The holiday push (November to February)
+
+Mosaics need 3 or 6 weeks, so seasonal posts go out early.
+
+| When to post | Occasion | Order-by date | Hook |
+|---|---|---|---|
+| Early to mid November | Christmas | [DATE] (3 weeks before) | "A Christmas gift the whole family paints." |
+| Early December | New Year | [DATE] | "Start the year with everyone in one picture." |
+| Mid January | Valentine's Day | [DATE] | "Your photo, painted by everyone who loves you both." |
+| Late January to February | Mother's Day (UK, March) | [DATE] | "For Mum, painted by all of us." |
+
+Fill in the order-by dates once you've checked them against the reveal options (3 or 6 weeks, or any date at least 7 days away).
 
 ---
 
