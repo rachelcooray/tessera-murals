@@ -5,7 +5,7 @@
  */
 
 export interface MosaicTier {
-  id: "small" | "medium" | "large";
+  id: "small" | "medium" | "large" | "grand";
   name: string;
   /** Grid size. Tiles = cols × rows. */
   cols: number;
@@ -15,11 +15,15 @@ export interface MosaicTier {
 }
 
 export const mosaicConfig = {
-  /** Sizes customers can buy. Prices and tile counts are placeholders: decide them after testing. */
+  /**
+   * Sizes customers can buy. 10,000 tiles is the minimum: real photos (faces especially) only read clearly from there.
+   * See docs/research for the comparison. Faces become recognisable from about 20,000 tiles; the gain flattens past 30,000.
+   */
   tiers: [
-    { id: "small", name: "Small", cols: 10, rows: 10, priceCents: 4900, fits: "A family or a small team" },
-    { id: "medium", name: "Medium", cols: 20, rows: 20, priceCents: 14900, fits: "A wedding or a big birthday" },
-    { id: "large", name: "Large", cols: 32, rows: 32, priceCents: 29900, fits: "A company or a community" },
+    { id: "small", name: "Small", cols: 100, rows: 100, priceCents: 4500, fits: "Landscapes, pets and silhouettes" },
+    { id: "medium", name: "Medium", cols: 142, rows: 142, priceCents: 9500, fits: "One or two faces you can recognise" },
+    { id: "large", name: "Large", cols: 174, rows: 174, priceCents: 14500, fits: "Group photos and sharp faces" },
+    { id: "grand", name: "Grand", cols: 200, rows: 200, priceCents: 19500, fits: "Big groups and large prints" },
   ] as MosaicTier[],
 
   /** Reveal date options offered at checkout, in days from today. */
@@ -66,6 +70,8 @@ export const mosaicConfig = {
     holdDays: 14,
     /** Smallest payout an artist can request, in cents. Smaller balances roll over. */
     payoutMinimumCents: 1000,
+    /** Accepted tiles an artist needs before their first payout. Earnings build up from the first tile. */
+    firstPayoutTiles: 20,
   },
 
   /**
@@ -86,7 +92,7 @@ export const mosaicConfig = {
   },
 
   /** Image sizes kept in the browser while there is no server storage. */
-  storage: { targetPx: 256, tilePx: 128, jpegQuality: 0.78 },
+  storage: { targetPx: 400, tilePx: 128, jpegQuality: 0.78 },
 } as const;
 
 export function tierById(id: string): MosaicTier {

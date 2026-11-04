@@ -34,6 +34,9 @@ export interface Mosaic {
   favourites: number[];
   splitAt: string | null;
   payment: { intentId: string | null; mock: boolean };
+  /** Slots filled by studio fill, as a bitmap (see bits.ts). Their tiles are generated when read, not stored. */
+  studioSlots?: string | null;
+  studioAt?: string | null;
   sample?: boolean;
 }
 

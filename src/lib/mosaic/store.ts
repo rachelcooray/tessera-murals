@@ -11,6 +11,8 @@ import type { LedgerEntry } from "./ledger.ts";
 import { entryId, releaseDue, reverseTile } from "./ledger.ts";
 import { poolFor, splitPool } from "./pool.ts";
 import { sampleMosaic } from "./sample.ts";
+import { decodeSlots, encodeSlots, packHex, unpackHex } from "./bits.ts";
+import { slotColour, type SlotColour } from "./colours.ts";
 import type { ArtistProfile, Claim, Mosaic, MosaicTile, RevenueEntry } from "./types.ts";
 
 export interface MosaicState {
@@ -41,11 +43,23 @@ export function rid(prefix: string): string {
   return `${prefix}${Date.now().toString(36)}${r}`;
 }
 
+type StoredMosaic = Omit<Mosaic, "slots"> & { slots?: SlotColour[]; slotsPacked?: string };
+
+/** Big mosaics keep their slot colours as one packed string in storage, and full objects in memory. */
+function toStorage(s: MosaicState) {
+  return { ...s, mosaics: s.mosaics.map(({ slots, ...m }) => ({ ...m, slotsPacked: packHex(slots.map((x) => x.hex)) })) };
+}
+
+function fromStorage(raw: Omit<Partial<MosaicState>, "mosaics"> & { mosaics?: StoredMosaic[] }): MosaicState {
+  const mosaics = (raw.mosaics ?? []).map(({ slotsPacked, slots, ...m }) => ({ ...m, slots: slots ?? unpackHex(slotsPacked ?? "").map((h) => slotColour(hexToRgb(h))) }) as Mosaic);
+  return { ...SERVER, ...raw, mosaics } as MosaicState;
+}
+
 function load(): MosaicState {
   if (state) return state;
   try {
     const raw = typeof window !== "undefined" ? window.localStorage.getItem(KEY) : null;
-    state = raw ? { ...SERVER, ...(JSON.parse(raw) as Partial<MosaicState>) } : { ...SERVER };
+    state = raw ? fromStorage(JSON.parse(raw)) : { ...SERVER };
   } catch {
     state = { ...SERVER };
   }
@@ -56,7 +70,7 @@ function load(): MosaicState {
 function save(next: MosaicState) {
   state = next;
   try {
-    window.localStorage.setItem(KEY, JSON.stringify(next));
+    window.localStorage.setItem(KEY, JSON.stringify(toStorage(next)));
   } catch {
     // Storage full: keep working in memory and tell the caller through lastSaveFailed.
     lastSaveFailed = true;
@@ -89,8 +103,38 @@ export function allMosaics(s: MosaicState): Mosaic[] {
   return [...s.mosaics, sample().mosaic];
 }
 
+const studioCache = new Map<string, MosaicTile[]>();
+
+/** Studio-filled tiles, generated from the mosaic's bitmap so they never take up storage. */
+function studioTiles(m: Mosaic): MosaicTile[] {
+  if (!m.studioSlots) return [];
+  const key = `${m.id}:${m.studioSlots}`;
+  const hit = studioCache.get(key);
+  if (hit) return hit;
+  const kinds = ["abstract", "waves", "hills", "bloom", "horizon"] as const;
+  let salt = 0;
+  for (let i = 0; i < m.id.length; i++) salt = (salt * 31 + m.id.charCodeAt(i)) >>> 0;
+  const at = m.studioAt ?? m.createdAt;
+  const tiles = decodeSlots(m.studioSlots, m.cols * m.rows).map((i): MosaicTile => {
+    const slot = m.slots[i];
+    const [h, sat, l] = rgbToHsl(hexToRgb(slot.hex));
+    const seed = (i * 2246822519 + salt) >>> 0;
+    return {
+      id: `f-${m.id}-${i}`, mosaicId: m.id, slot: i, contributorId: "studio", source: "studio", name: null, medium: "Studio fill",
+      imageUrl: null, art: { kind: kinds[seed % kinds.length], seed, h, s: Math.max(18, sat), l: Math.max(14, Math.min(80, l)) },
+      averageHex: slot.hex, match: 1, tint: 0, hash: null, flags: [], status: "approved", rejectionReason: null, createdAt: at, reviewedAt: at,
+    };
+  });
+  studioCache.set(key, tiles);
+  return tiles;
+}
+
+const tilesCache = new WeakMap<MosaicState, MosaicTile[]>();
+
 export function allTiles(s: MosaicState): MosaicTile[] {
-  return [...s.tiles, ...sample().tiles];
+  let t = tilesCache.get(s);
+  if (!t) { t = [...s.tiles, ...s.mosaics.flatMap(studioTiles), ...sample().tiles]; tilesCache.set(s, t); }
+  return t;
 }
 
 export function useMosaic(id: string): Mosaic | undefined {
@@ -98,8 +142,27 @@ export function useMosaic(id: string): Mosaic | undefined {
   return useMemo(() => allMosaics(s).find((m) => m.id === id), [s, id]);
 }
 
+const byMosaicCache = new WeakMap<MosaicState, Map<string, MosaicTile[]>>();
+
 export function tilesFor(s: MosaicState, mosaicId: string): MosaicTile[] {
-  return allTiles(s).filter((t) => t.mosaicId === mosaicId);
+  let per = byMosaicCache.get(s);
+  if (!per) {
+    per = new Map();
+    for (const t of allTiles(s)) { const list = per.get(t.mosaicId); if (list) list.push(t); else per.set(t.mosaicId, [t]); }
+    byMosaicCache.set(s, per);
+  }
+  return per.get(mosaicId) ?? [];
+}
+
+const slotMapCache = new WeakMap<MosaicState, Map<string, Map<number, MosaicTile>>>();
+
+/** slotMap for one mosaic, computed once per state. */
+export function slotMapFor(s: MosaicState, mosaicId: string): Map<number, MosaicTile> {
+  let per = slotMapCache.get(s);
+  if (!per) { per = new Map(); slotMapCache.set(s, per); }
+  let m = per.get(mosaicId);
+  if (!m) { m = slotMap(tilesFor(s, mosaicId)); per.set(mosaicId, m); }
+  return m;
 }
 
 /** The tile currently filling each slot (approved first, then pending), by slot number. */
@@ -118,13 +181,12 @@ function activeClaims(s: MosaicState, mosaicId: string, now = Date.now()): Claim
 }
 
 export function isSlotOpen(s: MosaicState, m: Mosaic, slot: number, forContributor?: string): boolean {
-  if (slotMap(tilesFor(s, m.id)).has(slot)) return false;
+  if (slotMapFor(s, m.id).has(slot)) return false;
   return !activeClaims(s, m.id).some((c) => c.slot === slot && c.contributorId !== forContributor);
 }
 
 export function progress(s: MosaicState, m: Mosaic) {
-  const tiles = tilesFor(s, m.id);
-  const map = slotMap(tiles);
+  const map = slotMapFor(s, m.id);
   const total = m.cols * m.rows;
   let circle = 0, artist = 0, studio = 0, review = 0, sampleN = 0;
   for (const t of map.values()) {
@@ -245,21 +307,13 @@ export function studioFill(mosaicId: string): number {
   const s = load();
   const m = s.mosaics.find((x) => x.id === mosaicId);
   if (!m || m.status !== "collecting") return 0;
-  const map = slotMap(tilesFor(s, m.id));
-  const now = new Date().toISOString();
-  const kinds = ["abstract", "waves", "hills", "bloom", "horizon"] as const;
-  const fill: MosaicTile[] = [];
-  m.slots.forEach((slot, i) => {
-    if (map.has(i)) return;
-    const [h, sat, l] = rgbToHsl(hexToRgb(slot.hex));
-    const seed = (i * 2246822519 + Date.now()) >>> 0;
-    fill.push({
-      id: rid("f"), mosaicId, slot: i, contributorId: "studio", source: "studio", name: null, medium: "Studio fill",
-      imageUrl: null, art: { kind: kinds[seed % kinds.length], seed, h, s: Math.max(18, sat), l: Math.max(14, Math.min(80, l)) },
-      averageHex: slot.hex, match: 1, tint: 0, hash: null, flags: [], status: "approved", rejectionReason: null, createdAt: now, reviewedAt: now,
-    });
-  });
-  update((x) => ({ ...x, tiles: [...x.tiles, ...fill], claims: x.claims.filter((c) => c.mosaicId !== mosaicId) }));
+  const map = slotMapFor(s, m.id);
+  const already = m.studioSlots ? decodeSlots(m.studioSlots, m.cols * m.rows) : [];
+  const fill: number[] = [];
+  for (let i = 0; i < m.cols * m.rows; i++) if (!map.has(i)) fill.push(i);
+  if (!fill.length) return 0;
+  const studioSlots = encodeSlots([...already, ...fill], m.cols * m.rows);
+  update((x) => ({ ...x, mosaics: x.mosaics.map((y) => (y.id === mosaicId ? { ...y, studioSlots, studioAt: new Date().toISOString() } : y)), claims: x.claims.filter((c) => c.mosaicId !== mosaicId) }));
   return fill.length;
 }
 

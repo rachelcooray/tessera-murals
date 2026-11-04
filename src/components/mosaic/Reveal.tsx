@@ -19,19 +19,32 @@ export function RevealRoute() {
   return <Reveal key={`${id}-${s}`} id={id} focus={s === null ? null : Number(s)} />;
 }
 
-/** Draws the whole mosaic once, large, so zoomed frames stay sharp. */
-async function renderMosaic(m: Mosaic, tiles: Map<number, MosaicTile>): Promise<HTMLCanvasElement> {
-  const cell = Math.max(48, Math.floor(2048 / m.cols));
-  const gap = Math.max(1, Math.round(cell / 40));
+/** The mosaic drawn twice: whole (capped at about 4,000 px, the limit phones allow) and a sharp close-up around the first tile. */
+interface MosaicImage { full: HTMLCanvasElement; detail: HTMLCanvasElement; dx0: number; dy0: number; span: number }
+const DETAIL_SPAN = 24, DETAIL_CELL = 96, FULL_MAX = 4000;
+
+async function renderMosaic(m: Mosaic, tiles: Map<number, MosaicTile>, focus: number): Promise<MosaicImage> {
+  const span = Math.min(DETAIL_SPAN, m.cols, m.rows), fx = focus % m.cols, fy = Math.floor(focus / m.cols);
+  const dx0 = Math.max(0, Math.min(m.cols - span, fx - Math.floor(span / 2))), dy0 = Math.max(0, Math.min(m.rows - span, fy - Math.floor(span / 2)));
+  const [full, detail] = await Promise.all([
+    renderRegion(m, tiles, 0, 0, m.cols, m.rows, Math.max(2, Math.floor(FULL_MAX / Math.max(m.cols, m.rows)))),
+    renderRegion(m, tiles, dx0, dy0, span, span, DETAIL_CELL),
+  ]);
+  return { full, detail, dx0, dy0, span };
+}
+
+async function renderRegion(m: Mosaic, tiles: Map<number, MosaicTile>, x0: number, y0: number, cw: number, ch: number, cell: number): Promise<HTMLCanvasElement> {
+  const gap = cell >= 12 ? Math.max(1, Math.round(cell / 40)) : 0;
   const c = document.createElement("canvas");
-  c.width = m.cols * cell; c.height = m.rows * cell;
+  c.width = cw * cell; c.height = ch * cell;
   const ctx = c.getContext("2d")!;
   ctx.fillStyle = "#080605";
   ctx.fillRect(0, 0, c.width, c.height);
   const jobs: Promise<void>[] = [];
-  for (let i = 0; i < m.cols * m.rows; i++) {
+  for (let ry = 0; ry < ch; ry++) for (let rx = 0; rx < cw; rx++) {
+    const i = (y0 + ry) * m.cols + x0 + rx;
     const t = tiles.get(i);
-    const x = (i % m.cols) * cell + gap, y = Math.floor(i / m.cols) * cell + gap, w = cell - gap * 2;
+    const x = rx * cell + gap, y = ry * cell + gap, w = cell - gap * 2;
     const hex = m.slots[i].hex;
     if (t?.imageUrl) {
       jobs.push(loadImage(t.imageUrl).then((img) => { ctx.drawImage(img, x, y, w, w); }).catch(() => { ctx.fillStyle = hex; ctx.fillRect(x, y, w, w); }));
@@ -62,15 +75,19 @@ function shade(hex: string, amt: number): string {
 const ease = (q: number) => (q < 0.5 ? 4 * q * q * q : 1 - Math.pow(-2 * q + 2, 3) / 2);
 const clamp = (v: number) => Math.max(0, Math.min(1, v));
 
-function drawFrame(ctx: CanvasRenderingContext2D, mos: HTMLCanvasElement, m: Mosaic, focus: number, p: number, contributors: number) {
+function drawFrame(ctx: CanvasRenderingContext2D, img: MosaicImage, m: Mosaic, focus: number, p: number, contributors: number) {
   ctx.fillStyle = "#0e0b09";
   ctx.fillRect(0, 0, W, H);
   const q = clamp((p - 0.18) / 0.64);
   const scale = Math.pow(m.cols * 0.94, 1 - ease(q));
-  const cell = mos.width / m.cols;
-  const cx = ((focus % m.cols) + 0.5) * cell, cy = (Math.floor(focus / m.cols) + 0.5) * cell;
-  const size = mos.width / scale;
-  const sx = Math.max(0, Math.min(mos.width - size, cx - size / 2)), sy = Math.max(0, Math.min(mos.height - size, cy - size / 2));
+  // Work in tile units, then read from the close-up while the view fits inside it, else from the whole mosaic.
+  const sizeT = m.cols / scale, cxT = (focus % m.cols) + 0.5, cyT = Math.floor(focus / m.cols) + 0.5;
+  const sxT = Math.max(0, Math.min(m.cols - sizeT, cxT - sizeT / 2)), syT = Math.max(0, Math.min(m.rows - sizeT, cyT - sizeT / 2));
+  const inDetail = sxT >= img.dx0 && syT >= img.dy0 && sxT + sizeT <= img.dx0 + img.span && syT + sizeT <= img.dy0 + img.span;
+  const mos = inDetail ? img.detail : img.full;
+  const cell = inDetail ? DETAIL_CELL : img.full.width / m.cols;
+  const size = sizeT * cell;
+  const sx = (sxT - (inDetail ? img.dx0 : 0)) * cell, sy = (syT - (inDetail ? img.dy0 : 0)) * cell;
   ctx.save();
   ctx.shadowColor = "rgba(0,0,0,.7)"; ctx.shadowBlur = 80; ctx.shadowOffsetY = 40;
   ctx.fillStyle = "#080605"; ctx.fillRect(40, BOX_Y, BOX, BOX);
@@ -96,7 +113,7 @@ function drawFrame(ctx: CanvasRenderingContext2D, mos: HTMLCanvasElement, m: Mos
   ctx.fillText(m.title, W / 2, 1600, W - 80);
   ctx.fillStyle = `rgba(168,154,132,${end})`;
   ctx.font = `30px ${sans}`;
-  ctx.fillText(`${m.cols * m.rows} tiles by ${contributors} people, one colour each`, W / 2, 1670, W - 80);
+  ctx.fillText(`${(m.cols * m.rows).toLocaleString()} tiles by ${contributors.toLocaleString()} people, one colour each`, W / 2, 1670, W - 80);
 }
 
 function Reveal({ id, focus: focusParam }: { id: string; focus: number | null }) {
@@ -105,7 +122,7 @@ function Reveal({ id, focus: focusParam }: { id: string; focus: number | null })
   const tiles = useMemo(() => (m ? slotMap(tilesFor(s, m.id).filter((t) => t.status === "approved")) : new Map<number, MosaicTile>()), [s, m]);
   const contributors = useMemo(() => new Set([...tiles.values()].filter((t) => t.source !== "studio").map((t) => t.contributorId)).size, [tiles]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const mosRef = useRef<HTMLCanvasElement | null>(null);
+  const mosRef = useRef<MosaicImage | null>(null);
   const raf = useRef(0);
   const [ready, setReady] = useState(false);
   const [pos, setPos] = useState(0);
@@ -118,9 +135,9 @@ function Reveal({ id, focus: focusParam }: { id: string; focus: number | null })
   useEffect(() => {
     if (!m || !visible) return;
     let live = true;
-    void renderMosaic(m, tiles).then((c) => { if (live) { mosRef.current = c; setReady(true); } });
+    void renderMosaic(m, tiles, focus).then((c) => { if (live) { mosRef.current = c; setReady(true); } });
     return () => { live = false; };
-  }, [m, tiles, visible]);
+  }, [m, tiles, visible, focus]);
 
   const paint = useCallback((p: number) => {
     const ctx = canvasRef.current?.getContext("2d");

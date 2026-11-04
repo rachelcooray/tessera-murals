@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useEffect, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type ReactNode } from "react";
 import { site } from "@/config/site";
 import { artDataUrl } from "@/lib/art";
 import { tick } from "@/lib/mosaic/store";
@@ -97,27 +97,104 @@ export type GridMode = "tiles" | "slots" | "hidden";
  *  slots: flat slot colours (owner preview)
  *  hidden: everything dark except the highlighted slot (what a contributor sees)
  */
-export function MosaicGrid({ mosaic, tiles, mode = "tiles", highlight, marks, pick, label, maxWidth = 560 }: {
-  mosaic: Mosaic; tiles?: Map<number, MosaicTile>; mode?: GridMode; highlight?: number; marks?: number[]; pick?: (slot: number) => void; label: string; maxWidth?: number;
+const tileImages = new Map<string, HTMLImageElement>();
+
+function mixHex(a: string, b: string, t: number): string {
+  const p = (h: string, i: number) => parseInt(h.slice(1 + i * 2, 3 + i * 2), 16);
+  return "#" + [0, 1, 2].map((i) => Math.round(p(a, i) + (p(b, i) - p(a, i)) * t).toString(16).padStart(2, "0")).join("");
+}
+
+/** A tile image, loaded once and shared. Calls onReady when it finishes loading. */
+function tileImage(url: string, onReady: () => void): HTMLImageElement | null {
+  const hit = tileImages.get(url);
+  if (hit) return hit.complete && hit.naturalWidth ? hit : null;
+  const img = new Image();
+  img.onload = onReady;
+  img.src = url;
+  tileImages.set(url, img);
+  return null;
+}
+
+/**
+ * The mosaic, drawn on a canvas so 10,000 to 40,000 tiles stay fast.
+ *  tiles: placed tiles show their art, open slots are dark
+ *  slots: flat slot colours (owner preview)
+ *  hidden: everything dark except the highlighted slot (what a contributor sees)
+ * focus zooms in on one slot and its neighbours.
+ */
+export function MosaicGrid({ mosaic, tiles, mode = "tiles", highlight, marks, pick, label, maxWidth = 560, focus }: {
+  mosaic: Pick<Mosaic, "cols" | "rows" | "slots">; tiles?: Map<number, MosaicTile>; mode?: GridMode; highlight?: number; marks?: number[];
+  pick?: (slot: number) => void; label: string; maxWidth?: number; focus?: { slot: number; span: number };
 }) {
-  const cells = mosaic.cols * mosaic.rows;
-  const gap = mosaic.cols > 24 ? 1 : 2;
+  const ref = useRef<HTMLCanvasElement>(null);
+  const [loaded, setLoaded] = useState(0);
+  const [typed, setTyped] = useState("");
+  const { cols, rows } = mosaic;
+  const view = useMemo(() => {
+    if (!focus) return { x0: 0, y0: 0, w: cols, h: rows };
+    const span = Math.min(focus.span, cols, rows), fx = focus.slot % cols, fy = Math.floor(focus.slot / cols);
+    return { x0: Math.max(0, Math.min(cols - span, fx - Math.floor(span / 2))), y0: Math.max(0, Math.min(rows - span, fy - Math.floor(span / 2))), w: span, h: span };
+  }, [focus, cols, rows]);
+
+  useEffect(() => {
+    const c = ref.current;
+    if (!c) return;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const W = Math.round(maxWidth * dpr), H = Math.round((maxWidth * view.h / view.w) * dpr);
+    if (c.width !== W) c.width = W;
+    if (c.height !== H) c.height = H;
+    const g = c.getContext("2d")!;
+    const cs = W / view.w, gap = cs > 10 ? Math.max(1, cs * 0.05) : 0;
+    g.fillStyle = "#080605"; g.fillRect(0, 0, W, H);
+    const redraw = () => setLoaded((n) => n + 1);
+    for (let vy = 0; vy < view.h; vy++) for (let vx = 0; vx < view.w; vx++) {
+      const i = (view.y0 + vy) * cols + view.x0 + vx, slot = mosaic.slots[i];
+      if (!slot) continue;
+      const x = vx * cs + gap / 2, y = vy * cs + gap / 2, w = cs - gap;
+      if (mode === "slots") { g.fillStyle = slot.hex; g.fillRect(x, y, w, w); continue; }
+      if (mode === "hidden") { g.fillStyle = i === highlight ? slot.hex : "#2a211a"; g.fillRect(x, y, w, w); continue; }
+      const t = tiles?.get(i);
+      if (!t) { g.fillStyle = "#1d1714"; g.fillRect(x, y, w, w); continue; }
+      g.globalAlpha = t.status === "pending" ? 0.5 : 1;
+      const img = t.imageUrl ? tileImage(t.imageUrl, redraw) : null;
+      if (img) g.drawImage(img, x, y, w, w);
+      else if (cs < 6) { g.fillStyle = t.averageHex || slot.hex; g.fillRect(x, y, w, w); }
+      else {
+        const a = rnd(i * 7 + 3) * Math.PI * 2, r = w / 2, grad = g.createLinearGradient(x + r - Math.cos(a) * r, y + r - Math.sin(a) * r, x + r + Math.cos(a) * r, y + r + Math.sin(a) * r);
+        grad.addColorStop(0, mixHex(slot.hex, "#fff4e4", 0.18)); grad.addColorStop(0.55, slot.hex); grad.addColorStop(1, mixHex(slot.hex, "#000000", 0.22));
+        g.fillStyle = grad; g.fillRect(x, y, w, w);
+      }
+      g.globalAlpha = 1;
+    }
+    const ring = (i: number, colour: string) => {
+      const vx = (i % cols) - view.x0, vy = Math.floor(i / cols) - view.y0;
+      if (vx < 0 || vy < 0 || vx >= view.w || vy >= view.h) return;
+      const x = vx * cs, y = vy * cs, pad = Math.max(0, (Math.max(14 * dpr, cs) - cs) / 2);
+      g.lineWidth = Math.max(2 * dpr, cs * 0.12);
+      g.strokeStyle = "#080605"; g.strokeRect(x - pad - g.lineWidth, y - pad - g.lineWidth, cs + 2 * (pad + g.lineWidth), cs + 2 * (pad + g.lineWidth));
+      g.strokeStyle = colour; g.strokeRect(x - pad, y - pad, cs + 2 * pad, cs + 2 * pad);
+    };
+    marks?.forEach((m) => ring(m, "#efe3cc"));
+    if (highlight !== undefined && highlight >= 0) ring(highlight, "#c9a24f");
+  }, [mosaic, tiles, mode, highlight, marks, maxWidth, view, cols, loaded]);
+
+  function onClick(ev: ReactMouseEvent<HTMLCanvasElement>) {
+    if (!pick) return;
+    const r = ev.currentTarget.getBoundingClientRect();
+    const vx = Math.floor(((ev.clientX - r.left) / r.width) * view.w), vy = Math.floor(((ev.clientY - r.top) / r.height) * view.h);
+    pick((view.y0 + vy) * cols + view.x0 + vx);
+  }
+
   return (
-    <div role={pick ? undefined : "img"} aria-label={label} className="mgrid" style={{ gridTemplateColumns: `repeat(${mosaic.cols}, minmax(0, 1fr))`, gap, maxWidth }}>
-      {Array.from({ length: cells }, (_, i) => {
-        const slot = mosaic.slots[i];
-        const t = tiles?.get(i);
-        let style: CSSProperties;
-        let cls = "mcell";
-        if (mode === "slots") style = { background: slot.hex };
-        else if (mode === "hidden") style = i === highlight ? { background: slot.hex } : {};
-        else style = t ? cellStyle(t, slot.hex, i) : {};
-        if (mode !== "slots" && !(mode === "hidden" && i === highlight) && !t) cls += " mcell--open";
-        if (t?.status === "pending" && mode === "tiles") cls += " mcell--pending";
-        if (i === highlight || marks?.includes(i)) cls += " mcell--hl";
-        if (pick) return <button key={i} type="button" className={cls} style={style} onClick={() => pick(i)} aria-pressed={marks ? marks.includes(i) : undefined} aria-label={`Slot ${i + 1}${t ? `, ${t.name ?? "Anonymous"}` : ""}`} />;
-        return <i key={i} className={cls} style={style} />;
-      })}
+    <div style={{ maxWidth, width: "100%" }}>
+      <canvas ref={ref} role="img" aria-label={label} className="mcanvas" onClick={pick ? onClick : undefined} style={{ aspectRatio: `${view.w} / ${view.h}`, cursor: pick ? "pointer" : undefined }} />
+      {pick && (
+        <form className="row small" style={{ marginTop: 10, gap: 8 }} onSubmit={(e) => { e.preventDefault(); const n = Number(typed); if (n >= 1 && n <= cols * rows) { pick(n - 1); setTyped(""); } }}>
+          <label htmlFor="slot-pick" className="muted">Or type a slot number</label>
+          <input id="slot-pick" className="input" inputMode="numeric" value={typed} onChange={(e) => setTyped(e.target.value.replace(/\D/g, ""))} style={{ width: 110, padding: "8px 10px", fontSize: 15 }} />
+          <button className="btn" type="submit">Select</button>
+        </form>
+      )}
     </div>
   );
 }

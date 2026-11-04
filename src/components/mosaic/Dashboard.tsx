@@ -32,7 +32,7 @@ function Dashboard({ id }: { id: string }) {
       <Page narrow>
         <span className="eyebrow">Revealed {m.revealedAt ? dateLabel(m.revealedAt) : ""}</span>
         <h1 style={{ fontSize: 44, margin: "10px 0 24px" }}>{m.title}</h1>
-        <MosaicGrid mosaic={m} tiles={tiles} label={`${m.title}, a finished mosaic of ${p.total} tiles`} />
+        <MosaicGrid mosaic={m} tiles={tiles} label={`${m.title}, a finished mosaic of ${p.total.toLocaleString()} tiles`} />
         <div className="row" style={{ marginTop: 20 }}><Link className="btn btn--primary" href={`/reveal?id=${m.id}`}>Watch the reveal</Link></div>
       </Page>
     );
@@ -51,7 +51,7 @@ function Dashboard({ id }: { id: string }) {
         <span className="small faint">{formatCents(m.priceCents)}{m.payment.mock ? " (test)" : ""}</span>
       </div>
       <h1 style={{ fontSize: 44, margin: "10px 0 6px" }}>{m.title}</h1>
-      <p className="lede" style={{ marginBottom: 24 }}>{m.status === "revealed" ? "Finished. Every tile is in." : `${p.circle + p.artist + p.studio} of ${p.total} tiles in${days > 0 ? `, ${days} day${days === 1 ? "" : "s"} to go` : ""}.`}</p>
+      <p className="lede" style={{ marginBottom: 24 }}>{m.status === "revealed" ? "Finished. Every tile is in." : `${(p.circle + p.artist + p.studio).toLocaleString()} of ${p.total.toLocaleString()} tiles in${days > 0 ? `, ${days} day${days === 1 ? "" : "s"} to go` : ""}.`}</p>
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 32 }}>
         <div style={{ flex: "1 1 360px", minWidth: 0, display: "flex", flexDirection: "column", gap: 12 }}>
@@ -68,11 +68,11 @@ function Dashboard({ id }: { id: string }) {
             <i style={{ width: pct(p.studio), background: "#8a7d6b" }} /><i style={{ width: pct(p.review), background: "#8c7a9a" }} />
           </div>
           <ul className="legend">
-            <li><i style={{ width: 10, height: 10, background: "var(--gold)" }} />Your circle · {p.circle}</li>
-            <li><i style={{ width: 10, height: 10, background: "#6e8fa6" }} />Tessera artists · {p.artist}</li>
-            <li><i style={{ width: 10, height: 10, background: "#8c7a9a" }} />In review · {p.review}</li>
-            <li><i style={{ width: 10, height: 10, border: "1px dashed #5a4c3e" }} />Open · {p.open}</li>
-            {p.studio > 0 && <li><i style={{ width: 10, height: 10, background: "#8a7d6b" }} />Studio fill · {p.studio}</li>}
+            <li><i style={{ width: 10, height: 10, background: "var(--gold)" }} />Your circle · {p.circle.toLocaleString()}</li>
+            <li><i style={{ width: 10, height: 10, background: "#6e8fa6" }} />Tessera artists · {p.artist.toLocaleString()}</li>
+            <li><i style={{ width: 10, height: 10, background: "#8c7a9a" }} />In review · {p.review.toLocaleString()}</li>
+            <li><i style={{ width: 10, height: 10, border: "1px dashed #5a4c3e" }} />Open · {p.open.toLocaleString()}</li>
+            {p.studio > 0 && <li><i style={{ width: 10, height: 10, background: "#8a7d6b" }} />Studio fill · {p.studio.toLocaleString()}</li>}
           </ul>
 
           {m.status === "collecting" ? (
@@ -93,7 +93,7 @@ function Dashboard({ id }: { id: string }) {
               <p className="small faint">{mosaicConfig.studioFillDaysBefore} days before {dateLabel(m.revealAt)}, any slot still open gets a clearly marked studio fill. If every tile is in sooner, you can reveal early.</p>
               {p.complete
                 ? <button className="btn btn--primary" onClick={() => { const e = reveal(m.id); if (e) notify(e); }}>Reveal it now</button>
-                : <button className="btn" onClick={() => { if (window.confirm(`Fill all ${p.open} open slots with studio fill now? Tiles in review keep their place.`)) notify(`${studioFill(m.id)} slots filled`); }}>Finish now with studio fill</button>}
+                : <button className="btn" onClick={() => { if (window.confirm(`Fill all ${p.open.toLocaleString()} open slots with studio fill now? Tiles in review keep their place.`)) notify(`${studioFill(m.id).toLocaleString()} slots filled`); }}>Finish now with studio fill</button>}
             </>
           ) : (
             <>

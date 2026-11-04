@@ -104,10 +104,10 @@ function Mosaics({ notify }: { notify: (m: string) => void }) {
         return (
           <article key={m.id} className="qrow" style={{ flexDirection: "column" }}>
             <div className="split"><span className="serif" style={{ fontSize: 24 }}>{m.title}</span><span className="small muted">{m.status === "revealed" ? `Revealed ${dateLabel(m.revealedAt!)}` : `Reveal ${dateLabel(m.revealAt)}`} · {m.visibility}</span></div>
-            <span className="small muted">{tileCount(m)} tiles · circle {p.circle} · artists {p.artist} · studio {p.studio} · review {p.review} · open {p.open} · pool {formatCents(m.poolCents)} · cap {cap(tileCount(m))}/artist · {formatCents(m.priceCents)}{m.payment.mock ? " (test)" : ""}</span>
+            <span className="small muted">{tileCount(m).toLocaleString()} tiles · circle {p.circle.toLocaleString()} · artists {p.artist.toLocaleString()} · studio {p.studio.toLocaleString()} · review {p.review.toLocaleString()} · open {p.open.toLocaleString()} · pool {formatCents(m.poolCents)} · cap {cap(tileCount(m))}/artist · {formatCents(m.priceCents)}{m.payment.mock ? " (test)" : ""}</span>
             <div className="row">
               <Link className="btn" href={`/mosaic?id=${m.id}`}>Open</Link>
-              {m.status === "collecting" && <button className="btn" onClick={() => notify(`${studioFill(m.id)} slots got studio fill`)}>Studio fill now</button>}
+              {m.status === "collecting" && <button className="btn" onClick={() => notify(`${studioFill(m.id).toLocaleString()} slots got studio fill`)}>Studio fill now</button>}
               {m.status === "revealed" && !m.splitAt && <button className="btn" onClick={() => { const r = runSplit(m.id); notify(r ? `Pool shared with ${r.artists} artist${r.artists === 1 ? "" : "s"}, ${formatCents(r.toRevenueCents)} to revenue` : "Nothing to split"); }}>Share the pool now</button>}
               {m.splitAt && <span className="tag">Pool shared {dateLabel(m.splitAt)}</span>}
             </div>

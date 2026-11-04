@@ -58,7 +58,10 @@ function Join({ mosaicId, token, slotParam, artist }: { mosaicId: string; token:
   const colour = slot >= 0 ? m.slots[slot] : null;
 
   if (step === "done" && done) return (
-    <FlowShell title="Your tile is being reviewed" actions={<Link className="btn btn--primary btn--block" href={artist ? "/challenge" : "/"}>{artist ? "Back to the colour challenge" : "Done"}</Link>}>
+    <FlowShell title="Your tile is being reviewed" actions={<>
+      {!artist && <button className="btn btn--primary btn--block" onClick={() => { setDone(null); setUpload(null); setPainted(null); setStep("start"); }}>Paint another square</button>}
+      <Link className={`btn btn--block${artist ? " btn--primary" : ""}`} href={artist ? "/challenge" : "/"}>{artist ? "Back to the colour challenge" : "Done for now"}</Link>
+    </>}>
       <div className="big-swatch" style={{ background: m.slots[done.slot].hex }}>{done.imageUrl && <img src={done.imageUrl} alt="Your tile" style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.92 }} />}</div>
       <p className="muted" style={{ textAlign: "center" }}>A person checks every tile, usually within a day. Slot {done.slot + 1} is held for you meanwhile. The picture is revealed on {dateLabel(m.revealAt)}.</p>
       {done.flags.length > 0 && <p className="note">We noticed: {done.flags.join("; ")}. The reviewer will take a look.</p>}
@@ -68,7 +71,7 @@ function Join({ mosaicId, token, slotParam, artist }: { mosaicId: string; token:
 
   if (step === "start") return (
     <FlowShell title="You are one tile in a hidden picture">
-      <p className="muted">{m.cols * m.rows} people, {m.cols * m.rows} colours. Nobody sees the picture until {dateLabel(m.revealAt)}.</p>
+      <p className="muted">{(m.cols * m.rows).toLocaleString()} squares, each painted in its own colour by friends, family and Tessera artists. Paint as many as you like. Nobody sees the picture until {dateLabel(m.revealAt)}.</p>
       {error && <p className="error" role="alert">{error}</p>}
       <div className="choices">
         <button className="choice" onClick={() => { const n = nextOpenSlot(m.id); if (n < 0 || !claimSlot(m.id, n, source)) { setError("Every slot is taken or in review right now. Try again later."); return; } setStep("slot"); }}>

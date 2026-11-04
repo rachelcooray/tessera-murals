@@ -20,16 +20,13 @@ function TilePage({ mosaicId, slot }: { mosaicId: string; slot: number }) {
   if (m.status !== "revealed") return <Page narrow><span className="eyebrow">Slot {slot + 1}</span><h1 style={{ fontSize: 40, margin: "10px 0 16px" }}>Not revealed yet</h1><p className="muted">{m.title} is revealed on {dateLabel(m.revealAt)}. Come back then to see your tile in the finished piece.</p></Page>;
   const t = tiles.get(slot);
   const row = Math.floor(slot / m.cols) + 1, col = (slot % m.cols) + 1;
-  const ox = ((slot % m.cols) + 0.5) / m.cols * 100, oy = (Math.floor(slot / m.cols) + 0.5) / m.rows * 100;
   return (
     <Page narrow>
       <span className="eyebrow">Revealed {m.revealedAt ? dateLabel(m.revealedAt) : ""}</span>
-      <h1 style={{ fontSize: 40, margin: "10px 0 6px" }}>{m.title}, by {m.cols * m.rows} hands</h1>
+      <h1 style={{ fontSize: 40, margin: "10px 0 6px" }}>{m.title}, in {(m.cols * m.rows).toLocaleString()} tiles</h1>
       <p className="muted" style={{ marginBottom: 20 }}>This one is slot {slot + 1}, row {row}, column {col}.</p>
       <div className="zoomwrap" style={{ maxWidth: 560 }}>
-        <div style={{ transform: `scale(${zoom ? Math.min(6, m.cols / 4) : 1})`, transformOrigin: `${ox}% ${oy}%`, transition: "transform 1.1s var(--ease)" }}>
-          <MosaicGrid mosaic={m} tiles={tiles} highlight={slot} label={zoom ? "Close up on this tile and its neighbours" : `The finished mosaic with slot ${slot + 1} highlighted`} />
-        </div>
+        <MosaicGrid mosaic={m} tiles={tiles} highlight={slot} focus={zoom ? { slot, span: 15 } : undefined} label={zoom ? "Close up on this tile and its neighbours" : `The finished mosaic with slot ${slot + 1} highlighted`} />
       </div>
       <div className="row" style={{ margin: "14px 0 24px" }}>
         <button className="btn" aria-pressed={!zoom} onClick={() => setZoom(false)}>Whole picture</button>
