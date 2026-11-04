@@ -79,7 +79,7 @@ To set a cover: open the highlight → Edit highlight → Edit cover → pick th
 
 ## The launch grid: one hidden mosaic
 
-The first nine posts make **one picture together**: a sunset mosaic, split into nine pieces. Each post's cover is one numbered piece. As you post, the picture builds. Once all nine are up, the profile shows the whole thing, the way a Tessera mosaic is revealed. See `marketing/instagram/grid/profile-mockup.png`.
+The first nine posts make **one picture together**: a red fox mosaic (10,800 squares, from an Unsplash photo by Sunyu), split into nine pieces. Each post's cover is one numbered piece. As you post, the picture builds. Once all nine are up, the profile shows the whole thing, the way a Tessera mosaic is revealed. See `marketing/instagram/grid/profile-mockup.png`.
 
 ```
  newest  ┌──────────────────┬──────────────────┬──────────────────┐
@@ -107,6 +107,8 @@ The piece files are in `marketing/instagram/grid/`, named by post number (`grid-
 3. **Don't pin anything.** Pinned posts jump to the front and break the picture. (This replaces the pinning advice from earlier.)
 4. **After the nine, post in threes.** Each new post pushes the grid along by one, so single posts shift the picture out of line. Adding a full row of three at a time keeps it aligned. The second row of three can be a new strip, for example three gift ideas.
 5. **Never delete one of the nine.** Archive it instead if you must, though even that shifts the grid.
+
+Captions for all nine are in `marketing/instagram/grid/captions.md`. Label-free versions of the pieces are in `grid/no-labels/`.
 
 **All nine are ready** except your Reel 3 screen recording. For each post, upload the grid piece first, then its slides from `posts/`.
 
