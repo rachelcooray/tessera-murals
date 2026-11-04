@@ -6,7 +6,7 @@ Goal for the first three weeks: **20 founding mosaic orders on a waiting list, a
 The account stays faceless. The mosaics are the face; you speak as voiceover only.
 
 Placeholders in `{{double braces}}` need real facts before posting. Never fill them with guesses.
-The 400 tile wedding mosaic on the site (`sample-dusk`) is a **sample**. Say so on screen whenever it appears.
+The 10,000 tile wedding mosaic on the site (`sample-dusk`) is a **sample**. Say so on screen whenever it appears.
 
 ---
 
@@ -29,7 +29,7 @@ Three angles, rotate them:
 | Angle | Who it's for | The promise |
 |---|---|---|
 | **The gift** | Couples, families, friends, teams | A present made by everyone who loves them, revealed all at once |
-| **The mystery** | Anyone scrolling | 400 people painted blind. Watch what they made. |
+| **The mystery** | Anyone scrolling | 10,000 squares painted blind. Watch what they made. |
 | **The artists** | Illustrators, painters, students | Pick a colour, make a small piece, share 30% of the price |
 
 Words to use: hidden, reveal, one colour, by hand, together, the last tile.
@@ -41,13 +41,16 @@ Words to avoid: AI, algorithm, pixel, NFT, viral, forever.
 
 These come from the site's settings (`src/config/mosaic.ts`). If you change a setting, update the posts.
 
-- Three sizes: Small, 100 tiles, $49 · Medium, 400 tiles, $149 · Large, 1,024 tiles, $299
+- Four sizes: Small, 10,000 tiles, $45 · Medium, 20,000 tiles, $95 · Large, 30,000 tiles, $145 · Grand, 40,000 tiles, $195
+- Faces become recognisable from about 20,000 tiles
+- Guests can paint as many squares as they like
+- A print can be added at checkout
 - Contributors never pay
-- Every contributed tile is made by a person. AI-made uploads are rejected, and a person reviews every tile
+- Tiles from guests and artists are made by hand. AI-made uploads are rejected, and a person reviews every tile. Say "hand-painted by your people and Tessera artists", never "every square is painted by a person"
 - Each contributor sees one slot and one colour, never the picture
 - Friends paint first. Open slots go to Tessera artists through the colour challenge
 - Artists share 30% of the price between them, split by accepted tiles. The customer can favourite up to 5 tiles, and those count double
-- Any slot still empty 2 days before the reveal gets a studio fill, clearly labelled as one
+- Every mosaic finishes on time; Tessera artists pick up open squares
 - Reveal date: 3 or 6 weeks out, or any date at least 7 days away
 - The reveal zooms out from one tile to the whole picture and exports a 9:16 video
 - Every contributor gets a link to their own tile
@@ -114,19 +117,19 @@ Test two slots in week 1, for example 12:00 and 19:30 your time. Keep the one wi
 ### Mon · Reel / TikTok 1 · "Painted blind"
 - **Footage:** home page, contributor view (one lit slot) → toggle to the finished piece. Then 3 seconds of the reveal.
 - **Hooks (best first):**
-  1. 400 people painted this. None of them knew what it was.
+  1. 10,000 squares. Nobody who painted them knew what they'd make.
   2. Everyone got one colour. Nobody saw the picture.
   3. This is what you see when you add a tile. This is what you made.
 - **Beats:**
   - 0 to 2s: hook over the single lit slot
   - 2 to 8s: VO "You get one square and one colour. Paint anything you like in it. A cat, a wave, your initials."
-  - 8 to 13s: toggle to the full piece. VO "Four hundred people did the same."
+  - 8 to 13s: toggle to the full piece. VO "Ten thousand squares, painted the same way."
   - 13 to 18s: reveal zoom-out. On screen: "Sample mosaic"
   - 18 to 20s: end card
-- **Instagram caption:** Every square in this picture was painted by someone who only knew their colour. Nobody saw the photo until the last tile landed. That's a Tessera hidden mosaic. Founding mosaics open soon: link in bio.
+- **Instagram caption:** Each square in a Tessera mosaic is painted by someone who only knows their colour. Nobody saw the photo until the last tile landed. That's a Tessera hidden mosaic. Founding mosaics open soon: link in bio.
 - **Instagram hashtags:** #mosaic #collaborativeart #weddinggift #handmadeart #tessera
 - **TikTok:** caption "they only knew their colour" · #mosaicart #art #weddingtok #giftideas #satisfying · cut the VO tight, let the zoom-out run long.
-- **Facebook:** post the same video. Caption: "We sent 400 people one colour each and asked them to paint anything they liked. None of them saw the picture. Here's what it became. (This one is a sample we made to show how it works.) We're opening founding mosaics soon for weddings, birthdays and family gifts. Join the list: {{waiting list link}}"
+- **Facebook:** post the same video. Caption: "Each square gets one colour, and whoever paints it can make anything they like. Nobody sees the picture. Here's what it became. (This one is a sample we made to show how it works.) We're opening founding mosaics soon for weddings, birthdays and family gifts. Join the list: {{waiting list link}}"
 
 ### Tue · Carousel 1 · "How a hidden mosaic works"
 - **Slides:**
@@ -135,7 +138,7 @@ Test two slots in week 1, for example 12:00 and 19:30 your time. Keep the one wi
   3. "2. We cut it into slots. Each guest gets one colour, never the picture."
   4. "3. They paint anything, by hand. Friends first, then our artists fill the rest."
   5. "4. On your date, it's revealed. One tile, then the whole picture."
-  6. "From $49. Contributors never pay. Join the list for a founding mosaic."
+  6. "From $45 for 10,000 squares. Guests never pay. Join the list for a founding mosaic."
 - **Caption:** Four steps, one surprise. Save this for the next wedding, big birthday or leaving do. Founding mosaics: link in bio.
 - **Hashtags:** #howitworks #mosaic #giftideas #weddingideas #tessera
 - **Facebook:** same slides as an album. Caption adds: "Good for weddings, anniversaries, retirements and big birthdays. Join the list: {{waiting list link}}"
@@ -145,7 +148,7 @@ Test two slots in week 1, for example 12:00 and 19:30 your time. Keep the one wi
 - **Hooks:**
   1. Wait for the zoom-out.
   2. This is one tile. Now watch.
-  3. A wedding gift made by 400 people, revealed.
+  3. A wedding gift in 20,000 hand-painted squares, revealed.
 - **Beats:** let the export play. Add the hook at the top for the first 2 seconds and "Sample mosaic" in a corner. End card.
 - **Caption:** The reveal starts on one tile and pulls back until you see the whole thing. Every couple gets this video. Link in bio for founding mosaics.
 - **Hashtags:** #reveal #weddinggift #mosaic #art #tessera
@@ -170,7 +173,7 @@ Test two slots in week 1, for example 12:00 and 19:30 your time. Keep the one wi
 
 ### Sat · Single image · "Sizes"
 - **Image:** the three sizes as cards, same as the site's Sizes section
-- **Caption:** Small, 100 tiles, for a family. Medium, 400 tiles, for a wedding. Large, 1,024 tiles, for a company or a community. Contributors never pay. Link in bio.
+- **Caption:** Small, 10,000 tiles, $45, for landscapes and pets. Medium, 20,000 tiles, $95, for faces you can recognise. Large, 30,000 tiles, $145, for group photos. Grand, 40,000 tiles, $195, for big groups and large prints. Guests never pay. Link in bio.
 - **Hashtags:** #mosaic #giftideas #tessera
 
 ---
@@ -228,10 +231,10 @@ Artist sign-ups fill the slots friends don't. This week recruits them, and shows
 - **Hashtags:** #doodle #mosaic #handmade #art #tessera
 - **Facebook:** frame it for guests, not artists: "Worried your aunt can't draw? She doesn't need to. Any doodle works."
 
-### Sat · Single image · "Studio fill"
-- **Image:** the dashboard showing labelled studio-fill tiles
-- **Caption:** It always finishes on time. If a slot is still empty 2 days before your date, we fill it ourselves and label it clearly. Founding mosaics: link in bio.
-- **Hashtags:** #mosaic #giftideas #tessera
+### Sat · Single image · "Paint as many"
+- **Image:** five small painted squares in neighbouring colours: "One square, or fifty."
+- **Caption:** Every guest can paint as many squares as they like, each in a new colour. The more they paint, the more of the picture is theirs. Link in bio.
+- **Hashtags:** #mosaic #giftideas #painting #tessera
 
 ---
 
@@ -253,7 +256,7 @@ Artist sign-ups fill the slots friends don't. This week recruits them, and shows
   1. Cover: "Questions people ask"
   2. "Can guests see the picture? No. Each one sees their slot and its colour."
   3. "What if people don't join? Our artists fill open slots, and we fill the rest before your date."
-  4. "Can people use AI? No. Every tile is made by a person and reviewed."
+  4. "Can people use AI? No. Tiles are made by hand, and a person checks every one."
   5. "Do guests pay? Never."
   6. "What do I get? The finished mosaic, the reveal video and a link to every tile."
 - **Caption:** Ask anything else in the comments. Founding mosaics: link in bio.
@@ -264,7 +267,7 @@ Artist sign-ups fill the slots friends don't. This week recruits them, and shows
 - **Footage:** the reveal export, slowed on the moment before the zoom-out.
 - **Hooks:**
   1. The last tile is always the best part.
-  2. When the 400th square lands.
+  2. When the last square lands.
   3. Everyone opens the link at the same time.
 - **Caption:** Everyone who painted gets the link on the same day. One tile, then the whole picture. Link in bio.
 - **Hashtags:** #reveal #mosaic #art #weddinggift #tessera
@@ -277,7 +280,7 @@ Artist sign-ups fill the slots friends don't. This week recruits them, and shows
 ### Fri · Reel / TikTok 9 · "Behind the build"
 - **Footage:** the site being clicked through, fast, start to reveal.
 - **Hooks:**
-  1. I built a way for 400 people to make one gift.
+  1. I built a way for everyone who loves someone to paint one gift.
   2. How a hidden mosaic gets made, start to finish, in 20 seconds.
   3. From one photo to the reveal.
 - **Caption:** One photo in, one picture made by everyone out. Founding mosaics open {{launch date}}. Link in bio.
@@ -300,7 +303,7 @@ Artist sign-ups fill the slots friends don't. This week recruits them, and shows
 | Wed | Reveal clip, link sticker | Question: "What's your colour?" | Repost Reel 8 |
 | Thu | Poll + question (see above) | Slider + question (see above) | Countdown + link |
 | Fri | Repost Reel 3 | Best answers from Thursday | Repost Reel 9 |
-| Sat | Sizes card | Studio fill card | "Questions? Ask here" |
+| Sat | Sizes card | "Paint as many" card | "Questions? Ask here" |
 | Sun | "Who would you make one for?" answers | A sample tile close-up | "The list opens" |
 
 ---
@@ -321,13 +324,13 @@ Facebook buyers are older on average: parents, grandparents, office organisers. 
 ## Replies and DMs
 
 **"How much?"**
-> From $49 for 100 tiles. A wedding size is 400 tiles for $149. Guests never pay. Join the list here: {{waiting list link}}
+> From $45 for 10,000 tiles. For a wedding with faces you can recognise, Medium is 20,000 tiles for $95. Guests never pay. Join the list here: {{waiting list link}}
 
 **"Is it AI?"**
-> No. Every tile is made by a person and checked by a person. AI-made uploads are turned away.
+> No. Tiles from guests and artists are made by hand, and a person checks every one. AI-made uploads are turned away.
 
 **"What if my guests don't do it?"**
-> Our artists fill open slots, and anything still empty 2 days before the date gets a clearly labelled studio fill. It always finishes on time.
+> Tessera artists pick up the open squares, so your mosaic always finishes on time.
 
 **"Can I be an artist?"**
 > Yes. Pick open slots in the colour challenge and share 30% of each mosaic's price with the other artists. Sign up here: {{artist link}}
@@ -386,5 +389,5 @@ Next week, make two more posts with the best hook's angle.
 2. **Handle:** pick one free on all three platforms and fill `{{handle}}`.
 3. **Launch date, number of founding mosaics and any founding offer:** decide before week 3.
 4. **Artist clip:** film one real speed paint for Reel 5, with permission.
-5. **Prices:** the site marks $49 / $149 / $299 as placeholders. Confirm them before week 1, since every post quotes them.
+5. **Prices:** $45 / $95 / $145 / $195 for 10,000 / 20,000 / 30,000 / 40,000 tiles. Every post quotes them.
 6. **Phase 2:** cross-device orders and real payouts. Until both are done, don't say "order now" or promise artist payments by a date.

@@ -18,7 +18,7 @@ Goal for the first three weeks: **people joining the founding mosaics list.** Ev
 | Carousel 2 · Paint it on your phone (5 slides) | Design canvas, row 2 | Ready, export from the canvas |
 | Carousel 3 · Questions people ask (5 slides) | Design canvas, row 3 | To make |
 | Post · Sizes | Design canvas, row 4 | To make |
-| Post · Studio fill | Design canvas, row 4 | To make |
+| Post · Paint as many as you like | Design canvas, row 4 | To make |
 | Post · Founding mosaics open | Design canvas, row 4 | To make once you have a date |
 | Reel 3 · Painting a tile | Screen recording on your phone | You record it (steps below) |
 | Stories | Design canvas, row 5, plus Instagram's own stickers | Partly to make |
@@ -32,7 +32,7 @@ Goal for the first three weeks: **people joining the founding mosaics list.** Ev
 1. **Handle.** Try these in order and take the first one that's free: `@tessera.mosaics`, `@tesseramosaics`, `@tessera.studio`, `@hiddenmosaics`, `@tessera.hq`. Use the same one on TikTok and Facebook if you can.
 2. **Waiting list link.** A simple form is enough (Google Forms, Tally or similar) asking for name, email and "What would you make one for?". This is the link in your bio.
 3. **Launch date for founding mosaics.** Only needed for week 3. Until then, say "soon".
-4. **Prices.** Every post quotes $49, $149 and $299, which are the site's placeholder prices. Confirm them first.
+4. **Prices.** Every post uses the four sizes: 10,000 tiles $45 · 20,000 $95 · 30,000 $145 · 40,000 $195.
 
 Replace `@[HANDLE]` on the designs with your real handle before exporting.
 
@@ -83,8 +83,8 @@ The first nine posts make **one picture together**: a sunset mosaic, split into 
          │ 9 Painted blind  │ 8 Paint on your  │ 7 How it works   │
          │   (Reel 1)       │   phone (carousel)│   (carousel)     │
          ├──────────────────┼──────────────────┼──────────────────┤
-         │ 6 Gift ideas     │ 5 Paint a tile   │ 4 Always on time │
-         │   (carousel)     │   (Reel 3)       │   (studio fill)  │
+         │ 6 Gift ideas     │ 5 Paint a tile   │ 4 Paint as many  │
+         │   (carousel)     │   (Reel 3)       │   (single)       │
          ├──────────────────┼──────────────────┼──────────────────┤
          │ 3 Questions      │ 2 Sizes          │ 1 The reveal     │
  oldest  │   (carousel)     │   (single)       │   (Reel 2)       │
@@ -105,7 +105,7 @@ The piece files are in `marketing/instagram/grid/`, named by post number (`grid-
 4. **After the nine, post in threes.** Each new post pushes the grid along by one, so single posts shift the picture out of line. Adding a full row of three at a time keeps it aligned. The second row of three can be a new strip, for example three gift ideas.
 5. **Never delete one of the nine.** Archive it instead if you must, though even that shifts the grid.
 
-**Still to make for the nine:** the Sizes card, Questions slides, Studio fill card and Gift ideas slides (texts below), plus your Reel 3 screen recording.
+**Still to make for the nine:** the Sizes card, Questions slides, "Paint as many" card and Gift ideas slides (texts below), plus your Reel 3 screen recording.
 
 ---
 
@@ -120,7 +120,7 @@ Post at the same two times each day to start, for example 12:00 and 19:30 your t
 | Tue | none | Poll: "Would you paint a square blind?" |
 | Wed | Reel 3 · Painting a tile | Share Reel 3 + "Tap the link to join" |
 | Thu | none | Question: "Who would you make one for?" |
-| Fri | Post · Studio fill | Best answers from Thursday |
+| Fri | Post · Paint as many as you like | Best answers from Thursday |
 | Sat | none | Share Carousel 1 |
 | Sun | none | "Questions? Ask here" sticker |
 | **Week 2** | | |
@@ -145,13 +145,13 @@ Only post what's ready. A missed day is better than a rushed post.
 
 ## The posts
 
-The launch grid uses these as: grid 1 = Post 3 (Reel 2), grid 2 = Post 2 (Sizes), grid 3 = Post 1 (Questions), grid 4 = Post 8 (Studio fill), grid 5 = Post 7 (Reel 3), grid 6 = Post 10 (Gift ideas), grid 7 = Post 4 (Carousel 1), grid 8 = Post 5 (Carousel 2), grid 9 = Post 6 (Reel 1). Post them in grid order, 1 to 9, on launch day.
+The launch grid uses these as: grid 1 = Post 3 (Reel 2), grid 2 = Post 2 (Sizes), grid 3 = Post 1 (Questions), grid 4 = Post 8 (Paint as many), grid 5 = Post 7 (Reel 3), grid 6 = Post 10 (Gift ideas), grid 7 = Post 4 (Carousel 1), grid 8 = Post 5 (Carousel 2), grid 9 = Post 6 (Reel 1). Post them in grid order, 1 to 9, on launch day.
 
 Hashtags: 3 to 5 per post, in the caption. Alt text: Edit post → Advanced settings → Write alt text (or "Accessibility" when posting). Always add it; it helps search too.
 
 ### Post 1 · Carousel 3 · Questions people ask (launch grid)
 
-**Slides:** Cover "Questions people ask" · "Can guests see the picture? No. Each one sees their square and its colour." · "What if people don't join? Tessera artists fill open squares, and anything still empty two days before your date gets a clearly labelled studio fill." · "Can people use AI? No. Every tile is made by a person and checked by a person." · "Do guests pay? Never. You get the finished mosaic, the reveal video and a link to every tile."
+**Slides:** Cover "Questions people ask" · "Can guests see the picture? No. Each one sees their square and its colour." · "What if people don't paint them all? Tessera artists pick up the open squares, and your mosaic always finishes on time." · "Can people use AI? No. Tiles from guests and artists are made by hand, and a person checks every one." · "Do guests pay? Never. You get the finished mosaic, the reveal video and a link to every tile."
 
 **Caption:**
 > The questions everyone asks first. Anything else? Ask in the comments and we'll answer every one.
@@ -163,24 +163,24 @@ Hashtags: 3 to 5 per post, in the caption. Alt text: Edit post → Advanced sett
 
 ### Post 2 · Sizes (launch grid)
 
-**Image:** Three cards: Small, 100 tiles, $49, for a family or a small team · Medium, 400 tiles, $149, for a wedding or a big birthday · Large, 1,024 tiles, $299, for a company or a community.
+**Image:** Four cards: Small, 10,000 tiles, $45, for landscapes, pets and silhouettes · Medium, 20,000 tiles, $95, for one or two faces you can recognise · Large, 30,000 tiles, $145, for group photos and sharp faces · Grand, 40,000 tiles, $195, for big groups and large prints.
 
 **Caption:**
-> Three sizes. Small for a family, medium for a wedding, large for a whole company or community.
+> Four sizes, from 10,000 to 40,000 hand-painted squares. The more squares, the sharper the faces: from 20,000 you can tell exactly who's in the picture.
 >
-> Contributors never pay. Every size comes with a private invite link, the reveal video and a link to every tile.
+> Guests never pay. Every size comes with a private invite link, the paint tool, the reveal video and a link to every tile. Add a print at checkout.
 >
 > Join the list for a founding mosaic, link in bio.
 
 **Hashtags:** #tessera #mosaic #giftideas #weddingideas
-**Alt text:** Three price cards: Small, 100 tiles, 49 dollars. Medium, 400 tiles, 149 dollars. Large, 1,024 tiles, 299 dollars.
+**Alt text:** Four price cards: Small, 10,000 tiles, 45 dollars. Medium, 20,000 tiles, 95 dollars. Large, 30,000 tiles, 145 dollars. Grand, 40,000 tiles, 195 dollars.
 
 ### Post 3 · Reel 2 · The reveal (launch grid)
 
 **File:** `tessera-reel-reveal.mp4` · **Cover:** the frame with the whole mosaic (choose it when posting).
 
 **Caption:**
-> Every square was painted by someone who only knew their colour. Then the camera pulls back.
+> Each square is painted by someone who only knows their colour. Then the camera pulls back.
 >
 > (This one's a sample we made to show how it works.)
 >
@@ -215,7 +215,7 @@ Hashtags: 3 to 5 per post, in the caption. Alt text: Edit post → Advanced sett
 >
 > Can't draw? A heart or your initials works perfectly. Tiny details disappear at tile size anyway.
 >
-> Or paint on paper and upload a photo. Either way, every square is made by a person.
+> Or paint on paper and upload a photo. Either way, it's made by hand.
 >
 > Join the list, link in bio.
 
@@ -227,7 +227,7 @@ Hashtags: 3 to 5 per post, in the caption. Alt text: Edit post → Advanced sett
 **File:** `tessera-reel-instagram.mp4` · **Cover:** the full mosaic frame.
 
 **Caption:**
-> 400 people, one colour each, and nobody sees the picture until the reveal.
+> 10,000 squares, one colour each, and nobody sees the picture until the reveal.
 >
 > Tessera turns one photo into a picture painted by everyone who loves them. Weddings, big birthdays, anniversaries, teams, and families remembering someone.
 >
@@ -250,17 +250,17 @@ Hashtags: 3 to 5 per post, in the caption. Alt text: Edit post → Advanced sett
 **Hashtags:** #speedpaint #digitalart #mosaic #satisfying #tessera
 **Alt text:** A phone screen recording of someone painting a small sunset in their square on Tessera's paint tool.
 
-### Post 8 · Studio fill (week 1, Fri)
+### Post 8 · Paint as many as you like (week 1, Fri)
 
-**Image:** A mosaic with a few squares marked with stripes as studio fill, and the line "It always finishes on time."
+**Image:** Slide 1 is grid piece 4. Slide 2: a row of five small painted squares in neighbouring colours, and the line "One square, or fifty."
 
 **Caption:**
-> What if some guests never paint their square? Tessera artists pick up open squares first. Anything still empty two days before your date gets a studio fill, clearly marked so you know which ones they are.
+> One square, or fifty. Every guest can paint as many squares as they like, each in a new colour. The more they paint, the more of the picture is theirs, and they still won't see it until the reveal.
 >
-> Your mosaic always finishes on time. Link in bio.
+> Link in bio.
 
-**Hashtags:** #mosaic #giftideas #weddingplanning #tessera
-**Alt text:** A mosaic with a handful of squares marked with diagonal stripes. Text: It always finishes on time.
+**Hashtags:** #mosaic #giftideas #weddingideas #painting #tessera
+**Alt text:** Five small hand-painted squares in neighbouring shades of rose and gold. Text: One square, or fifty.
 
 ### Post 9 · Reel 4 · Speed paint (week 2, Thu)
 
@@ -338,9 +338,9 @@ Reply to every Story reply. Share the best Question answers (cover the person's 
 
 Save these as quick replies (Settings → Business tools → Saved replies), so a shortcut fills them in:
 
-- **/price:** "Sizes start at $49 for 100 tiles. A wedding size is 400 tiles for $149. Guests never pay. Join the list here: [LINK]"
-- **/ai:** "No AI. Every tile is made by a person and checked by a person before it goes in."
-- **/empty:** "Tessera artists fill open squares, and anything still empty two days before your date gets a clearly labelled studio fill. It always finishes on time."
+- **/price:** "Mosaics start at $45 for 10,000 tiles. For a wedding with faces you can recognise, Medium is 20,000 tiles for $95. Guests never pay. Join the list here: [LINK]"
+- **/ai:** "No AI. Tiles from guests and artists are made by hand, and a person checks every one before it goes in."
+- **/empty:** "Tessera artists pick up the open squares, so your mosaic always finishes on time."
 - **/how:** "You upload a photo, invite people with a private link, each gets one square and one colour, and the whole picture is revealed on your date."
 
 Rude comments: reply once, kindly, or not at all. Never argue.
@@ -368,6 +368,7 @@ Next week, make more of whatever won.
 ## Rules for every post
 
 - No made-up customers, quotes, numbers or reviews. The sample mosaic is called a sample.
+- Don't say "every square is painted by a person". Say "hand-painted by your people and Tessera artists".
 - Show someone's tile, face or photo only with their written permission.
 - No AI-made images, ever. That's the whole promise.
 - Plain, warm words. No hype.
