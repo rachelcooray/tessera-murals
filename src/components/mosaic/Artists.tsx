@@ -9,7 +9,7 @@ import { estimatePerTileCents } from "@/lib/mosaic/pool";
 import { allMosaics, appendLedger, artistTileCount, capFor, claimSlot, isSlotOpen, progress, saveArtist, tilesFor, useMosaicState } from "@/lib/mosaic/store";
 import { OCCASIONS, type ArtistProfile } from "@/lib/mosaic/types";
 import { Toast, useToast } from "../ui";
-import { Page, Stat, Todo, dateLabel } from "./common";
+import { MosaicGrid, Page, Stat, Todo, dateLabel } from "./common";
 
 type Family = "all" | "warm" | "blue" | "green" | "dark";
 function family(hex: string): Exclude<Family, "all"> {
@@ -110,10 +110,13 @@ export function ArtistPage() {
     };
   });
   const min = mosaicConfig.pool.payoutMinimumCents;
-  const canRequest = b.availableCents >= min && b.requestedCents === 0;
+  const firstPayout = mosaicConfig.pool.firstPayoutTiles;
+  const acceptedTiles = myTiles.filter((t) => t.status === "approved").length;
+  const unlocked = acceptedTiles >= firstPayout;
+  const canRequest = unlocked && b.availableCents >= min && b.requestedCents === 0;
 
   function request() {
-    const r = requestPayout(s.ledger, a!.id, min, new Date());
+    const r = requestPayout(s.ledger, a!.id, min, new Date(), acceptedTiles, firstPayout);
     if (typeof r === "string") { notify(r); return; }
     appendLedger([r as LedgerEntry]);
     notify("Payout requested. An admin will review it.");
@@ -141,9 +144,13 @@ export function ArtistPage() {
           <div className="box" style={{ gap: 10, boxShadow: "0 0 0 1px var(--accent)", border: 0 }}>
             <span className="eyebrow">Available</span>
             <span className="serif" style={{ fontSize: 32 }}>{formatCents(b.availableCents)}</span>
+            {!unlocked && <>
+              <div className="meter" role="progressbar" aria-label={`Accepted tiles toward your first payout`} aria-valuemin={0} aria-valuemax={firstPayout} aria-valuenow={acceptedTiles}><i style={{ width: `${Math.min(100, (acceptedTiles / firstPayout) * 100)}%` }} /></div>
+              <span className="small muted">{acceptedTiles} of {firstPayout} accepted tiles. Your first payout unlocks at {firstPayout}; your earnings build up in the meantime.</span>
+            </>}
             <div className="meter" role="progressbar" aria-label={`Progress toward the ${formatCents(min)} payout minimum`} aria-valuemin={0} aria-valuemax={min} aria-valuenow={Math.min(min, b.availableCents)}><i style={{ width: `${Math.min(100, (b.availableCents / min) * 100)}%` }} /></div>
             <span className="small muted">{b.requestedCents > 0 ? `${formatCents(b.requestedCents)} requested, waiting for review.` : b.availableCents >= min ? "You can request a payout." : `${formatCents(min - b.availableCents)} to go before you can request a payout. Smaller balances roll over.`}</span>
-            <button className="btn" disabled={!canRequest} onClick={request}>{canRequest ? "Request payout" : `Request payout at ${formatCents(min)}`}</button>
+            <button className="btn" disabled={!canRequest} onClick={request}>{canRequest ? "Request payout" : !unlocked ? `Unlocks at ${firstPayout} tiles` : `Request payout at ${formatCents(min)}`}</button>
           </div>
           <Stat k="Lifetime" v={formatCents(b.lifetimeCents)} sub={`Paid out ${formatCents(b.paidCents)}`} />
         </div>
@@ -238,9 +245,9 @@ export function Gallery() {
           const people = new Set(tiles.filter((t) => t.status === "approved" && t.source !== "studio").map((t) => t.contributorId)).size;
           return (
             <li key={m.id} style={{ background: "none", boxShadow: "none", gap: 12 }}>
-              <Link href={`/mosaic?id=${m.id}`} aria-label={`Open ${m.title}`}><div className="mgrid" style={{ gridTemplateColumns: `repeat(${m.cols}, minmax(0, 1fr))`, gap: 1, padding: 8 }}>{m.slots.map((c, i) => <i key={i} className="mcell" style={{ background: c.hex }} />)}</div></Link>
+              <Link href={`/mosaic?id=${m.id}`} aria-label={`Open ${m.title}`}><MosaicGrid mosaic={m} mode="slots" maxWidth={400} label={`${m.title}, as slot colours`} /></Link>
               <div className="split"><h2 style={{ fontSize: 24 }}>{m.title}</h2><span className="eyebrow" style={{ color: "var(--muted)" }}>{m.sample ? "Sample" : OCCASIONS.find((o) => o.id === m.occasion)?.label}</span></div>
-              <span className="small muted">{m.cols * m.rows} tiles · {people} contributors · revealed {m.revealedAt ? dateLabel(m.revealedAt) : ""}</span>
+              <span className="small muted">{(m.cols * m.rows).toLocaleString()} tiles · {people.toLocaleString()} contributors · revealed {m.revealedAt ? dateLabel(m.revealedAt) : ""}</span>
               <Link className="small" href={`/reveal?id=${m.id}`}>Watch the reveal</Link>
             </li>
           );

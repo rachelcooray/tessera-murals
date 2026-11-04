@@ -94,7 +94,8 @@ export function reverseTile(entries: LedgerEntry[], shareId: string, tileWeight:
 }
 
 /** A payout request for the whole available balance, or an error message. */
-export function requestPayout(entries: LedgerEntry[], artistId: string, minimumCents: number, now: Date): LedgerEntry | string {
+export function requestPayout(entries: LedgerEntry[], artistId: string, minimumCents: number, now: Date, acceptedTiles = Infinity, firstPayoutTiles = 0): LedgerEntry | string {
+  if (acceptedTiles < firstPayoutTiles) return `Your first payout unlocks after ${firstPayoutTiles} accepted tiles. You have ${acceptedTiles} so far, and your earnings are building up.`;
   const { availableCents, requestedCents } = balances(entries, artistId);
   if (requestedCents > 0) return "You already have a payout request waiting.";
   if (availableCents < minimumCents) return `You can request a payout from ${formatCents(minimumCents)}.`;

@@ -235,6 +235,7 @@ p { margin: 0; }
 .pay-tiles img { width: 64px; height: 64px; object-fit: cover; box-shadow: 0 0 0 1px var(--line), 0 12px 24px rgba(0,0,0,.5); }
 
 /* commissioned mosaics */
+.mcanvas { display: block; width: 100%; height: auto; background: var(--backing); box-shadow: 0 40px 80px rgba(0,0,0,.55), 0 0 0 1px var(--line); }
 .mgrid { display: grid; width: 100%; aspect-ratio: 1; padding: 10px; background: var(--backing); box-shadow: 0 40px 80px rgba(0,0,0,.55), inset 0 0 0 1px var(--line); }
 .mcell { display: block; aspect-ratio: 1; min-width: 0; border: 0; padding: 0; background: rgba(239,227,204,.035); border-radius: 1px; }
 button.mcell { cursor: pointer; }

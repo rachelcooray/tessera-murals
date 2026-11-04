@@ -3,11 +3,12 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { mosaicConfig, tileCount } from "@/config/mosaic";
 import { formatCents } from "@/lib/mosaic/ledger";
+import { SAMPLE_HIGHLIGHT } from "@/lib/mosaic/sample";
 import { allTiles, slotMap, useMosaic, useMosaicState } from "@/lib/mosaic/store";
 import { Icon } from "../ui";
 import { MosaicGrid, Page } from "./common";
 
-const HIGHLIGHT = 187;
+const HIGHLIGHT = SAMPLE_HIGHLIGHT;
 
 export function MosaicHome() {
   const sample = useMosaic("sample-dusk");
@@ -31,12 +32,12 @@ export function MosaicHome() {
         {sample && (
           <figure style={{ margin: 0, display: "flex", flexDirection: "column", gap: 14 }}>
             <MosaicGrid mosaic={sample} tiles={tiles} mode={view === "finished" ? "tiles" : "hidden"} highlight={view === "contributor" ? HIGHLIGHT : undefined}
-              label={view === "finished" ? "A finished mosaic: two people silhouetted against a low sun over the sea, made of 400 small artworks" : "What one contributor sees: a single lit slot and its colour, the rest hidden"} />
+              label={view === "finished" ? "A finished mosaic: two people silhouetted against a low sun over the sea, made of 10,000 small artworks" : "What one contributor sees: a single lit slot and its colour, the rest hidden"} />
             <div className="row" role="group" aria-label="Switch view">
               <button className="btn" aria-pressed={view === "finished"} onClick={() => setView("finished")} style={view === "finished" ? { borderColor: "var(--accent)", color: "var(--accent)" } : undefined}>The finished piece</button>
               <button className="btn" aria-pressed={view === "contributor"} onClick={() => setView("contributor")} style={view === "contributor" ? { borderColor: "var(--accent)", color: "var(--accent)" } : undefined}>What a contributor sees</button>
             </div>
-            <figcaption className="small muted">{view === "finished" ? "A 400 tile wedding mosaic. Up close, every tile is a small painting, drawing or photo made by a person." : "What a guest sees when they open their link: one slot, one colour. The picture stays hidden until the reveal."}</figcaption>
+            <figcaption className="small muted">{view === "finished" ? "A 10,000 tile wedding mosaic (a sample). Up close, every tile is a small painting, drawing or photo made by a person." : "What a guest sees when they open their link: one slot, one colour. The picture stays hidden until the reveal."}</figcaption>
           </figure>
         )}
       </section>

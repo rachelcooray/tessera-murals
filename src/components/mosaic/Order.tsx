@@ -10,7 +10,7 @@ import { OCCASIONS, type Mosaic, type Occasion } from "@/lib/mosaic/types";
 import { createMosaicIntent, paymentsLive } from "@/lib/payments";
 import { StripePay } from "../StripePay";
 import { Icon } from "../ui";
-import { FlowShell, Todo } from "./common";
+import { FlowShell, MosaicGrid, Todo } from "./common";
 
 const DAY = 86400_000;
 
@@ -128,9 +128,7 @@ export function OrderFlow() {
       <button className="btn btn--quiet btn--block" onClick={() => setStep(1)}>Back</button>
     </>}>
       <div className="row" style={{ flexWrap: "nowrap", gap: 14 }}>
-        <div className="mgrid" aria-label={`Your image at ${tileCount(tier)} tiles`} role="img" style={{ gridTemplateColumns: `repeat(${tier.cols}, minmax(0, 1fr))`, gap: tier.cols > 24 ? 0 : 1, width: 132, padding: 6, flex: "0 0 auto" }}>
-          {slots.map((c, i) => <i key={i} className="mcell" style={{ background: c.hex }} />)}
-        </div>
+        <div style={{ width: 132, flex: "0 0 auto" }}><MosaicGrid mosaic={{ cols: tier.cols, rows: tier.rows, slots }} mode="slots" maxWidth={132} label={`Your image at ${tileCount(tier).toLocaleString()} tiles`} /></div>
         <p className="small muted">Your image at {tileCount(tier).toLocaleString()} tiles. Only you see this preview. More tiles, more detail, more people.</p>
       </div>
       <div className="choices" role="radiogroup" aria-label="Mosaic size">
@@ -165,9 +163,7 @@ export function OrderFlow() {
       <button className="btn btn--quiet btn--block" onClick={() => setStep(2)}>Back</button>
     </>}>
       <p className="small muted">Each square is one person’s tile. This is all a contributor gets: the colour of their square.</p>
-      <div className="mgrid" role="img" aria-label="Your image split into flat colour slots" style={{ gridTemplateColumns: `repeat(${tier.cols}, minmax(0, 1fr))`, gap: tier.cols > 24 ? 1 : 2 }}>
-        {slots.map((c, i) => <i key={i} className="mcell" style={{ background: c.hex }} />)}
-      </div>
+      <MosaicGrid mosaic={{ cols: tier.cols, rows: tier.rows, slots }} mode="slots" label="Your image split into flat colour slots" />
       <div className="row" style={{ flexWrap: "nowrap", justifyContent: "space-between", padding: "10px 14px", border: "1px solid var(--line2)" }}>
         <span style={{ display: "flex", flexDirection: "column", gap: 3 }}><span className="small" style={{ color: "var(--ink)" }}>Open spare slots to Tessera artists</span><span className="small faint">Your circle goes first. Unclaimed slots join the colour challenge.</span></span>
         <button className="switch" role="switch" aria-checked={openToArtists} aria-label="Open spare slots to Tessera artists" onClick={() => setOpenToArtists(!openToArtists)} />

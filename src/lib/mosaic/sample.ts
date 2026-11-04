@@ -31,18 +31,21 @@ export function duskScene(u: number, v: number): RGB {
   return c;
 }
 
+/** A slot in the warm sky to the right of the couple, used to show "what one contributor sees". */
+export const SAMPLE_HIGHLIGHT = 3372;
+
 const KINDS = ["abstract", "waves", "hills", "bloom", "horizon", "forest"] as const;
 const NAMES = ["Nimali P.", "Ravi", "Sam", "Amara K.", null, "Leela", "Tom A.", "Mei L.", "Dinuk", null, "Ishan R.", "Anya"];
 
 export function sampleMosaic(): { mosaic: Mosaic; tiles: MosaicTile[] } {
-  const cols = 20, rows = 20;
+  const cols = 100, rows = 100;
   const slots = [];
   for (let y = 0; y < rows; y++) for (let x = 0; x < cols; x++) slots.push(slotColour(duskScene((x + 0.5) / cols, (y + 0.5) / rows)));
   const revealed = "2026-10-12T18:00:00Z";
   const mosaic: Mosaic = {
-    id: "sample-dusk", title: "Shehan and Ama", occasion: "wedding", tierId: "medium", cols, rows, priceCents: 14900, poolCents: 4470,
+    id: "sample-dusk", title: "Shehan and Ama", occasion: "wedding", tierId: "small", cols, rows, priceCents: 4900, poolCents: 1470,
     email: "", createdAt: "2026-09-01T10:00:00Z", revealAt: revealed, visibility: "public", openToArtists: true,
-    ownerKey: "sample", inviteToken: "sample", target: "", slots, status: "revealed", revealedAt: revealed, favourites: [187, 203],
+    ownerKey: "sample", inviteToken: "sample", target: "", slots, status: "revealed", revealedAt: revealed, favourites: [SAMPLE_HIGHLIGHT, 3374],
     splitAt: revealed, payment: { intentId: null, mock: true }, sample: true,
   };
   const tiles: MosaicTile[] = slots.map((s, i) => {

@@ -15,11 +15,14 @@ export interface MosaicTier {
 }
 
 export const mosaicConfig = {
-  /** Sizes customers can buy. Prices and tile counts are placeholders: decide them after testing. */
+  /**
+   * Sizes customers can buy. 10,000 tiles is the minimum: real photos (faces especially) only read clearly from there.
+   * See docs/research for the comparison. Prices are placeholders: decide them with the artist pool in mind.
+   */
   tiers: [
-    { id: "small", name: "Small", cols: 10, rows: 10, priceCents: 4900, fits: "A family or a small team" },
-    { id: "medium", name: "Medium", cols: 20, rows: 20, priceCents: 14900, fits: "A wedding or a big birthday" },
-    { id: "large", name: "Large", cols: 32, rows: 32, priceCents: 29900, fits: "A company or a community" },
+    { id: "small", name: "Small", cols: 100, rows: 100, priceCents: 4900, fits: "A family, a birthday or a small team" },
+    { id: "medium", name: "Medium", cols: 150, rows: 150, priceCents: 14900, fits: "A wedding or a big anniversary" },
+    { id: "large", name: "Large", cols: 200, rows: 200, priceCents: 29900, fits: "A company or a community" },
   ] as MosaicTier[],
 
   /** Reveal date options offered at checkout, in days from today. */
@@ -66,6 +69,8 @@ export const mosaicConfig = {
     holdDays: 14,
     /** Smallest payout an artist can request, in cents. Smaller balances roll over. */
     payoutMinimumCents: 1000,
+    /** Accepted tiles an artist needs before their first payout. Earnings build up from the first tile. */
+    firstPayoutTiles: 20,
   },
 
   /**
@@ -86,7 +91,7 @@ export const mosaicConfig = {
   },
 
   /** Image sizes kept in the browser while there is no server storage. */
-  storage: { targetPx: 256, tilePx: 128, jpegQuality: 0.78 },
+  storage: { targetPx: 400, tilePx: 128, jpegQuality: 0.78 },
 } as const;
 
 export function tierById(id: string): MosaicTier {
