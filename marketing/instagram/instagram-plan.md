@@ -79,7 +79,7 @@ To set a cover: open the highlight → Edit highlight → Edit cover → pick th
 
 ## The launch grid: one hidden mosaic
 
-The first nine posts make **one picture together**: a real photo of a couple at golden hour (10,800 squares, Unsplash photo by Allef Vinicius), split into nine pieces. Each post's cover is one numbered piece. As you post, the picture builds. Once all nine are up, the profile shows the whole thing, the way a Tessera mosaic is revealed. See `marketing/instagram/grid/profile-mockup.png`.
+The first nine posts make **one picture together**: Antelope Canyon lit by a sunbeam (10,800 squares, Unsplash photo by Madhu Shesharam; two more scenery sets in `grid/sets/`), split into nine pieces. Each post's cover is one numbered piece. As you post, the picture builds. Once all nine are up, the profile shows the whole thing, the way a Tessera mosaic is revealed. See `marketing/instagram/grid/profile-mockup.png`.
 
 ```
  newest  ┌──────────────────┬──────────────────┬──────────────────┐

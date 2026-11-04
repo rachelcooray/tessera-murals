@@ -1,12 +1,28 @@
-# Launch grid · the couple mosaic · 9 posts with captions
+# Launch grid · the canyon mosaic · 9 posts with captions
 
-The nine pieces join into one mosaic: a real photo of a couple at golden hour, made of **10,800 hand-painted-style squares** (90 across, 120 down), just above our Small size. Up close, every post is a wall of separate squares. On the profile, the couple appears.
+The nine pieces join into one mosaic: **Antelope Canyon lit by a sunbeam**, made of **10,800 hand-painted-style squares** (90 across, 120 down), just above our Small size. Up close, every post is a wall of separate squares. On the profile, the canyon and its beam of light appear.
 
 - Pieces with labels: `grid-1-the-reveal.png` to `grid-9-painted-blind.png`
 - Same pieces without labels: `no-labels/`
 - Whole picture: `whole-mosaic.png` · Profile preview: `profile-mockup.png`
+- Other ready sets (same captions work, swap the photo lines at the bottom): `sets/jellyfish/`, `sets/firefall/`
 
-**Photo credit:** "Man kissing woman's forehead" by Allef Vinicius on Unsplash (https://unsplash.com/photos/man-kissing-woman-forehead-0dXvugMScIY), Unsplash licence, free for commercial use. Credit is not required, but it's in post 1's caption as a courtesy. They are models, not customers, and the squares are a sample made by our generator, not real guests' tiles. Never call this a customer's mosaic.
+## Photos and permission
+
+All photos are from Unsplash, under the Unsplash licence: free for commercial and marketing use, no permission or credit needed. We credit anyway as a courtesy.
+
+| Set | Photo | Photographer | Unsplash page |
+| --- | --- | --- | --- |
+| Main (canyon) | Antelope Canyon lit by sunbeams | Madhu Shesharam | https://unsplash.com/photos/EVZxXuOEk3w |
+| `sets/jellyfish` | A swarm of jellyfish, Valencia | Joel Filipe | https://unsplash.com/photos/_AjqGGafofE |
+| `sets/firefall` | Yosemite firefall at sunset | Stephen Leonardi | https://unsplash.com/photos/MDmwQVgDHHM |
+| `sets/couple-on-hold` | Man kissing woman's forehead | Allef Vinicius | https://unsplash.com/photos/man-kissing-woman-forehead-0dXvugMScIY |
+
+**Before posting, open each Unsplash link and check the photo is still there and matches.** Our copies came from open-source projects that list them as Unsplash; we couldn't open Unsplash itself from the build machine.
+
+**Why the couple set is on hold:** the Unsplash licence covers the photo, not the people in it. There's no guarantee of a model release, and Unsplash says not to use photos of people in a way that suggests they endorse a product. A couple on an ad for a paid gift can read exactly that way. Use scenery and animals for paid ads. For people, use your own photos with written consent (friends or family who agree to be the first sample).
+
+The squares in every set are a sample made by our generator, not real guests' tiles. Never call any of these a customer's mosaic.
 
 Post in number order, 1 first. Post 1 lands bottom-right, post 9 top-left.
 
@@ -16,7 +32,7 @@ Post in number order, 1 first. Post 1 lands bottom-right, post 9 top-left.
 
 **Cover:** `grid-1-the-reveal.png`
 
-> 10,800 squares. Every one painted on its own. Nobody saw the picture until the end. 🤍
+> 10,800 squares. Every one painted on its own. Nobody saw the picture until the end. ✨
 >
 > That's a Tessera mosaic. You send us one photo. We cut it into thousands of squares and send them to the people who love you. Each person paints a square in the colour they're given, without ever seeing the full picture.
 >
@@ -24,7 +40,7 @@ Post in number order, 1 first. Post 1 lands bottom-right, post 9 top-left.
 >
 > Founding mosaics are open now. Link in bio.
 >
-> Sample photo by Allef Vinicius on Unsplash.
+> Sample photo: Antelope Canyon by Madhu Shesharam on Unsplash.
 >
 > #hiddenmosaic #tessera #giftideas #collaborativeart #mosaicart
 
@@ -39,7 +55,7 @@ Post in number order, 1 first. Post 1 lands bottom-right, post 9 top-left.
 > Large · 30,000 squares · $145. Group photos and sharp faces.
 > Grand · 40,000 squares · $195. Big groups and large prints.
 >
-> The couple on this page is about a Small. Imagine your own photo at four times that.
+> The canyon on this page is about a Small. Imagine your own photo at four times that.
 >
 > Guests never pay. Add a print at checkout. Link in bio.
 >
@@ -80,7 +96,7 @@ Post in number order, 1 first. Post 1 lands bottom-right, post 9 top-left.
 
 > This is what one guest sees. One square. One colour. No idea what it's part of. 👀
 >
-> Look closely at this post: every little square here was painted on its own. Now look at the whole profile. That's her cheek, in the evening light.
+> Look closely at this post: every little square here was painted on its own. Now look at the whole profile. That bright patch is where the sun breaks into the canyon.
 >
 > Paint on paper and snap it, or paint right in your browser with our paint tool. Takes about five minutes.
 >
@@ -136,12 +152,25 @@ Post in number order, 1 first. Post 1 lands bottom-right, post 9 top-left.
 
 **Cover:** `grid-9-painted-blind.png`
 
-> That's all nine. Step back and look at the whole page. 🤍
+> That's all nine. Step back and look at the whole page. ✨
 >
-> Every post was a pile of squares. Together they're one moment. That's exactly how a Tessera mosaic feels on reveal day, except the picture is yours and the squares come from everyone who loves you.
+> Every post was a pile of squares. Together they're a canyon full of light. That's exactly how a Tessera mosaic feels on reveal day, except the picture is yours and the squares come from everyone who loves you.
 >
 > Painted blind. Revealed together.
 >
 > Founding mosaics: link in bio.
 >
 > #hiddenmosaic #tessera #mosaicart #giftideas #collaborativeart
+
+---
+
+## Swapping in another set
+
+Every caption works for any set. Only change these lines:
+
+| Post | Jellyfish | Firefall |
+| --- | --- | --- |
+| 1 credit | Sample photo: jellyfish by Joel Filipe on Unsplash. | Sample photo: Yosemite firefall by Stephen Leonardi on Unsplash. |
+| 2 | The jellyfish on this page are about a Small. | The waterfall on this page is about a Small. |
+| 5 | That pale swirl is a jellyfish's tentacle. | That orange streak is the waterfall catching the sunset. |
+| 9 | Together they're a swarm of jellyfish. | Together they're a waterfall on fire. |
