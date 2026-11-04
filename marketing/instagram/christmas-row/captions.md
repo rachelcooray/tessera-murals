@@ -1,0 +1,70 @@
+# Christmas row · 3 posts
+
+Three posts that join into one strip on the profile: a Christmas tree by the fireplace, made of 8,100 painted squares, with the line "A Christmas gift / the whole family / paints together." across the top.
+
+**Post them right to left:** post 1 first (it lands on the right), post 3 last (it lands on the left). Post all three the same day, a few minutes apart, so the row stays lined up.
+
+**Only post this once orders are open.** It says "Order by 4 December". That date gives three weeks of painting before a 25 December reveal. If you pick a different date, tell me and I'll change the slides.
+
+Photo: "Tree by the Fireplace" by Mike Cox on Unsplash (https://unsplash.com/photos/3UQybRpwpso), Unsplash licence, free for commercial use. Open the link and check it matches before posting.
+
+---
+
+## Post 1 · How it works (carousel) · lands on the right
+
+**Slides:** `grid-1-how-it-works.png`, then `slides/post1-slide-2.png` to `post1-slide-5.png`
+
+```
+The Christmas gift for the family that has everything. 🎄
+
+Send us one family photo. We cut it into thousands of squares and send one to everyone: grandparents, cousins abroad, the kids. Each person paints their square in the colour they're given, without ever seeing the picture.
+
+On Christmas morning, it comes together.
+
+Order by 4 December. Link in bio.
+
+Sample photo: Mike Cox on Unsplash.
+
+#christmasgift #familygift #giftideas #hiddenmosaic #tessera
+```
+
+## Post 2 · Order by 4 December (single) · lands in the middle
+
+**Slides:** `grid-2-order-by.png`, then `slides/post2-slide-2.png`
+
+```
+Christmas morning reveal? Order by 4 December. 📅
+
+That gives everyone three weeks to paint their square.
+
+Small · 10,000 squares · $45
+Medium · 20,000 squares · $95
+Large · 30,000 squares · $145
+Grand · 40,000 squares · $195
+
+Guests never pay. Add a print at checkout. Link in bio.
+
+#christmasgift #giftideas #personalisedgift #hiddenmosaic #tessera
+```
+
+## Post 3 · The reveal (Reel) · lands on the left
+
+**Video:** `reel-christmas.mp4` (17 s, with voice). **Cover:** `grid-3-the-reveal.png` (Edit cover → Add from camera roll).
+
+```
+One family photo. Everyone paints one square. Nobody sees the picture until Christmas morning. ✨
+
+Share this with whoever's organising Christmas this year.
+
+Order by 4 December. Link in bio.
+
+Sample photo: Mike Cox on Unsplash.
+
+#christmasgift #christmas2026 #familychristmas #hiddenmosaic #tessera
+```
+
+## Stories that week
+- Day of posting: share the reel with a link sticker, "Order by 4 Dec".
+- Countdown sticker: "Last day to order for Christmas", ending 4 December.
+- Poll: "Who's the hardest person to buy for?" Mum / Dad / Grandparents / Partner
+- Every other day: share post 2 with a link sticker.
