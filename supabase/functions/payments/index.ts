@@ -22,8 +22,8 @@ const TIERS: Tier[] = JSON.parse(Deno.env.get("PRICE_TIERS") ?? '[{"n":1,"price"
   .sort((a: Tier, b: Tier) => a.n - b.n);
 
 // Commissioned mosaics: one charge per order, captured straight away. Keep in step with src/config/mosaic.ts,
-// or override with the MOSAIC_TIERS secret, e.g. {"small":4900,"medium":14900,"large":29900} (cents).
-const MOSAIC_TIERS: Record<string, number> = JSON.parse(Deno.env.get("MOSAIC_TIERS") ?? '{"small":4900,"medium":14900,"large":29900}');
+// or override with the MOSAIC_TIERS secret, e.g. {"small":4500,"medium":9500,"large":14500,"grand":19500} (cents).
+const MOSAIC_TIERS: Record<string, number> = JSON.parse(Deno.env.get("MOSAIC_TIERS") ?? '{"small":4500,"medium":9500,"large":14500,"grand":19500}');
 
 function priceCents(n: number): number {
   const exact = TIERS.find((t) => t.n === n);

@@ -43,7 +43,7 @@ export function sampleMosaic(): { mosaic: Mosaic; tiles: MosaicTile[] } {
   for (let y = 0; y < rows; y++) for (let x = 0; x < cols; x++) slots.push(slotColour(duskScene((x + 0.5) / cols, (y + 0.5) / rows)));
   const revealed = "2026-10-12T18:00:00Z";
   const mosaic: Mosaic = {
-    id: "sample-dusk", title: "Shehan and Ama", occasion: "wedding", tierId: "small", cols, rows, priceCents: 4900, poolCents: 1470,
+    id: "sample-dusk", title: "Shehan and Ama", occasion: "wedding", tierId: "small", cols, rows, priceCents: 4500, poolCents: 1350,
     email: "", createdAt: "2026-09-01T10:00:00Z", revealAt: revealed, visibility: "public", openToArtists: true,
     ownerKey: "sample", inviteToken: "sample", target: "", slots, status: "revealed", revealedAt: revealed, favourites: [SAMPLE_HIGHLIGHT, 3374],
     splitAt: revealed, payment: { intentId: null, mock: true }, sample: true,
