@@ -1,12 +1,12 @@
-# Launch grid · the fox mosaic · 9 posts with captions
+# Launch grid · the couple mosaic · 9 posts with captions
 
-The nine pieces join into one mosaic: a red fox made of **10,800 hand-painted-style squares** (90 across, 120 down), just above our Small size. Up close, every post is a wall of separate squares. On the profile, the fox appears.
+The nine pieces join into one mosaic: a real photo of a couple at golden hour, made of **10,800 hand-painted-style squares** (90 across, 120 down), just above our Small size. Up close, every post is a wall of separate squares. On the profile, the couple appears.
 
 - Pieces with labels: `grid-1-the-reveal.png` to `grid-9-painted-blind.png`
 - Same pieces without labels: `no-labels/`
 - Whole picture: `whole-mosaic.png` · Profile preview: `profile-mockup.png`
 
-**Photo credit:** fox by Sunyu on Unsplash (https://unsplash.com/photos/tIfrzHxhPYQ), Unsplash licence, free for commercial use. Credit is not required, but it's in post 1's caption as a courtesy. The squares are a sample made by our generator, not real guests' tiles, so never call this a customer's mosaic.
+**Photo credit:** "Man kissing woman's forehead" by Allef Vinicius on Unsplash (https://unsplash.com/photos/man-kissing-woman-forehead-0dXvugMScIY), Unsplash licence, free for commercial use. Credit is not required, but it's in post 1's caption as a courtesy. They are models, not customers, and the squares are a sample made by our generator, not real guests' tiles. Never call this a customer's mosaic.
 
 Post in number order, 1 first. Post 1 lands bottom-right, post 9 top-left.
 
@@ -16,7 +16,7 @@ Post in number order, 1 first. Post 1 lands bottom-right, post 9 top-left.
 
 **Cover:** `grid-1-the-reveal.png`
 
-> 10,800 squares. Every one painted on its own. Nobody saw the picture until the end. 🦊
+> 10,800 squares. Every one painted on its own. Nobody saw the picture until the end. 🤍
 >
 > That's a Tessera mosaic. You send us one photo. We cut it into thousands of squares and send them to the people who love you. Each person paints a square in the colour they're given, without ever seeing the full picture.
 >
@@ -24,7 +24,7 @@ Post in number order, 1 first. Post 1 lands bottom-right, post 9 top-left.
 >
 > Founding mosaics are open now. Link in bio.
 >
-> Sample fox photo by Sunyu on Unsplash.
+> Sample photo by Allef Vinicius on Unsplash.
 >
 > #hiddenmosaic #tessera #giftideas #collaborativeart #mosaicart
 
@@ -39,7 +39,7 @@ Post in number order, 1 first. Post 1 lands bottom-right, post 9 top-left.
 > Large · 30,000 squares · $145. Group photos and sharp faces.
 > Grand · 40,000 squares · $195. Big groups and large prints.
 >
-> The fox on this page is about a Small. Imagine your wedding photo at four times that.
+> The couple on this page is about a Small. Imagine your own photo at four times that.
 >
 > Guests never pay. Add a print at checkout. Link in bio.
 >
@@ -80,7 +80,7 @@ Post in number order, 1 first. Post 1 lands bottom-right, post 9 top-left.
 
 > This is what one guest sees. One square. One colour. No idea what it's part of. 👀
 >
-> Look closely at this post: every little square here was painted on its own. Now look at the whole profile. That's the fox's eye.
+> Look closely at this post: every little square here was painted on its own. Now look at the whole profile. That's her cheek, in the evening light.
 >
 > Paint on paper and snap it, or paint right in your browser with our paint tool. Takes about five minutes.
 >
@@ -136,9 +136,9 @@ Post in number order, 1 first. Post 1 lands bottom-right, post 9 top-left.
 
 **Cover:** `grid-9-painted-blind.png`
 
-> That's all nine. Step back and look at the whole page. 🦊
+> That's all nine. Step back and look at the whole page. 🤍
 >
-> Every post was a pile of squares. Together they're a fox. That's exactly how a Tessera mosaic feels on reveal day, except the picture is yours and the squares come from everyone who loves you.
+> Every post was a pile of squares. Together they're one moment. That's exactly how a Tessera mosaic feels on reveal day, except the picture is yours and the squares come from everyone who loves you.
 >
 > Painted blind. Revealed together.
 >
