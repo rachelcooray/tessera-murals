@@ -1,6 +1,6 @@
-# Christmas row · 3 posts
+# Christmas rows · 6 posts (2 rows of 3)
 
-Three posts that join into one strip on the profile: a Christmas tree by the fireplace, made of 8,100 painted squares, with the line "A Christmas gift / the whole family / paints together." across the top.
+**Row 1 (posts 1 to 3)** is three posts that join into one strip on the profile: a Christmas tree by the fireplace, made of 8,100 painted squares, with the line "A Christmas gift / the whole family / paints together." across the top.
 
 **Post them right to left:** post 1 first (it lands on the right), post 3 last (it lands on the left). Post all three the same day, a few minutes apart, so the row stays lined up.
 
@@ -68,3 +68,73 @@ Sample photo: Mike Cox on Unsplash.
 - Countdown sticker: "Last day to order for Christmas", ending 4 December.
 - Poll: "Who's the hardest person to buy for?" Mum / Dad / Grandparents / Partner
 - Every other day: share post 2 with a link sticker.
+
+---
+
+# Row 2 · posts 4 to 6 (post about a week after row 1)
+
+A strip of red and green Christmas baubles, 8,100 squares, with "Order by / 4 December / for Christmas." across the top. It lands above row 1. See `profile-preview.jpg` for how both rows look on the profile.
+
+**Post right to left again:** post 4 first, post 6 last, all on the same day.
+
+Photo: "Christmas Baubles" by Eric Prouzet on Unsplash (https://unsplash.com/photos/Y5k4nhyHluo). Check the link before posting.
+
+## Post 4 · Who it's for (carousel) · lands on the right
+
+**Slides:** `grid-4-who-its-for.png`, then `slides/post4-slide-2.png` to `post4-slide-6.png`
+
+```
+Stuck on what to get them? Four people this is perfect for. 🎁
+
+1. Grandparents, painted by every grandchild.
+2. The family that can't be home, painted from everywhere.
+3. A baby's first Christmas, painted by everyone waiting to meet them.
+4. The person who has everything, except this.
+
+Save this, then send it to whoever's organising Christmas.
+
+Order by 4 December. Link in bio.
+
+#christmasgift #giftsforgrandparents #giftideas #hiddenmosaic #tessera
+```
+
+## Post 5 · What happens next (single) · lands in the middle
+
+**Slides:** `grid-5-what-happens-next.png`, then `slides/post5-slide-2.png`
+
+```
+What happens after you order? Four steps to Christmas morning. 🎄
+
+Today: upload one photo and pick a size.
+Same day: share one link with everyone.
+Next 3 weeks: everyone paints. Nobody peeks.
+25 December: the reveal, with a video to share.
+
+Order by 4 December. Guests never pay. Link in bio.
+
+#christmasgift #familychristmas #giftideas #hiddenmosaic #tessera
+```
+
+## Post 6 · Your square (Reel) · lands on the left
+
+**Video:** `reel-christmas-baubles.mp4` (16 s, with voice). **Cover:** `grid-6-your-square.png`.
+
+```
+This square could be yours. 🔴
+
+Everyone gets one square and one colour. Nobody sees the picture until Christmas morning.
+
+Order by 4 December. Link in bio.
+
+Sample photo: Eric Prouzet on Unsplash.
+
+#christmasgift #christmas2026 #hiddenmosaic #satisfying #tessera
+```
+
+## Timing
+
+| When | What |
+| --- | --- |
+| As soon as orders open | Row 1 (posts 1 to 3) |
+| About a week later | Row 2 (posts 4 to 6) |
+| 1 to 4 December | Stories only: countdown sticker, "Last days to order for Christmas", share post 5 |
