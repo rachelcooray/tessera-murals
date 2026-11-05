@@ -66,29 +66,48 @@ Everything here is also on the website: **Admin › Marketing**, with a download
 - **Sun 21 Feb** · Carousel: Birthday ideas (Big birthdays row (posts 16 to 18)) · *orders must be open*
 - **Sun 21 Feb** · Reel: The reveal (Big birthdays row (posts 16 to 18)) · *orders must be open*
 - **Wed 24 Feb** · You film: Your own paint-a-square Reel
+- **Sun 28 Feb** · Story: Question: who would you make one for?
 
 ## March 2027
 
 - **Wed 3 Mar** · Reel: Guess what it is: a kingfisher
 - **Sun 7 Mar** · Story: Happy Mother's Day
+- **Wed 10 Mar** · Reel: Guess what it is: a scarlet macaw
 - **Sun 14 Mar** · Carousel: How it works (Leaving gifts row (posts 19 to 21)) · *orders must be open*
 - **Sun 14 Mar** · Carousel: For teams (Leaving gifts row (posts 19 to 21)) · *orders must be open*
 - **Sun 14 Mar** · Reel: The reveal (Leaving gifts row (posts 19 to 21)) · *orders must be open*
+- **Wed 17 Mar** · Reel: Zoom out: Lofoten
+- **Sun 21 Mar** · Story: Poll: when would you reveal it?
 - **Wed 24 Mar** · You film: Behind the scenes: reviewing squares
+- **Sun 28 Mar** · Carousel: How it works (Anniversaries row (posts 22 to 24))
+- **Sun 28 Mar** · Carousel: Who paints (Anniversaries row (posts 22 to 24))
+- **Sun 28 Mar** · Reel: The reveal (Anniversaries row (posts 22 to 24))
+- **Wed 31 Mar** · Reel: Guess what it is: a tiger
 
 ## April 2027
 
+- **Thu 1 Apr** · Story: Poll: a place or your people?
 - **Sun 4 Apr** · You film: The first real reveal
-- **Sun 11 Apr** · Carousel: Wedding season (Wedding season row (posts 22 to 24)) · *orders must be open*
-- **Sun 11 Apr** · Carousel: What if… (Wedding season row (posts 22 to 24)) · *orders must be open*
-- **Sun 11 Apr** · Reel: The reveal (Wedding season row (posts 22 to 24)) · *orders must be open*
+- **Wed 7 Apr** · Reel: Zoom out: a lighthouse
+- **Sun 11 Apr** · Carousel: Wedding season (Wedding season row (posts 25 to 27)) · *orders must be open*
+- **Sun 11 Apr** · Carousel: What if… (Wedding season row (posts 25 to 27)) · *orders must be open*
+- **Sun 11 Apr** · Reel: The reveal (Wedding season row (posts 25 to 27)) · *orders must be open*
+- **Wed 14 Apr** · Reel: Guess what it is: a little owl
+- **Sun 18 Apr** · Reel: Zoom out: hydrangeas
 - **Wed 21 Apr** · You film: A guest's square, up close
+- **Sun 25 Apr** · Carousel: Start here (Start here row (posts 28 to 30))
+- **Sun 25 Apr** · Carousel: Questions (Start here row (posts 28 to 30))
+- **Sun 25 Apr** · Reel: What a guest sees (Start here row (posts 28 to 30))
+- **Wed 28 Apr** · Reel: Guess what it is: a hummingbird
 
 ## May 2027
 
-- **Sun 9 May** · Carousel: How it works (Father's Day row (posts 25 to 27)) · *orders must be open*
-- **Sun 9 May** · Carousel: Order by 30 May (Father's Day row (posts 25 to 27)) · *orders must be open*
-- **Sun 9 May** · Reel: The reveal (Father's Day row (posts 25 to 27)) · *orders must be open*
+- **Sun 2 May** · Story: Question box: ask us anything
+- **Wed 5 May** · Reel: Guess what it is: koi
+- **Sun 9 May** · Carousel: How it works (Father's Day row (posts 31 to 33)) · *orders must be open*
+- **Sun 9 May** · Carousel: Order by 30 May (Father's Day row (posts 31 to 33)) · *orders must be open*
+- **Sun 9 May** · Reel: The reveal (Father's Day row (posts 31 to 33)) · *orders must be open*
+- **Sun 16 May** · Reel: Guess what it is: king penguins
 - **Sun 23 May** · Story: One week left for Father's Day
 - **Sun 30 May** · Story: Last day to order for Father's Day
 
@@ -117,3 +136,14 @@ Everything here is also on the website: **Admin › Marketing**, with a download
 - "Fuji in Blossom" by JJ Ying on Unsplash (https://unsplash.com/photos/9Qwbfa_RM94)
 - "Turquoise Falls" by Jonatan Pie on Unsplash (https://unsplash.com/photos/OPOg0fz5uIs)
 - "Blue Domes of Santorini" by Jonathan Gallegos on Unsplash (https://unsplash.com/photos/_vA2q0-NroU)
+- "Golden Forest Lake" by Tobias Reich on Unsplash (https://unsplash.com/photos/kOFvKxzph30)
+- "Hallstatt by the Lake" by Joss Woodhead on Unsplash (https://unsplash.com/photos/3wFRlwS91yk)
+- "Scarlet Macaw" by Tim Mossholder on Unsplash (https://unsplash.com/photos/cO5-QcKIR9o)
+- "Red Koi" by Tifenn Degornet on Unsplash (https://unsplash.com/photos/PpwK032gSao)
+- "Bengal Tiger" by A G on Unsplash (https://unsplash.com/photos/YuQgNYku1M8)
+- "Little Owl" by Zdeněk Macháček on Unsplash (https://unsplash.com/photos/oqYHtXrLXLo)
+- "Hummingbird" by James Wainscoat on Unsplash (https://unsplash.com/photos/hjmED1qivmc)
+- "King Penguins" by Ian Parker on Unsplash (https://unsplash.com/photos/2CA93gJIh98)
+- "Lofoten Fishing Village" by John O'Nolan on Unsplash (https://unsplash.com/photos/6f_ANCcbj3o)
+- "Lighthouse at Dusk" by Jonathan Ford on Unsplash (https://unsplash.com/photos/c9bEyA_xFIk)
+- "Blue Hydrangeas" by Gaetano Cessati on Unsplash (https://unsplash.com/photos/CCy2UFLO1Mg)
