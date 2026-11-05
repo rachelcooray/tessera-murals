@@ -1,5 +1,7 @@
 # Payments setup (Stripe)
 
+> **Mosaic orders now use the `orders` function and the database. Follow [backend-setup.md](backend-setup.md).** This page describes the older `payments` function, which only the Season 0 wall still uses.
+
 Until the two public settings in step 4 are set, the site runs in **test mode**: no card is charged and orders are marked "(test)" in Admin.
 
 ## How charging works

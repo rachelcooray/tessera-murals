@@ -4,13 +4,14 @@ import { useSearchParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
 import { mosaicConfig } from "@/config/mosaic";
 import { findNearDuplicate, overRateLimit } from "@/lib/mosaic/checks";
-import { bestOpenSlot } from "@/lib/mosaic/colours";
 import { averageColour } from "@/lib/mosaic/colours";
+import { rgbToHex } from "@/lib/colour";
 import { dHash, greyThumb } from "@/lib/mosaic/checks";
 import { ACCEPTED, MAX_BYTES, pixels, prepareUpload, squareCanvas, tinted, type PreparedUpload } from "@/lib/mosaic/image";
 import { deleteDraft, draftKey } from "@/lib/mosaic/paint/drafts";
 import { durationLabel, effortFlag, type PaintStats } from "@/lib/mosaic/paint/effort";
-import { allMosaics, allTiles, artistTileCount, capFor, claimSlot, isSlotOpen, lastSaveFailed, myClaim, nextOpenSlot, releaseClaim, submitMosaicTile, useMosaicState } from "@/lib/mosaic/store";
+import { claim as claimSlot, loadJoin, loadMe, release, sendTile, useLoad } from "@/lib/mosaic/actions";
+import { allMosaics, allTiles, artistTileCount, capFor, myClaim, useMosaicState } from "@/lib/mosaic/store";
 import { MEDIUMS, type Mosaic, type MosaicTile } from "@/lib/mosaic/types";
 import { Icon } from "../ui";
 import { FlowShell, Swatch, Todo, dateLabel, inkOn } from "./common";
@@ -33,6 +34,7 @@ type Step = "start" | "slot" | "paint" | "make" | "done";
 
 function Join({ mosaicId, token, slotParam, artist }: { mosaicId: string; token: string | null; slotParam: string | null; artist: boolean }) {
   const s = useMosaicState();
+  const loaded = useLoad(`${mosaicId}:${token}:${artist}`, async () => { const info = await loadJoin(mosaicId, token, artist ? "artist" : "circle"); if (artist) await loadMe(); return info; });
   const m = useMemo(() => allMosaics(s).find((x) => x.id === mosaicId), [s, mosaicId]);
   const claim = m ? myClaim(s, m.id) : undefined;
   const [rawStep, setStep] = useState<Step>("start");
@@ -43,7 +45,10 @@ function Join({ mosaicId, token, slotParam, artist }: { mosaicId: string; token:
   const [, setFitFirst] = useState(false);
   const [error, setError] = useState<string | null>(artist && slotParam !== null && !claim ? "That slot was just taken. Pick another below, or go back to the colour challenge." : null);
   const [done, setDone] = useState<MosaicTile | null>(null);
+  const [busy, setBusy] = useState(false);
 
+  if (loaded.loading) return <FlowShell title="One moment"><p className="muted" role="status">Opening your invite…</p></FlowShell>;
+  if (loaded.error) return <FlowShell title="We couldn’t open this invite"><p className="muted">{loaded.error}</p><button className="btn" onClick={loaded.reload}>Try again</button></FlowShell>;
   if (!m) return <FlowShell title="This link doesn’t work"><p className="muted">The mosaic may have been removed, or the link is incomplete. Ask whoever sent it for a new one.</p></FlowShell>;
   if (m.status !== "collecting") return <FlowShell title="This mosaic is finished"><p className="muted">Every tile is in. <Link href={`/reveal?id=${m.id}`}>Watch the reveal</Link>.</p></FlowShell>;
   if (!artist && token !== m.inviteToken) return <FlowShell title="This invite link isn’t right"><p className="muted">Ask whoever invited you to send the link again.</p></FlowShell>;
@@ -74,8 +79,8 @@ function Join({ mosaicId, token, slotParam, artist }: { mosaicId: string; token:
       <p className="muted">{(m.cols * m.rows).toLocaleString()} squares, each painted in its own colour by friends, family and Tessera artists. Paint as many as you like. Nobody sees the picture until {dateLabel(m.revealAt)}.</p>
       {error && <p className="error" role="alert">{error}</p>}
       <div className="choices">
-        <button className="choice" onClick={() => { const n = nextOpenSlot(m.id); if (n < 0 || !claimSlot(m.id, n, source)) { setError("Every slot is taken or in review right now. Try again later."); return; } setStep("slot"); }}>
-          <b>Give me a colour</b><span className="faint">You get one slot’s colour and make something in it.</span>
+        <button className="choice" disabled={busy} onClick={() => { setBusy(true); setError(null); void claimSlot(m, { token, source }).then((r) => { setBusy(false); if (typeof r === "string") setError(r); else setStep("slot"); }); }}>
+          <b>{busy ? "Finding your colour…" : "Give me a colour"}</b><span className="faint">You get one slot’s colour and make something in it.</span>
         </button>
         <button className="choice" onClick={() => { setFitFirst(true); setStep("make"); }}>
           <b>I already have a picture</b><span className="faint">Upload it and we’ll find the slot it fits best.</span>
@@ -88,7 +93,7 @@ function Join({ mosaicId, token, slotParam, artist }: { mosaicId: string; token:
     <FlowShell title="Your slot" actions={<>
       <button className="btn btn--primary btn--block" onClick={() => setStep("paint")} style={{ background: colour.hex, borderColor: colour.hex, color: inkOn(colour.hex) }}>Paint it here</button>
       <button className="btn btn--block" onClick={() => { setPainted(null); setUpload(null); setStep("make"); }}>Upload a picture I made</button>
-      <button className="btn btn--quiet btn--block" onClick={() => { releaseClaim(m.id); setStep("start"); }}>Not for me, free this slot</button>
+      <button className="btn btn--quiet btn--block" onClick={() => { void release(m.id).then(() => setStep("start"), () => setStep("start")); }}>Not for me, free this slot</button>
     </>}>
       <p className="muted">From {m.title}. It’s held for you for {mosaicConfig.slotHoldHours} hours.</p>
       <div className="big-swatch" role="img" aria-label={`Your slot colour, ${colour.name}, with a lighter and a darker note`} style={{ background: colour.hex }}>
@@ -108,15 +113,16 @@ function Join({ mosaicId, token, slotParam, artist }: { mosaicId: string; token:
       onDone={(r) => { setUpload(preparePainting(r)); setPainted(r.stats); setStep("make"); }} />
   );
 
-  return <MakeTile mosaic={m} slot={slot} fitFirst={slot < 0} source={source} upload={upload} setUpload={setUpload} painted={painted} onRepaint={() => setStep("paint")}
-    onPlaced={(n) => { if (!claimSlot(m.id, n, source)) return false; setFitFirst(false); return true; }}
+  return <MakeTile mosaic={m} slot={slot} fitFirst={slot < 0} source={source} token={token} upload={upload} setUpload={setUpload} painted={painted} onRepaint={() => setStep("paint")}
+    onPlaced={async (hex) => { const r = await claimSlot(m, { token, source, hex }); if (typeof r === "string") return r; setFitFirst(false); return null; }}
     onDone={(t) => { setDone(t); setStep("done"); }} />;
 }
 
-function MakeTile({ mosaic: m, slot, fitFirst, source, upload, setUpload, painted, onRepaint, onPlaced, onDone }: {
-  mosaic: Mosaic; slot: number; fitFirst: boolean; source: "circle" | "artist"; upload: PreparedUpload | null; setUpload: (u: PreparedUpload | null) => void;
+function MakeTile({ mosaic: m, slot, fitFirst, source, token, upload, setUpload, painted, onRepaint, onPlaced, onDone }: {
+  mosaic: Mosaic; slot: number; fitFirst: boolean; source: "circle" | "artist"; token: string | null; upload: PreparedUpload | null; setUpload: (u: PreparedUpload | null) => void;
   painted: PaintStats | null; onRepaint: () => void;
-  onPlaced: (slot: number) => boolean; onDone: (t: MosaicTile) => void;
+  /** Holds the open slot closest to this colour. Returns null when it worked, or a message. */
+  onPlaced: (hex: string) => Promise<string | null>; onDone: (t: MosaicTile) => void;
 }) {
   const s = useMosaicState();
   const fileRef = useRef<HTMLInputElement>(null);
@@ -140,8 +146,8 @@ function MakeTile({ mosaic: m, slot, fitFirst, source, upload, setUpload, painte
     try {
       const u = await prepareUpload(f, mosaicConfig.storage.tilePx);
       if (fitFirst) {
-        const best = bestOpenSlot(u.average, m.slots, (i) => isSlotOpen(s, m, i, s.me));
-        if (best < 0 || !onPlaced(best)) { setError("Every slot is taken or in review right now."); return; }
+        const err = await onPlaced(rgbToHex(u.average));
+        if (err) { setError(err); return; }
       }
       setUpload(u);
     } catch {
@@ -149,7 +155,7 @@ function MakeTile({ mosaic: m, slot, fitFirst, source, upload, setUpload, painte
     } finally { setBusy(false); }
   }
 
-  function submit() {
+  async function submit() {
     if (!upload || !result || slot < 0) return;
     setError(null);
     if (overRateLimit(s.submissions[s.me] ?? [], Date.now(), mosaicConfig.moderation.submissionsPerHour)) { setError("You’ve sent a lot of tiles in the last hour. Please try again a little later."); return; }
@@ -161,20 +167,26 @@ function MakeTile({ mosaic: m, slot, fitFirst, source, upload, setUpload, painte
     if (effort) flags.push(effort);
     if (result.match < mosaicConfig.minColourMatch) flags.push(`Colour match only ${Math.round(result.match * 100)}%`);
     if (upload.contentCredentials && !upload.flags.length) flags.push("Has Content Credentials (check the source)");
-    const t = submitMosaicTile({
+    setBusy(true);
+    let t: MosaicTile;
+    try {
+      t = await sendTile({
       mosaicId: m.id, slot, source, name: anon ? null : name.trim() || null, medium, imageUrl: result.url, art: null,
       averageHex: result.averageHex, match: result.match, tint, hash: upload.hash, flags,
       painted: painted ? { strokes: painted.strokes, activeMs: painted.activeMs, inputs: painted.inputs, tools: painted.tools } : null,
-    });
+      }, token);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Your tile didn’t send. Please try again.");
+      return;
+    } finally { setBusy(false); }
     if (painted) void deleteDraft(draftKey(m.id, slot));
-    if (lastSaveFailed) { setError("This browser’s storage is full, so your tile may not be kept."); return; }
     setUpload(null);
     onDone(t);
   }
 
   return (
     <FlowShell title={painted ? "Check and send" : colour ? "Fit it to your colour" : "Upload your picture"} back={undefined}
-      actions={<button className="btn btn--primary btn--block" disabled={!result || !agree || busy} onClick={submit} style={colour ? { background: colour.hex, borderColor: colour.hex, color: inkOn(colour.hex) } : undefined}>{!result ? "Choose your picture" : !agree ? "Tick the box to send" : "Send for review"}</button>}>
+      actions={<button className="btn btn--primary btn--block" disabled={!result || !agree || busy} onClick={() => void submit()} style={colour ? { background: colour.hex, borderColor: colour.hex, color: inkOn(colour.hex) } : undefined}>{!result ? "Choose your picture" : !agree ? "Tick the box to send" : busy ? "Sending…" : "Send for review"}</button>}>
       {colour && <p className="small muted row" style={{ gap: 8 }}><Swatch hex={colour.hex} /> Slot {slot + 1} · <span style={{ textTransform: "capitalize" }}>{colour.name}</span></p>}
       <input ref={fileRef} id="tilefile" type="file" accept={ACCEPTED} className="sr-only" onChange={(e) => void onFile(e.target.files?.[0])} />
       {!upload ? (

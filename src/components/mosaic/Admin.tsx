@@ -4,9 +4,10 @@ import { durationLabel } from "@/lib/mosaic/paint/effort";
 import { useMemo, useState } from "react";
 import { artistCap as cap, mosaicConfig, tileCount } from "@/config/mosaic";
 import { authConfigured, isAdminEmail, useSession } from "@/lib/auth";
-import { balances, formatCents, openRequests, releaseDue, settleRequest } from "@/lib/mosaic/ledger";
+import { balances, formatCents, openRequests, releaseDue } from "@/lib/mosaic/ledger";
 import { payoutProvider } from "@/lib/mosaic/payouts";
-import { allMosaics, appendLedger, artistTileCount, capFor, progress, removeTile, resetMosaics, reviewTile, runSplit, slotMap, studioFill, tilesFor, useMosaicState } from "@/lib/mosaic/store";
+import { amAdmin, live, loadAdmin, removeTile, review, settlePayout, studioFillNow, useLoad, useTileImage } from "@/lib/mosaic/actions";
+import { allMosaics, appendLedger, artistTileCount, capFor, progress, resetMosaics, runSplit, slotMap, tilesFor, useMosaicState } from "@/lib/mosaic/store";
 import { TILE_REJECTION_REASONS, type MosaicTile } from "@/lib/mosaic/types";
 import { Mark, Toast, useToast } from "../ui";
 import { Swatch, dateLabel, useHousekeeping } from "./common";
@@ -17,12 +18,15 @@ export function MosaicAdmin() {
   useHousekeeping();
   const { session, ready } = useSession();
   const [tab, setTab] = useState<Tab>("review");
+  // Live: the database decides who is an admin, and loads everything only for them.
+  const data = useLoad(live && ready && session ? `admin:${session.user.id}` : null, async () => (await amAdmin()) ? loadAdmin() : null);
   const s = useMosaicState();
   const [toast, notify] = useToast();
   const queue = useMemo(() => s.tiles.filter((t) => t.status === "pending").sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1)), [s]);
   const requests = openRequests(s.ledger);
 
-  if (authConfigured && ready && (!session || !isAdminEmail(session.user.email))) return (
+  if (live && (!ready || data.loading)) return <div className="flow"><main className="flow__main"><p className="muted" role="status">Loading…</p></main></div>;
+  if (authConfigured && ready && (!session || (live ? !data.data : !isAdminEmail(session.user.email)))) return (
     <div className="flow"><main className="flow__main"><h1>Admin sign-in</h1><p className="muted">Sign in on the main admin page, then come back here.</p><Link className="btn btn--primary" href="/admin">Go to sign-in</Link></main></div>
   );
 
@@ -38,9 +42,10 @@ export function MosaicAdmin() {
       </nav>
       <main className="admin__main">
         {!authConfigured && <p className="banner">Sign-in is off until Supabase is connected (see docs/admin-signin.md). Everything here only changes this browser.</p>}
+        {data.error && <p className="error" role="alert">{data.error} <button className="btn btn--quiet" onClick={data.reload}>Reload</button></p>}
         {tab === "review" && <Review queue={queue} notify={notify} />}
         {tab === "mosaics" && <Mosaics notify={notify} />}
-        {tab === "payouts" && <Payouts notify={notify} />}
+        {tab === "payouts" && <Payouts notify={notify} artists={data.data?.artists ?? {}} />}
         {tab === "settings" && <Settings />}
       </main>
       <Toast msg={toast} />
@@ -69,7 +74,7 @@ function Review({ queue, notify }: { queue: MosaicTile[]; notify: (m: string) =>
         const r = reason[t.id] ?? TILE_REJECTION_REASONS[0];
         return (
           <article key={t.id} className={`qrow${t.flags.length ? " qrow--late" : ""}`}>
-            {t.imageUrl && <img src={t.imageUrl} alt={`Submitted tile for slot ${t.slot + 1}`} />}
+            <ReviewImage tile={t} />
             <div className="qrow__body">
               <span className="eyebrow">{m.title} · slot {t.slot + 1}</span>
               <span className="serif" style={{ fontSize: 22 }}>{t.name ?? "Anonymous"}</span>
@@ -79,8 +84,8 @@ function Review({ queue, notify }: { queue: MosaicTile[]; notify: (m: string) =>
               <select id={`r-${t.id}`} className="input" style={{ padding: "8px 10px", fontSize: 14 }} value={r} onChange={(e) => setReason({ ...reason, [t.id]: e.target.value })}>{TILE_REJECTION_REASONS.map((x) => <option key={x}>{x}</option>)}</select>
             </div>
             <div className="qrow__acts">
-              <button className="btn btn--primary" onClick={() => { reviewTile(t.id, true); notify("Accepted and placed"); }}>Accept</button>
-              <button className="btn" onClick={() => { reviewTile(t.id, false, r); notify("Rejected. The slot reopens."); }}>Reject</button>
+              <button className="btn btn--primary" onClick={() => void review(t.id, true).then(() => notify("Accepted and placed"), (e: Error) => notify(e.message))}>Accept</button>
+              <button className="btn" onClick={() => void review(t.id, false, r).then(() => notify("Rejected. The slot reopens."), (e: Error) => notify(e.message))}>Reject</button>
             </div>
           </article>
         );
@@ -88,6 +93,11 @@ function Review({ queue, notify }: { queue: MosaicTile[]; notify: (m: string) =>
       <p className="small faint">Contributors don’t pay, so there’s nothing to refund. Old $1 season tiles are still refunded from the season wall admin.</p>
     </>
   );
+}
+
+function ReviewImage({ tile }: { tile: MosaicTile }) {
+  const src = useTileImage(tile);
+  return src ? <img src={src} alt={`Submitted tile for slot ${tile.slot + 1}`} /> : <span aria-hidden="true" style={{ width: 120, height: 120, background: tile.averageHex }} />;
 }
 
 function Mosaics({ notify }: { notify: (m: string) => void }) {
@@ -107,8 +117,8 @@ function Mosaics({ notify }: { notify: (m: string) => void }) {
             <span className="small muted">{tileCount(m).toLocaleString()} tiles · circle {p.circle.toLocaleString()} · artists {p.artist.toLocaleString()} · studio {p.studio.toLocaleString()} · review {p.review.toLocaleString()} · open {p.open.toLocaleString()} · pool {formatCents(m.poolCents)} · cap {cap(tileCount(m))}/artist · {formatCents(m.priceCents)}{m.payment.mock ? " (test)" : ""}</span>
             <div className="row">
               <Link className="btn" href={`/mosaic?id=${m.id}`}>Open</Link>
-              {m.status === "collecting" && <button className="btn" onClick={() => notify(`${studioFill(m.id).toLocaleString()} slots got studio fill`)}>Studio fill now</button>}
-              {m.status === "revealed" && !m.splitAt && <button className="btn" onClick={() => { const r = runSplit(m.id); notify(r ? `Pool shared with ${r.artists} artist${r.artists === 1 ? "" : "s"}, ${formatCents(r.toRevenueCents)} to revenue` : "Nothing to split"); }}>Share the pool now</button>}
+              {m.status === "collecting" && <button className="btn" onClick={() => void studioFillNow(m.id).then((n) => notify(`${n.toLocaleString()} slots got studio fill`), (e: Error) => notify(e.message))}>Studio fill now</button>}
+              {!live && m.status === "revealed" && !m.splitAt && <button className="btn" onClick={() => { const r = runSplit(m.id); notify(r ? `Pool shared with ${r.artists} artist${r.artists === 1 ? "" : "s"}, ${formatCents(r.toRevenueCents)} to revenue` : "Nothing to split"); }}>Share the pool now</button>}
               {m.splitAt && <span className="tag">Pool shared {dateLabel(m.splitAt)}</span>}
             </div>
             {m.status === "revealed" && (
@@ -119,46 +129,37 @@ function Mosaics({ notify }: { notify: (m: string) => void }) {
                   const t = map.get(Number(removeSlot[m.id]) - 1);
                   if (!t) { notify("No tile in that slot"); return; }
                   if (!window.confirm(`Remove slot ${t.slot + 1} by ${t.name ?? "Anonymous"}? If the pool was shared, their part is reversed.`)) return;
-                  notify(removeTile(t.id, "Removed after a report") ?? "Removed");
+                  void removeTile(t.id, "Removed after a report").then((err) => notify(err ?? (live ? "Removed. Any pool share is reversed on the next hourly run." : "Removed")), (e: Error) => notify(e.message));
                 }}>Remove</button>
               </div>
             )}
           </article>
         );
       })}
+      {live ? <p className="small faint" style={{ marginTop: 20 }}>Studio fill, reveals, pool shares and releasing holds run automatically every hour on the server.</p> : (
       <div className="row" style={{ marginTop: 20 }}>
         <button className="btn" onClick={() => { const r = releaseDue(s.ledger, new Date()); appendLedger(r); notify(`${r.length} hold${r.length === 1 ? "" : "s"} released`); }}>Release finished holds</button>
         <button className="btn btn--quiet" onClick={() => { if (window.confirm("Delete every mosaic, tile and ledger entry in this browser?")) { resetMosaics(); notify("Reset"); } }}>Reset mosaics prototype</button>
-      </div>
+      </div>)}
       {s.revenue.length > 0 && <p className="small faint">To Tessera revenue from pools: {formatCents(s.revenue.reduce((t, r) => t + r.cents, 0))}</p>}
     </>
   );
 }
 
-function Payouts({ notify }: { notify: (m: string) => void }) {
+function Payouts({ notify, artists }: { notify: (m: string) => void; artists: Record<string, string> }) {
   const s = useMosaicState();
   const provider = payoutProvider();
   const reqs = openRequests(s.ledger);
   const done = s.ledger.filter((e) => e.kind === "paid" || e.kind === "returned").slice(-20).reverse();
   async function decide(id: string, ok: boolean) {
-    const req = s.ledger.find((e) => e.id === id);
-    if (!req) return;
-    if (ok) {
-      const res = await provider.send({ requestId: id, artistId: req.artistId, amountCents: req.amountCents, currency: "usd", method: s.artist?.id === req.artistId ? s.artist.payoutMethod : "unset" });
-      if (!res.ok) { notify(res.message); return; }
-      const e = settleRequest(s.ledger, id, "paid", new Date(), `${provider.name}: ${res.reference}`);
-      if (e) appendLedger([e]);
-      notify(res.message);
-    } else {
-      const e = settleRequest(s.ledger, id, "returned", new Date(), "Rejected by admin");
-      if (e) appendLedger([e]);
-      notify("Rejected. The balance is back in the artist’s available funds.");
-    }
+    const reference = ok && live ? window.prompt("Pay the artist by hand first (bank transfer, PayPal). Then enter its reference here to record it as paid.") : undefined;
+    if (ok && live && !reference) return;
+    try { notify(await settlePayout(id, ok, reference ?? undefined)); } catch (e) { notify(e instanceof Error ? e.message : "That didn’t work."); }
   }
-  const name = (artistId: string) => (s.artist?.id === artistId ? s.artist.name : artistId);
+  const name = (artistId: string) => artists[artistId] ?? (s.artist?.id === artistId ? s.artist.name : artistId);
   return (
     <>
-      <div className="split"><h1 style={{ fontSize: 34 }}>Payout requests</h1><span className="tag tag--warn">{provider.name}{provider.live ? "" : " · no money moves"}</span></div>
+      <div className="split"><h1 style={{ fontSize: 34 }}>Payout requests</h1><span className="tag tag--warn">{live ? "Paid by hand, then recorded here" : `${provider.name}${provider.live ? "" : " · no money moves"}`}</span></div>
       {reqs.length === 0 ? <p className="muted">No requests waiting.</p> : (
         <div className="table-wrap"><table className="table">
           <thead><tr><th>Artist</th><th>Requested</th><th>Amount</th><th>Available now</th><th>Decision</th></tr></thead>

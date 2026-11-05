@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
+import { loadMosaic, useLoad, useTileImage } from "@/lib/mosaic/actions";
 import { slotMap, tilesFor, useMosaic, useMosaicState } from "@/lib/mosaic/store";
 import { MosaicGrid, Page, SourceLabel, TileArt, dateLabel } from "./common";
 
@@ -14,8 +15,11 @@ export function TileRouteMosaic() {
 function TilePage({ mosaicId, slot }: { mosaicId: string; slot: number }) {
   const s = useMosaicState();
   const m = useMosaic(mosaicId);
+  const loaded = useLoad(mosaicId, () => loadMosaic(mosaicId));
   const tiles = useMemo(() => (m ? slotMap(tilesFor(s, m.id)) : new Map()), [s, m]);
   const [zoom, setZoom] = useState(false);
+  const full = useTileImage(tiles.get(slot));
+  if (loaded.loading) return <Page narrow><p className="muted" role="status">Loading…</p></Page>;
   if (!m || slot < 0 || slot >= m.cols * m.rows) return <Page narrow><h1>Tile not found</h1></Page>;
   if (m.status !== "revealed") return <Page narrow><span className="eyebrow">Slot {slot + 1}</span><h1 style={{ fontSize: 40, margin: "10px 0 16px" }}>Not revealed yet</h1><p className="muted">{m.title} is revealed on {dateLabel(m.revealAt)}. Come back then to see your tile in the finished piece.</p></Page>;
   const t = tiles.get(slot);
@@ -34,7 +38,7 @@ function TilePage({ mosaicId, slot }: { mosaicId: string; slot: number }) {
       </div>
       {t && (
         <div className="row" style={{ gap: 18, alignItems: "flex-start" }}>
-          <TileArt tile={t} slotHex={m.slots[slot].hex} size={120} />
+          <TileArt tile={t} slotHex={m.slots[slot].hex} size={120} src={full} />
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             <span className="serif" style={{ fontSize: 24 }}>{t.source === "studio" ? "Studio fill" : t.name ?? "Anonymous"}</span>
             <SourceLabel tile={t} />

@@ -4,22 +4,33 @@ import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { mosaicConfig } from "@/config/mosaic";
 import { formatCents } from "@/lib/mosaic/ledger";
-import { daysToReveal, ownsMosaic, progress, reveal, setOpenToArtists, slotMap, studioFill, tilesFor, toggleFavourite, useMosaic, useMosaicState } from "@/lib/mosaic/store";
+import { confirmOrder, live, loadMosaic, revealNow, setOpenToArtists, studioFillNow, toggleFavourite, useLoad } from "@/lib/mosaic/actions";
+import { daysToReveal, ownsMosaic, progress, slotMap, tilesFor, useMosaic, useMosaicState } from "@/lib/mosaic/store";
 import { Toast, useToast } from "../ui";
 import { MosaicGrid, Page, baseUrl, dateLabel } from "./common";
 
 export function DashboardRoute() {
-  const id = useSearchParams().get("id") ?? "";
-  return <Dashboard key={id} id={id} />;
+  const q = useSearchParams();
+  const id = q.get("id") ?? "";
+  return <Dashboard key={id} id={id} fresh={q.get("new") === "1"} />;
 }
 
-function Dashboard({ id }: { id: string }) {
+function Dashboard({ id, fresh }: { id: string; fresh: boolean }) {
   const s = useMosaicState();
   const m = useMosaic(id);
+  const loaded = useLoad(id, () => loadMosaic(id));
   const [toast, notify] = useToast();
   const [showTarget, setShowTarget] = useState(false);
+  const [busy, setBusy] = useState(false);
   const tiles = useMemo(() => (m ? slotMap(tilesFor(s, m.id)) : new Map()), [s, m]);
 
+  async function act(fn: () => Promise<unknown>) {
+    setBusy(true);
+    try { await fn(); } catch (e) { notify(e instanceof Error ? e.message : "That didn’t work. Please try again."); } finally { setBusy(false); }
+  }
+
+  if (loaded.loading) return <Page narrow><p className="muted" role="status">Loading…</p></Page>;
+  if (loaded.error) return <Page narrow><h1>We couldn’t load this mosaic</h1><p className="muted" style={{ margin: "16px 0" }}>{loaded.error}</p><button className="btn" onClick={loaded.reload}>Try again</button></Page>;
   if (!m) return <Page narrow><h1>We couldn’t find that mosaic</h1><p className="muted" style={{ marginTop: 16 }}>Check the link, or <Link href="/start">start a new one</Link>.</p></Page>;
 
   const owner = ownsMosaic(s, m);
@@ -39,6 +50,20 @@ function Dashboard({ id }: { id: string }) {
     return <Page narrow><span className="eyebrow">A hidden mosaic</span><h1 style={{ fontSize: 40, margin: "10px 0 16px" }}>{m.title}</h1><p className="muted">This picture is still being made. It will be revealed on {dateLabel(m.revealAt)}.</p></Page>;
   }
 
+  if (m.status === "awaiting_payment" || m.status === "cancelled") return (
+    <Page narrow>
+      <span className="eyebrow">Your order</span>
+      <h1 style={{ fontSize: 40, margin: "10px 0 16px" }}>{m.title}</h1>
+      {m.status === "cancelled"
+        ? <p className="muted">This order was never paid, so it was cancelled. <Link href="/start">Start again</Link> whenever you like.</p>
+        : <>
+          <p className="muted" style={{ marginBottom: 20 }}>We’re waiting for your payment to come through. This usually takes a few seconds.</p>
+          <button className="btn btn--primary" disabled={busy} onClick={() => void act(async () => { const st = await confirmOrder(m.id); loaded.reload(); if (st !== "collecting") notify("Not through yet. If you paid, it will appear shortly."); })}>{busy ? "Checking…" : "Check again"}</button>
+        </>}
+      <Toast msg={toast} />
+    </Page>
+  );
+
   const days = Math.ceil(daysToReveal(m));
   async function copy() {
     try { await navigator.clipboard.writeText(invite); notify("Invite link copied"); } catch { notify("Copy didn’t work. Select the link and copy it."); }
@@ -51,12 +76,13 @@ function Dashboard({ id }: { id: string }) {
         <span className="small faint">{formatCents(m.priceCents)}{m.payment.mock ? " (test)" : ""}</span>
       </div>
       <h1 style={{ fontSize: 44, margin: "10px 0 6px" }}>{m.title}</h1>
+      {fresh && live && <p className="note" style={{ marginBottom: 16 }}>{m.payment.mock ? "Ready (a test order: nothing was charged)." : "Paid and ready."} We’ve emailed {m.email} a link: open it to confirm your email, so you can reach this page from any device. Until then, bookmark it.</p>}
       <p className="lede" style={{ marginBottom: 24 }}>{m.status === "revealed" ? "Finished. Every tile is in." : `${(p.circle + p.artist + p.studio).toLocaleString()} of ${p.total.toLocaleString()} tiles in${days > 0 ? `, ${days} day${days === 1 ? "" : "s"} to go` : ""}.`}</p>
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 32 }}>
         <div style={{ flex: "1 1 360px", minWidth: 0, display: "flex", flexDirection: "column", gap: 12 }}>
           {m.status === "revealed" && !m.splitAt
-            ? <MosaicGrid mosaic={m} tiles={tiles} marks={m.favourites} pick={(slot) => { const err = toggleFavourite(m.id, slot); if (err) notify(err); }} label="Tap tiles to favourite them" />
+            ? <MosaicGrid mosaic={m} tiles={tiles} marks={m.favourites} pick={(slot) => void act(async () => { const err = await toggleFavourite(m.id, slot); if (err) notify(err); })} label="Tap tiles to favourite them" />
             : showTarget ? <MosaicGrid mosaic={m} mode="slots" label="Your image as slot colours" />
             : <MosaicGrid mosaic={m} tiles={tiles} label="Your mosaic so far: placed tiles show their art, open slots are dashed" />}
           {m.status === "collecting" && <button className="btn btn--quiet" onClick={() => setShowTarget(!showTarget)}>{showTarget ? "Show the tiles" : "Show my picture as colours"}</button>}
@@ -88,12 +114,12 @@ function Dashboard({ id }: { id: string }) {
               </div>
               <div className="row" style={{ flexWrap: "nowrap", justifyContent: "space-between" }}>
                 <span className="small">Open spare slots to Tessera artists</span>
-                <button className="switch" role="switch" aria-checked={m.openToArtists} aria-label="Open spare slots to Tessera artists" onClick={() => setOpenToArtists(m.id, !m.openToArtists)} />
+                <button className="switch" role="switch" aria-checked={m.openToArtists} aria-label="Open spare slots to Tessera artists" disabled={busy} onClick={() => void act(() => setOpenToArtists(m.id, !m.openToArtists))} />
               </div>
               <p className="small faint">{mosaicConfig.studioFillDaysBefore} days before {dateLabel(m.revealAt)}, any slot still open gets a clearly marked studio fill. If every tile is in sooner, you can reveal early.</p>
               {p.complete
-                ? <button className="btn btn--primary" onClick={() => { const e = reveal(m.id); if (e) notify(e); }}>Reveal it now</button>
-                : <button className="btn" onClick={() => { if (window.confirm(`Fill all ${p.open.toLocaleString()} open slots with studio fill now? Tiles in review keep their place.`)) notify(`${studioFill(m.id).toLocaleString()} slots filled`); }}>Finish now with studio fill</button>}
+                ? <button className="btn btn--primary" disabled={busy} onClick={() => void act(async () => { const e = await revealNow(m.id); if (e) notify(e); })}>Reveal it now</button>
+                : <button className="btn" disabled={busy} onClick={() => { if (window.confirm(`Fill all ${p.open.toLocaleString()} open slots with studio fill now? Tiles in review keep their place.`)) void act(async () => notify(`${(await studioFillNow(m.id)).toLocaleString()} slots filled`)); }}>Finish now with studio fill</button>}
             </>
           ) : (
             <>

@@ -11,6 +11,8 @@ export const MAX_BYTES = 15 * 1024 * 1024;
 export async function loadImage(src: string): Promise<HTMLImageElement> {
   const img = new Image();
   img.decoding = "async";
+  // Stored tiles come from another origin: ask for CORS so drawing them doesn't block the reveal video.
+  if (/^https?:/.test(src)) img.crossOrigin = "anonymous";
   img.src = src;
   await img.decode();
   return img;

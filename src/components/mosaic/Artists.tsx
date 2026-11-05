@@ -2,11 +2,13 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { mosaicConfig } from "@/config/mosaic";
+import { artistCap, mosaicConfig } from "@/config/mosaic";
+import { slotColour } from "@/lib/mosaic/colours";
 import { hexToRgb, rgbToHsl } from "@/lib/colour";
-import { balances, formatCents, requestPayout, type LedgerEntry } from "@/lib/mosaic/ledger";
+import { balances, formatCents, type LedgerEntry } from "@/lib/mosaic/ledger";
 import { estimatePerTileCents } from "@/lib/mosaic/pool";
-import { allMosaics, appendLedger, artistTileCount, capFor, claimSlot, isSlotOpen, progress, saveArtist, tilesFor, useMosaicState } from "@/lib/mosaic/store";
+import { askForPayout, claimAt, live, loadChallenge, loadGallery, loadMe, loadMosaic, saveArtistProfile, useLoad, type ChallengeCard } from "@/lib/mosaic/actions";
+import { allMosaics, artistTileCount, capFor, isSlotOpen, progress, tilesFor, useMosaicState } from "@/lib/mosaic/store";
 import { OCCASIONS, type ArtistProfile } from "@/lib/mosaic/types";
 import { Toast, useToast } from "../ui";
 import { MosaicGrid, Page, Stat, Todo, dateLabel } from "./common";
@@ -25,9 +27,18 @@ export function Challenge() {
   const router = useRouter();
   const [f, setF] = useState<Family>("all");
   const [toast, notify] = useToast();
+  // Live: the server hands out a sample of open slots, one colour each. It never sends a whole mosaic.
+  const remote = useLoad<ChallengeCard[]>("challenge", async () => { await loadMe(); return loadChallenge(36); });
 
   const cards = useMemo(() => {
     const out: { key: string; mosaicId: string; slot: number; hex: string; name: string; occasion: string; due: string; estimate: number; mine: number; cap: number }[] = [];
+    if (live) {
+      for (const c of remote.data ?? []) {
+        const cap = artistCap(c.total), mine = artistTileCount(s, c.mosaicId, s.me);
+        out.push({ key: `${c.mosaicId}-${c.slot}`, mosaicId: c.mosaicId, slot: c.slot, hex: c.hex, name: slotColour(hexToRgb(c.hex)).name, occasion: OCCASIONS.find((o) => o.id === c.occasion)?.label ?? "Mosaic", due: dateLabel(c.revealAt), estimate: -1, mine, cap });
+      }
+      return out;
+    }
     for (const m of allMosaics(s)) {
       if (m.status !== "collecting" || !m.openToArtists || m.sample) continue;
       const p = progress(s, m);
@@ -43,12 +54,13 @@ export function Challenge() {
       }
     }
     return out;
-  }, [s]);
+  }, [s, remote.data]);
   const shown = cards.filter((c) => f === "all" || family(c.hex) === f);
 
-  function take(mosaicId: string, slot: number) {
+  async function take(mosaicId: string, slot: number) {
     if (!s.artist) { router.push("/artist"); return; }
-    if (!claimSlot(mosaicId, slot, "artist")) { notify("Someone has just taken that slot."); return; }
+    const r = await claimAt(mosaicId, slot, "artist");
+    if (typeof r === "string") { notify(r); remote.reload(); return; }
     router.push(`/join?m=${mosaicId}&slot=${slot}&artist=1`);
   }
 
@@ -65,7 +77,7 @@ export function Challenge() {
         </div>
       </div>
       {!s.artist && <p className="note" style={{ marginBottom: 20 }}>To take a slot, <Link href="/artist">set up your artist profile</Link> first. It takes a minute.</p>}
-      {shown.length === 0 ? (
+      {remote.loading ? <p className="muted" role="status">Finding open slots…</p> : remote.error ? <p className="error">{remote.error}</p> : shown.length === 0 ? (
         <p className="muted">No open slots right now. When a customer opens their spare slots to artists, they appear here.</p>
       ) : (
         <ul className="cards">
@@ -75,9 +87,9 @@ export function Challenge() {
               <div style={{ display: "flex", flexDirection: "column", gap: 6, padding: 16 }}>
                 <span className="serif italic" style={{ fontSize: 20, textTransform: "capitalize" }}>{c.name}</span>
                 <span className="small muted">{c.hex.toUpperCase()} · {c.occasion} · due {c.due}</span>
-                <div className="split small" style={{ borderTop: "1px solid var(--line)", paddingTop: 10, marginTop: 4 }}><span>at least ~{formatCents(c.estimate)} a tile</span><span className="faint">Est.</span></div>
+                <div className="split small" style={{ borderTop: "1px solid var(--line)", paddingTop: 10, marginTop: 4 }}><span>{c.estimate < 0 ? "Shares a 30% artist pool" : `at least ~${formatCents(c.estimate)} a tile`}</span><span className="faint">{c.estimate < 0 ? "" : "Est."}</span></div>
                 <span className="small faint">Your tiles here: {c.mine} of {c.cap}</span>
-                <button className="btn" disabled={c.mine >= c.cap} onClick={() => take(c.mosaicId, c.slot)}>{c.mine >= c.cap ? "Limit reached" : "Claim this slot"}</button>
+                <button className="btn" disabled={c.mine >= c.cap} onClick={() => void take(c.mosaicId, c.slot)}>{c.mine >= c.cap ? "Limit reached" : "Claim this slot"}</button>
               </div>
             </li>
           ))}
@@ -92,7 +104,9 @@ export function Challenge() {
 export function ArtistPage() {
   const s = useMosaicState();
   const [toast, notify] = useToast();
+  const loaded = useLoad("me", loadMe);
   const a = s.artist;
+  if (loaded.loading) return <Page current="/artist" narrow><p className="muted" role="status">Loading…</p></Page>;
   if (!a) return <Page current="/artist" narrow><ArtistForm onSaved={() => notify("Profile saved")} /><Toast msg={toast} /></Page>;
 
   const b = balances(s.ledger, a.id);
@@ -105,7 +119,7 @@ export function ArtistPage() {
     return {
       m, accepted: ts.filter((t) => t.status === "approved").length, pending: ts.filter((t) => t.status === "pending").length,
       favs: ts.filter((t) => m.favourites.includes(t.slot) && t.status === "approved").length,
-      earn: share ? formatCents(share.amountCents) : m.status === "collecting" ? `at least ~${formatCents(estimatePerTileCents(m.poolCents, p.open, p.artist) * Math.max(1, ts.length))}` : "Shared after favourites",
+      earn: share ? formatCents(share.amountCents) : m.status === "collecting" && live ? "Set after the reveal" : m.status === "collecting" ? `at least ~${formatCents(estimatePerTileCents(m.poolCents, p.open, p.artist) * Math.max(1, ts.length))}` : "Shared after favourites",
       status: m.status === "collecting" ? "Collecting" : share ? (s.ledger.some((e) => e.kind === "release" && e.ref === share.id) ? "Available" : `Held to ${dateLabel(share.releaseAt ?? share.at)}`) : "Revealed",
     };
   });
@@ -115,11 +129,9 @@ export function ArtistPage() {
   const unlocked = acceptedTiles >= firstPayout;
   const canRequest = unlocked && b.availableCents >= min && b.requestedCents === 0;
 
-  function request() {
-    const r = requestPayout(s.ledger, a!.id, min, new Date(), acceptedTiles, firstPayout);
-    if (typeof r === "string") { notify(r); return; }
-    appendLedger([r as LedgerEntry]);
-    notify("Payout requested. An admin will review it.");
+  async function request() {
+    const err = await askForPayout(acceptedTiles);
+    notify(err ?? "Payout requested. An admin will review it.");
   }
 
   return (
@@ -150,7 +162,7 @@ export function ArtistPage() {
             </>}
             <div className="meter" role="progressbar" aria-label={`Progress toward the ${formatCents(min)} payout minimum`} aria-valuemin={0} aria-valuemax={min} aria-valuenow={Math.min(min, b.availableCents)}><i style={{ width: `${Math.min(100, (b.availableCents / min) * 100)}%` }} /></div>
             <span className="small muted">{b.requestedCents > 0 ? `${formatCents(b.requestedCents)} requested, waiting for review.` : b.availableCents >= min ? "You can request a payout." : `${formatCents(min - b.availableCents)} to go before you can request a payout. Smaller balances roll over.`}</span>
-            <button className="btn" disabled={!canRequest} onClick={request}>{canRequest ? "Request payout" : !unlocked ? `Unlocks at ${firstPayout} tiles` : `Request payout at ${formatCents(min)}`}</button>
+            <button className="btn" disabled={!canRequest} onClick={() => void request()}>{canRequest ? "Request payout" : !unlocked ? `Unlocks at ${firstPayout} tiles` : `Request payout at ${formatCents(min)}`}</button>
           </div>
           <Stat k="Lifetime" v={formatCents(b.lifetimeCents)} sub={`Paid out ${formatCents(b.paidCents)}`} />
         </div>
@@ -196,7 +208,7 @@ function ArtistForm({ profile, onSaved }: { profile?: ArtistProfile; onSaved: ()
   const [portfolio, setPortfolio] = useState(profile?.portfolio ?? "");
   const [adult, setAdult] = useState(Boolean(profile));
   return (
-    <form style={{ display: "grid", gap: 16, maxWidth: 520 }} onSubmit={(e) => { e.preventDefault(); if (!name.trim() || !adult) return; saveArtist({ name: name.trim(), portfolio: portfolio.trim(), payoutMethod: profile?.payoutMethod ?? "unset", payoutName: profile?.payoutName ?? "", country: profile?.country ?? "" }); onSaved(); }}>
+    <form style={{ display: "grid", gap: 16, maxWidth: 520 }} onSubmit={(e) => { e.preventDefault(); if (!name.trim() || !adult) return; void saveArtistProfile({ name: name.trim(), portfolio: portfolio.trim(), payoutMethod: profile?.payoutMethod ?? "unset", payoutName: profile?.payoutName ?? "", country: profile?.country ?? "" }).then(onSaved, (err: Error) => alert(err.message)); }}>
       {!profile && <><span className="eyebrow">For artists</span><h1 style={{ fontSize: 44 }}>Paint one colour at a time</h1><p className="muted">Take open slots in other people’s hidden mosaics, make something by hand in that colour, and share each mosaic’s artist pool.</p></>}
       <div className="field"><label htmlFor="an">Name shown on your tiles</label><input id="an" className="input" maxLength={40} value={name} onChange={(e) => setName(e.target.value)} required /></div>
       <div className="field"><label htmlFor="ap">Portfolio or handle (optional)</label><input id="ap" className="input" maxLength={80} value={portfolio} onChange={(e) => setPortfolio(e.target.value)} placeholder="yourname.com or @yourname" /><span className="small faint">Shown as text, not a link.</span></div>
@@ -225,7 +237,7 @@ function PayoutSetup({ profile, onSaved }: { profile: ArtistProfile; onSaved: ()
         <p className="small muted">We’ll ask for identity and tax details here before payouts open. We don’t collect ID or bank numbers yet.</p>
         <Todo>[TODO: needs accountant and legal review]</Todo>
       </div>
-      <button className="btn btn--primary" onClick={() => { saveArtist({ ...profile, payoutMethod: method, payoutName: payoutName.trim(), country: country.trim() }); onSaved(); }}>Save</button>
+      <button className="btn btn--primary" onClick={() => void saveArtistProfile({ ...profile, payoutMethod: method, payoutName: payoutName.trim(), country: country.trim() }).then(onSaved, (err: Error) => alert(err.message))}>Save</button>
       <p className="small faint">Payouts are approved by hand while we test. No money moves yet.</p>
     </div>
   );
@@ -233,12 +245,14 @@ function PayoutSetup({ profile, onSaved }: { profile: ArtistProfile; onSaved: ()
 
 export function Gallery() {
   const s = useMosaicState();
+  const loaded = useLoad("gallery", async () => { const list = await loadGallery(); await Promise.all(list.slice(0, 24).map((g) => loadMosaic(g.id))); return list.length; });
   const done = allMosaics(s).filter((m) => m.status === "revealed" && m.visibility === "public");
   return (
     <Page current="/gallery">
       <span className="eyebrow">The archive</span>
       <h1 style={{ fontSize: "clamp(36px, 5vw, 52px)", margin: "12px 0 10px" }}>Past mosaics</h1>
       <p className="muted" style={{ marginBottom: 32 }}>Finished pieces their owners chose to share. Private mosaics never appear here.</p>
+      {loaded.loading && <p className="muted" role="status">Loading…</p>}
       <ul className="cards" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 28 }}>
         {done.map((m) => {
           const tiles = tilesFor(s, m.id);

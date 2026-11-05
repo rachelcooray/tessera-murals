@@ -1,10 +1,16 @@
 "use client";
 /**
- * Mock backend for commissioned mosaics. Everything lives in this browser's localStorage,
- * like the season wall's store. Phase 2 swaps these functions for Supabase calls behind the
- * same names. The money logic (pool.ts, ledger.ts) is already server-ready and tested.
+ * The site's data for commissioned mosaics, held in memory and read synchronously by every page.
+ *
+ * Two modes:
+ *  - Demo (no Supabase settings): this browser is the whole backend, saved in localStorage.
+ *  - Live (NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY set): this is only a cache.
+ *    remote.ts loads what the signed-in user may see from the database and merges it in here,
+ *    and every change goes to the server through actions.ts. Nothing is saved in the browser.
+ * Pages write through actions.ts, which picks the right mode.
  */
 import { useMemo, useSyncExternalStore } from "react";
+import { authConfigured } from "../auth";
 import { artistCap, mosaicConfig } from "@/config/mosaic";
 import { hexToRgb, rgbToHsl } from "../colour";
 import type { LedgerEntry } from "./ledger.ts";
@@ -32,6 +38,8 @@ export interface MosaicState {
 }
 
 const KEY = "tessera:mosaic:v1";
+/** Live mode: the database is the source of truth and this store is a cache. */
+export const remoteMode = authConfigured;
 const DAY = 86400_000;
 const SERVER: MosaicState = { v: 1, mosaics: [], tiles: [], claims: [], ledger: [], revenue: [], artist: null, me: "", owned: {}, submissions: {} };
 
@@ -57,6 +65,7 @@ function fromStorage(raw: Omit<Partial<MosaicState>, "mosaics"> & { mosaics?: St
 
 function load(): MosaicState {
   if (state) return state;
+  if (remoteMode) { state = { ...SERVER }; return state; }
   try {
     const raw = typeof window !== "undefined" ? window.localStorage.getItem(KEY) : null;
     state = raw ? fromStorage(JSON.parse(raw)) : { ...SERVER };
@@ -69,6 +78,7 @@ function load(): MosaicState {
 
 function save(next: MosaicState) {
   state = next;
+  if (remoteMode) { listeners.forEach((l) => l()); return; }
   try {
     window.localStorage.setItem(KEY, JSON.stringify(toStorage(next)));
   } catch {
@@ -82,6 +92,15 @@ export let lastSaveFailed = false;
 
 function update(fn: (s: MosaicState) => MosaicState) {
   save(fn(load()));
+}
+
+/** For remote.ts: merge server data into the cache. */
+export function mutate(fn: (s: MosaicState) => MosaicState) {
+  update(fn);
+}
+
+export function currentState(): MosaicState {
+  return load();
 }
 
 function subscribe(cb: () => void) {
@@ -100,7 +119,7 @@ export function useMosaicState(): MosaicState {
 const sample = (() => { let c: ReturnType<typeof sampleMosaic> | null = null; return () => (c ??= sampleMosaic()); })();
 
 export function allMosaics(s: MosaicState): Mosaic[] {
-  return [...s.mosaics, sample().mosaic];
+  return s.mosaics.some((m) => m.id === "sample-dusk") ? s.mosaics : [...s.mosaics, sample().mosaic];
 }
 
 const studioCache = new Map<string, MosaicTile[]>();
@@ -371,6 +390,8 @@ export function appendLedger(entries: LedgerEntry[]) {
 
 /** Housekeeping on every visit: share pools whose favourites window closed, release finished holds. */
 export function tick(now = new Date()) {
+  // Live mode: the server's hourly job does all of this.
+  if (remoteMode) return;
   for (const m of load().mosaics) {
     if (m.status !== "collecting") continue;
     // Close to the date: finish the empty slots so the reveal never slips.

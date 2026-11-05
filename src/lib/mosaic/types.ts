@@ -28,7 +28,8 @@ export interface Mosaic {
   /** Downscaled target image. Only the owner and reviewers see it before the reveal. */
   target: string;
   slots: SlotColour[];
-  status: "collecting" | "revealed";
+  /** awaiting_payment and cancelled exist only in live mode, for orders not yet paid. */
+  status: "collecting" | "revealed" | "awaiting_payment" | "cancelled";
   revealedAt: string | null;
   /** Slot numbers the customer favourited after the reveal. */
   favourites: number[];
@@ -52,8 +53,11 @@ export interface MosaicTile {
   /** null means Anonymous. */
   name: string | null;
   medium: string | null;
-  /** Uploaded image (downscaled, already tinted) as a data URL. Studio and sample tiles use art instead. */
+  /** Uploaded image (downscaled, already tinted) as a data URL. Studio and sample tiles use art instead.
+   *  In live mode this is a tiny thumbnail for drawing the grid; the full tile is at imagePath in Storage. */
   imageUrl: string | null;
+  /** Live mode: path of the full-size tile in the "tiles" Storage bucket. */
+  imagePath?: string | null;
   art: ArtSpec | null;
   averageHex: string;
   /** Colour match with the slot after tinting, 0 to 1. */

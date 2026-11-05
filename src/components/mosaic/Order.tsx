@@ -5,14 +5,17 @@ import { mosaicConfig, tierById, tileCount } from "@/config/mosaic";
 import { sampleGrid, type SlotColour } from "@/lib/mosaic/colours";
 import { ACCEPTED, MAX_BYTES, loadImage, pixels, readAsDataUrl, squareCanvas } from "@/lib/mosaic/image";
 import { formatCents } from "@/lib/mosaic/ledger";
-import { createMosaic, lastSaveFailed } from "@/lib/mosaic/store";
+import { confirmOrder, live, placeOrder, rememberEmail } from "@/lib/mosaic/actions";
+import { packHex } from "@/lib/mosaic/bits";
 import { OCCASIONS, type Mosaic, type Occasion } from "@/lib/mosaic/types";
-import { createMosaicIntent, paymentsLive } from "@/lib/payments";
+import { STRIPE_PK } from "@/lib/payments";
 import { StripePay } from "../StripePay";
 import { Icon } from "../ui";
 import { FlowShell, MosaicGrid, Todo } from "./common";
 
 const DAY = 86400_000;
+/** Card payments run only against the live database, with Stripe's public key set. */
+const paymentsLive = live && Boolean(STRIPE_PK);
 
 function isoDate(d: Date) { return d.toISOString().slice(0, 10); }
 
@@ -35,7 +38,7 @@ export function OrderFlow() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const [intent, setIntent] = useState<{ clientSecret: string } | null>(null);
+  const [intent, setIntent] = useState<{ clientSecret: string; mosaicId: string } | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const tier = tierById(tierId);
@@ -69,27 +72,31 @@ export function OrderFlow() {
     }
   }
 
-  function finish(intentId: string | null) {
-    const m = createMosaic({
-      title: title.trim() || "Untitled mosaic", occasion, tierId: tier.id, cols: tier.cols, rows: tier.rows, priceCents: tier.priceCents,
-      email: email.trim(), revealAt: revealAt.toISOString(), visibility, openToArtists, target: target!.url, slots,
-      payment: { intentId, mock: !intentId },
-    });
-    if (lastSaveFailed) { setError("This browser’s storage is full, so the mosaic may not be kept. Clear some site data and try again."); return; }
-    router.push(`/mosaic?id=${m.id}`);
+  async function finish(mosaicId: string) {
+    // Live: a confirmed email lets the buyer reach their mosaic from any device. Failing this mustn't block them.
+    if (live) await rememberEmail(email.trim()).catch(() => null);
+    router.push(`/mosaic?id=${mosaicId}&new=1`);
   }
 
   async function pay() {
     setError(null);
     if (!/^\S+@\S+\.\S+$/.test(email.trim())) { setError("Please add an email so we can send your links."); return; }
-    if (!paymentsLive) { finish(null); return; }
     setBusy(true);
     try {
-      const i = await createMosaicIntent(tier.id, email.trim(), `${tier.id}-${Date.now()}`);
-      setIntent({ clientSecret: i.clientSecret });
+      const r = await placeOrder({
+        tierId: tier.id, title: title.trim() || "Untitled mosaic", occasion, email: email.trim(), revealAt: revealAt.toISOString(), visibility, openToArtists,
+        slotsPacked: packHex(slots.map((x) => x.hex)), target: target!.canvas, targetUrl: target!.url, priceCents: tier.priceCents, cols: tier.cols, rows: tier.rows, slots,
+      });
+      if (r.clientSecret) setIntent({ clientSecret: r.clientSecret, mosaicId: r.mosaicId });
+      else await finish(r.mosaicId);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Payment could not start.");
+      setError(e instanceof Error ? e.message : "Your order could not start.");
     } finally { setBusy(false); }
+  }
+
+  async function paid() {
+    // The webhook marks the order paid too; this just makes it instant.
+    if (intent) { await confirmOrder(intent.mosaicId).catch(() => null); await finish(intent.mosaicId); }
   }
 
   if (step === 1) return (
@@ -159,7 +166,7 @@ export function OrderFlow() {
 
   return (
     <FlowShell step={3} of={3} title={`${tileCount(tier).toLocaleString()} slots, ${tileCount(tier).toLocaleString()} colours`} actions={intent ? null : <>
-      <button className="btn btn--primary btn--block" disabled={busy} onClick={() => void pay()}>{busy ? "Working…" : paymentsLive ? `Pay ${formatCents(tier.priceCents)} and get your invite link` : `Test mode: create without paying`}</button>
+      <button className="btn btn--primary btn--block" disabled={busy} onClick={() => void pay()}>{busy ? "Working…" : paymentsLive ? `Continue to payment, ${formatCents(tier.priceCents)}` : `Test mode: create without paying`}</button>
       <button className="btn btn--quiet btn--block" onClick={() => setStep(2)}>Back</button>
     </>}>
       <p className="small muted">Each square is one person’s tile. This is all a contributor gets: the colour of their square.</p>
@@ -175,8 +182,8 @@ export function OrderFlow() {
         <div className="split"><dt className="muted">After the reveal</dt><dd style={{ margin: 0 }}>{visibility === "public" ? "Public" : "Private"}</dd></div>
         <div className="split" style={{ borderTop: "1px solid var(--line)", paddingTop: 10 }}><dt className="serif" style={{ fontSize: 18 }}>Total</dt><dd className="serif" style={{ margin: 0, fontSize: 18 }}>{formatCents(tier.priceCents)}</dd></div>
       </dl>
-      {!paymentsLive && <p className="note">Payments are in test mode, so no card is charged. Your mosaic is created in this browser.</p>}
-      {intent && <StripePay clientSecret={intent.clientSecret} label={`Pay ${formatCents(tier.priceCents)}`} onPaid={(id) => finish(id)} />}
+      {!paymentsLive && <p className="note">Payments are in test mode, so no card is charged. {live ? "The mosaic is saved on Tessera’s server." : "Your mosaic is created in this browser."}</p>}
+      {intent && <StripePay clientSecret={intent.clientSecret} label={`Pay ${formatCents(tier.priceCents)} and get your invite link`} onPaid={() => void paid()} />}
       {error && <p className="error" role="alert">{error}</p>}
     </FlowShell>
   );
