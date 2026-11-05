@@ -9,10 +9,10 @@ const stripePromise = STRIPE_PK ? loadStripe(STRIPE_PK) : null;
 const appearance: Appearance = {
   theme: "night",
   variables: {
-    colorPrimary: "#C9A24F", colorBackground: "#17120E", colorText: "#EFE3CC", colorTextSecondary: "#A89A84",
+    colorPrimary: "#f5f5f7", colorBackground: "#1c1c1e", colorText: "#f5f5f7", colorTextSecondary: "#a1a1a6",
     colorDanger: "#C8665A", fontFamily: "Geist, system-ui, sans-serif", borderRadius: "0px", spacingUnit: "4px",
   },
-  rules: { ".Input": { border: "1px solid #3B2F25", boxShadow: "none" }, ".Input:focus": { border: "1px solid #C9A24F", boxShadow: "none" } },
+  rules: { ".Input": { border: "1px solid #3a3a3c", boxShadow: "none" }, ".Input:focus": { border: "1px solid #f5f5f7", boxShadow: "none" } },
 };
 
 export function StripePay({ clientSecret, label, onPaid }: { clientSecret: string; label: string; onPaid: (intentId: string) => void }) {

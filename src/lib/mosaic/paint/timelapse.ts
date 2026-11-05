@@ -55,17 +55,17 @@ export class TimelapseRecorder {
 /** One frame of the shareable video: the square on the dark wall, framed in its slot colour. */
 export function drawVideoFrame(ctx: CanvasRenderingContext2D, img: HTMLImageElement | null, slotHex: string, label: string, sub: string) {
   const W = ctx.canvas.width, H = ctx.canvas.height, box = Math.round(W * 0.84), x = (W - box) / 2, y = Math.round(H * 0.24);
-  ctx.fillStyle = "#0e0b09"; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = "#000000"; ctx.fillRect(0, 0, W, H);
   ctx.fillStyle = slotHex; ctx.fillRect(x - 18, y - 18, box + 36, box + 36);
   if (img) { ctx.imageSmoothingQuality = "high"; ctx.drawImage(img, x, y, box, box); }
   const css = typeof document !== "undefined" ? getComputedStyle(document.body) : null;
   const serif = css?.getPropertyValue("--serif").trim() || "Georgia, serif", sans = css?.getPropertyValue("--sans").trim() || "system-ui, sans-serif";
   ctx.textAlign = "center";
-  ctx.fillStyle = "rgba(201,162,79,.95)"; ctx.font = `500 ${Math.round(W * 0.026)}px ${sans}`;
-  ctx.fillText("TESSERA  ·  PAINTED BY HAND", W / 2, y - Math.round(W * 0.09));
-  ctx.fillStyle = "#efe3cc"; ctx.font = `italic ${Math.round(W * 0.06)}px ${serif}`;
+  ctx.fillStyle = "rgba(245,245,247,.95)"; ctx.font = `500 ${Math.round(W * 0.026)}px ${sans}`;
+  ctx.fillText("Tessera · painted by hand", W / 2, y - Math.round(W * 0.09));
+  ctx.fillStyle = "#f5f5f7"; ctx.font = `600 ${Math.round(W * 0.056)}px ${serif}`;
   ctx.fillText(label, W / 2, y + box + Math.round(W * 0.14));
-  ctx.fillStyle = "#a89a84"; ctx.font = `${Math.round(W * 0.028)}px ${sans}`;
+  ctx.fillStyle = "#a1a1a6"; ctx.font = `${Math.round(W * 0.028)}px ${sans}`;
   ctx.fillText(sub, W / 2, y + box + Math.round(W * 0.2));
 }
 

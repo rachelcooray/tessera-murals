@@ -48,7 +48,7 @@ async function renderRegion(m: Mosaic, tiles: Map<number, MosaicTile>, x0: numbe
   const c = document.createElement("canvas");
   c.width = cw * cell; c.height = ch * cell;
   const ctx = c.getContext("2d")!;
-  ctx.fillStyle = "#080605";
+  ctx.fillStyle = "#000000";
   ctx.fillRect(0, 0, c.width, c.height);
   const jobs: Promise<void>[] = [];
   for (let ry = 0; ry < ch; ry++) for (let rx = 0; rx < cw; rx++) {
@@ -86,7 +86,7 @@ const ease = (q: number) => (q < 0.5 ? 4 * q * q * q : 1 - Math.pow(-2 * q + 2, 
 const clamp = (v: number) => Math.max(0, Math.min(1, v));
 
 function drawFrame(ctx: CanvasRenderingContext2D, img: MosaicImage, m: Mosaic, focus: number, p: number, contributors: number) {
-  ctx.fillStyle = "#0e0b09";
+  ctx.fillStyle = "#000000";
   ctx.fillRect(0, 0, W, H);
   const q = clamp((p - 0.18) / 0.64);
   const scale = Math.pow(m.cols * 0.94, 1 - ease(q));
@@ -100,7 +100,7 @@ function drawFrame(ctx: CanvasRenderingContext2D, img: MosaicImage, m: Mosaic, f
   const sx = (sxT - (inDetail ? img.dx0 : 0)) * cell, sy = (syT - (inDetail ? img.dy0 : 0)) * cell;
   ctx.save();
   ctx.shadowColor = "rgba(0,0,0,.7)"; ctx.shadowBlur = 80; ctx.shadowOffsetY = 40;
-  ctx.fillStyle = "#080605"; ctx.fillRect(40, BOX_Y, BOX, BOX);
+  ctx.fillStyle = "#000000"; ctx.fillRect(40, BOX_Y, BOX, BOX);
   ctx.restore();
   ctx.imageSmoothingQuality = "high";
   ctx.drawImage(mos, sx, sy, size, size, 40, BOX_Y, BOX, BOX);
@@ -110,12 +110,12 @@ function drawFrame(ctx: CanvasRenderingContext2D, img: MosaicImage, m: Mosaic, f
   const serif = css.getPropertyValue("--serif").trim() || "Georgia, serif";
   const sans = css.getPropertyValue("--sans").trim() || "system-ui, sans-serif";
   const fade = (a: number, b: number) => clamp((p - a) / (b - a));
-  ctx.fillStyle = `rgba(201,162,79,${0.4 + 0.6 * (1 - fade(0.3, 0.42))})`;
+  ctx.fillStyle = `rgba(245,245,247,${0.4 + 0.6 * (1 - fade(0.3, 0.42))})`;
   ctx.font = `500 26px ${sans}`;
-  ctx.fillText("TESSERA  ·  A HIDDEN MOSAIC", W / 2, 190);
+  ctx.fillText("Tessera · a hidden mosaic", W / 2, 190);
   const early = p < 0.42;
   ctx.fillStyle = `rgba(239,227,204,${early ? 1 - fade(0.3, 0.42) : fade(0.55, 0.7)})`;
-  ctx.font = `italic 64px ${serif}`;
+  ctx.font = `600 60px ${serif}`;
   ctx.fillText(early ? "This is one tile." : "Together, they made this.", W / 2, 300);
   const end = fade(0.8, 0.92);
   ctx.fillStyle = `rgba(239,227,204,${end})`;

@@ -91,14 +91,14 @@ function Dashboard({ id, fresh }: { id: string; fresh: boolean }) {
         <div style={{ flex: "1 1 280px", minWidth: 0, display: "flex", flexDirection: "column", gap: 18 }}>
           <div className="stack" aria-hidden="true">
             <i style={{ width: pct(p.circle), background: "var(--gold)" }} /><i style={{ width: pct(p.artist), background: "#6e8fa6" }} />
-            <i style={{ width: pct(p.studio), background: "#8a7d6b" }} /><i style={{ width: pct(p.review), background: "#8c7a9a" }} />
+            <i style={{ width: pct(p.studio), background: "#86868b" }} /><i style={{ width: pct(p.review), background: "#8c7a9a" }} />
           </div>
           <ul className="legend">
             <li><i style={{ width: 10, height: 10, background: "var(--gold)" }} />Your circle · {p.circle.toLocaleString()}</li>
             <li><i style={{ width: 10, height: 10, background: "#6e8fa6" }} />Tessera artists · {p.artist.toLocaleString()}</li>
             <li><i style={{ width: 10, height: 10, background: "#8c7a9a" }} />In review · {p.review.toLocaleString()}</li>
-            <li><i style={{ width: 10, height: 10, border: "1px dashed #5a4c3e" }} />Open · {p.open.toLocaleString()}</li>
-            {p.studio > 0 && <li><i style={{ width: 10, height: 10, background: "#8a7d6b" }} />Studio fill · {p.studio.toLocaleString()}</li>}
+            <li><i style={{ width: 10, height: 10, border: "1px dashed #48484a" }} />Open · {p.open.toLocaleString()}</li>
+            {p.studio > 0 && <li><i style={{ width: 10, height: 10, background: "#86868b" }} />Studio fill · {p.studio.toLocaleString()}</li>}
           </ul>
 
           {m.status === "collecting" ? (

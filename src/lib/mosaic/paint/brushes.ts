@@ -100,7 +100,7 @@ export function paletteFor(slot: SlotColour): { hex: string; label: string }[] {
     { hex: shift(slot.hex, 0, 4, -26), label: "Darkest" },
     { hex: shift(slot.hex, 35, 10, 12), label: "Warm accent" },
     { hex: shift(slot.hex, 180, -10, -18), label: "Cool accent" },
-    { hex: "#efe3cc", label: "Cream" },
+    { hex: "#f5f5f7", label: "Cream" },
   ];
 }
 

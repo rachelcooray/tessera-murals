@@ -115,7 +115,7 @@ export class PaintEngine {
   colourGuard = false;
   /** Primary and secondary colours. */
   colour: string;
-  colour2 = "#efe3cc";
+  colour2 = "#f5f5f7";
   symmetry: Symmetry = "off";
   shape: ShapeKind = "rect";
   shapeStyle: ShapeStyle = "outline";
@@ -1296,7 +1296,7 @@ export class PaintEngine {
     const s = this.size;
     if (this.selection && !this.floating) {
       const o = ctx2d(this.scratch);
-      o.save(); o.clearRect(0, 0, s, s); o.fillStyle = "rgba(14,11,9,0.45)"; o.fillRect(0, 0, s, s);
+      o.save(); o.clearRect(0, 0, s, s); o.fillStyle = "rgba(0,0,0,0.45)"; o.fillRect(0, 0, s, s);
       o.globalCompositeOperation = "destination-out"; o.drawImage(this.selection, 0, 0); o.restore();
       ctx.drawImage(this.scratch, 0, 0);
     }
@@ -1308,13 +1308,13 @@ export class PaintEngine {
       outline.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
       if (this.selectKind !== "lasso" && this.selectKind !== "polygon") ctx.closePath();
       ctx.setLineDash([s / 120, s / 120]);
-      ctx.strokeStyle = "#0e0b09"; ctx.stroke();
-      ctx.lineDashOffset = s / 120; ctx.strokeStyle = "#efe3cc"; ctx.stroke();
+      ctx.strokeStyle = "#000000"; ctx.stroke();
+      ctx.lineDashOffset = s / 120; ctx.strokeStyle = "#f5f5f7"; ctx.stroke();
       ctx.restore();
     }
     if (this.polygon.length) {
       const [x, y] = this.polygon[0];
-      ctx.save(); ctx.fillStyle = "#c9a24f"; ctx.beginPath(); ctx.arc(x, y, s / 90, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+      ctx.save(); ctx.fillStyle = "#f5f5f7"; ctx.beginPath(); ctx.arc(x, y, s / 90, 0, Math.PI * 2); ctx.fill(); ctx.restore();
     }
     if (this.floating) {
       const f = this.floating, b = alphaBounds(f.canvas);
@@ -1323,13 +1323,13 @@ export class PaintEngine {
       ctx.translate(cx + t.dx, cy + t.dy); ctx.rotate((t.rotate * Math.PI) / 180);
       ctx.transform(1, Math.tan((t.skewY * Math.PI) / 180), Math.tan((t.skewX * Math.PI) / 180), 1, 0, 0);
       ctx.scale(t.scale, t.scale); ctx.translate(-cx, -cy);
-      ctx.lineWidth = s / 300 / t.scale; ctx.setLineDash([s / 80, s / 80]); ctx.strokeStyle = "#c9a24f";
+      ctx.lineWidth = s / 300 / t.scale; ctx.setLineDash([s / 80, s / 80]); ctx.strokeStyle = "#f5f5f7";
       ctx.strokeRect(b[0], b[1], b[2] - b[0], b[3] - b[1]);
       ctx.restore();
     }
     if (this.tool === "retouch" && this.retouchMode === "clone" && this.cloneSource) {
       const [x, y] = this.cloneSource;
-      ctx.save(); ctx.strokeStyle = "#efe3cc"; ctx.lineWidth = s / 400;
+      ctx.save(); ctx.strokeStyle = "#f5f5f7"; ctx.lineWidth = s / 400;
       ctx.beginPath(); ctx.moveTo(x - s / 60, y); ctx.lineTo(x + s / 60, y); ctx.moveTo(x, y - s / 60); ctx.lineTo(x, y + s / 60); ctx.stroke(); ctx.restore();
     }
   }
@@ -1354,7 +1354,7 @@ export class PaintEngine {
     if (this.guide === "thirds") for (const v of [s / 3, (2 * s) / 3]) { ctx.moveTo(v, 0); ctx.lineTo(v, s); ctx.moveTo(0, v); ctx.lineTo(s, v); }
     ctx.stroke();
     if (this.symmetry !== "off") {
-      ctx.strokeStyle = "rgba(201,162,79,0.6)";
+      ctx.strokeStyle = "rgba(245,245,247,0.6)";
       ctx.setLineDash([s / 100, s / 100]);
       ctx.beginPath();
       if (this.symmetry === "vertical" || this.symmetry === "quad" || this.symmetry === "radial") { ctx.moveTo(s / 2, 0); ctx.lineTo(s / 2, s); }

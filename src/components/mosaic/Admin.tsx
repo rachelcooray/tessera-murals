@@ -33,7 +33,7 @@ export function MosaicAdmin() {
   return (
     <div className="admin">
       <nav className="admin__nav" aria-label="Admin">
-        <Link href="/" className="wordmark" style={{ marginBottom: 20 }}><Mark size={18} /><span style={{ fontSize: 19 }}>TESSERA</span></Link>
+        <Link href="/" className="wordmark" style={{ marginBottom: 20 }}><Mark size={18} /><span style={{ fontSize: 19 }}>Tessera</span></Link>
         <span className="eyebrow" style={{ padding: "0 12px 8px" }}>Mosaics admin</span>
         {([["review", `Tile review`, queue.length], ["mosaics", "Mosaics", null], ["payouts", "Payouts", requests.length], ["list", "Founding list", null], ["settings", "Settings", null]] as const).map(([id, label, n]) => (
           <button key={id} aria-current={tab === id} onClick={() => setTab(id)}>{label}{n ? <span className="tag">{n}</span> : null}</button>

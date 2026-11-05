@@ -318,7 +318,7 @@ export function AddFlow({ preferSpot, startGift }: { preferSpot: { x: number; y:
               const mine = drafts.findIndex((o, j) => j !== ti && o.spot?.x === x && o.spot?.y === y);
               if (mine >= 0) return <i key={i} className="mine" style={{ backgroundImage: `url("${preview(drafts[mine])}")` }} />;
               const t = seasonTiles.find((v) => v.x === x && v.y === y);
-              return <i key={i} className={t ? "" : "free"} style={t ? { background: t.status === "approved" ? t.palette[0] : "rgba(201,162,79,.15)", opacity: 0.8 } : undefined} />;
+              return <i key={i} className={t ? "" : "free"} style={t ? { background: t.status === "approved" ? t.palette[0] : "rgba(245,245,247,.15)", opacity: 0.8 } : undefined} />;
             })}
           </div>
           <p className="small muted" aria-live="polite">{chosen?.why}</p>

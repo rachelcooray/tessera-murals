@@ -152,7 +152,7 @@ export function AdminView() {
   return (
     <div className="admin">
       <nav className="admin__nav" aria-label="Admin">
-        <Link href="/" className="wordmark" style={{ marginBottom: 20 }}><Mark size={18} /><span style={{ fontSize: 19 }}>TESSERA</span></Link>
+        <Link href="/" className="wordmark" style={{ marginBottom: 20 }}><Mark size={18} /><span style={{ fontSize: 19 }}>Tessera</span></Link>
         {([["queue", "Queue", pending.length], ["reports", "Reports", openReports.length], ["seasons", "Seasons", null], ["prices", "Prices", null]] as const).map(([k, l, c]) => (
           <button key={k} aria-current={tab === k} onClick={() => setTab(k)}><span>{l}</span>{c !== null && <span className="small" style={{ color: "var(--accent)" }}>{c}</span>}</button>
         ))}
@@ -224,7 +224,7 @@ function SignIn({ recovery = false, onDone }: { recovery?: boolean; onDone?: () 
   return (
     <main className="page" style={{ alignItems: "center", justifyContent: "center", padding: 20 }}>
       <form onSubmit={submit} className="box" style={{ width: "min(420px, 100%)", background: "var(--card)", gap: 18 }}>
-        <Link href="/" className="wordmark"><Mark size={18} /><span style={{ fontSize: 19 }}>TESSERA</span></Link>
+        <Link href="/" className="wordmark"><Mark size={18} /><span style={{ fontSize: 19 }}>Tessera</span></Link>
         <h1 style={{ fontSize: 32 }}>{recovery ? "Choose a new password" : "Admin sign in"}</h1>
         {!recovery && <div className="field"><label htmlFor="em">Email</label><input id="em" className="input" type="email" autoComplete="username" required value={email} onChange={(e) => setEmail(e.target.value)} /></div>}
         <div className="field"><label htmlFor="pw">{recovery ? "New password" : "Password"}</label><input id="pw" className="input" type="password" autoComplete={recovery ? "new-password" : "current-password"} required minLength={recovery ? 10 : 1} value={password} onChange={(e) => setPassword(e.target.value)} /></div>

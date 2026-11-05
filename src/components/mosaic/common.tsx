@@ -19,7 +19,7 @@ export function SiteHeader({ current }: { current?: string }) {
   useHousekeeping();
   return (
     <header className="header">
-      <Link href="/" className="wordmark" aria-label="Tessera home"><Mark /><span>TESSERA</span></Link>
+      <Link href="/" className="wordmark" aria-label="Tessera home"><Mark /><span>Tessera</span></Link>
       <nav className="nav" aria-label="Main">
         {NAV.map(([href, label]) => <Link key={href} href={href} aria-current={current === href ? "page" : undefined}>{label}</Link>)}
       </nav>
@@ -72,7 +72,7 @@ export function FlowShell({ step, of, back, title, children, actions }: { step?:
   return (
     <div className="flow">
       <div className="flow__top">
-        {back ? <Link className="flow__back" href={back.href}><Icon name="back" size={14} />{back.label}</Link> : <Link href="/" className="wordmark"><Mark size={16} /><span style={{ fontSize: 17 }}>TESSERA</span></Link>}
+        {back ? <Link className="flow__back" href={back.href}><Icon name="back" size={14} />{back.label}</Link> : <Link href="/" className="wordmark"><Mark size={16} /><span style={{ fontSize: 17 }}>Tessera</span></Link>}
         <Link href="/" className="icon-btn" aria-label="Leave and go home"><Icon name="close" /></Link>
       </div>
       {step && of ? <div className="flow__progress"><i style={{ width: `${(step / of) * 100}%` }} /></div> : null}
@@ -149,14 +149,14 @@ export function MosaicGrid({ mosaic, tiles, mode = "tiles", highlight, marks, pi
     if (c.height !== H) c.height = H;
     const g = c.getContext("2d")!;
     const cs = W / view.w, gap = cs > 10 ? Math.max(1, cs * 0.05) : 0;
-    g.fillStyle = "#080605"; g.fillRect(0, 0, W, H);
+    g.fillStyle = "#000000"; g.fillRect(0, 0, W, H);
     const redraw = () => setLoaded((n) => n + 1);
     for (let vy = 0; vy < view.h; vy++) for (let vx = 0; vx < view.w; vx++) {
       const i = (view.y0 + vy) * cols + view.x0 + vx, slot = mosaic.slots[i];
       if (!slot) continue;
       const x = vx * cs + gap / 2, y = vy * cs + gap / 2, w = cs - gap;
       if (mode === "slots") { g.fillStyle = slot.hex; g.fillRect(x, y, w, w); continue; }
-      if (mode === "hidden") { g.fillStyle = i === highlight ? slot.hex : "#2a211a"; g.fillRect(x, y, w, w); continue; }
+      if (mode === "hidden") { g.fillStyle = i === highlight ? slot.hex : "#2c2c2e"; g.fillRect(x, y, w, w); continue; }
       const t = tiles?.get(i);
       if (!t) { g.fillStyle = "#1d1714"; g.fillRect(x, y, w, w); continue; }
       g.globalAlpha = t.status === "pending" ? 0.5 : 1;
@@ -175,11 +175,11 @@ export function MosaicGrid({ mosaic, tiles, mode = "tiles", highlight, marks, pi
       if (vx < 0 || vy < 0 || vx >= view.w || vy >= view.h) return;
       const x = vx * cs, y = vy * cs, pad = Math.max(0, (Math.max(14 * dpr, cs) - cs) / 2);
       g.lineWidth = Math.max(2 * dpr, cs * 0.12);
-      g.strokeStyle = "#080605"; g.strokeRect(x - pad - g.lineWidth, y - pad - g.lineWidth, cs + 2 * (pad + g.lineWidth), cs + 2 * (pad + g.lineWidth));
+      g.strokeStyle = "#000000"; g.strokeRect(x - pad - g.lineWidth, y - pad - g.lineWidth, cs + 2 * (pad + g.lineWidth), cs + 2 * (pad + g.lineWidth));
       g.strokeStyle = colour; g.strokeRect(x - pad, y - pad, cs + 2 * pad, cs + 2 * pad);
     };
-    marks?.forEach((m) => ring(m, "#efe3cc"));
-    if (highlight !== undefined && highlight >= 0) ring(highlight, "#c9a24f");
+    marks?.forEach((m) => ring(m, "#f5f5f7"));
+    if (highlight !== undefined && highlight >= 0) ring(highlight, "#f5f5f7");
   }, [mosaic, tiles, mode, highlight, marks, maxWidth, view, cols, loaded]);
 
   function onClick(ev: ReactMouseEvent<HTMLCanvasElement>) {
@@ -228,7 +228,7 @@ export function Swatch({ hex, size = 16 }: { hex: string; size?: number }) {
 export function inkOn(hex: string): string {
   const n = parseInt(hex.slice(1), 16);
   const l = 0.2126 * ((n >> 16) & 255) + 0.7152 * ((n >> 8) & 255) + 0.0722 * (n & 255);
-  return l > 140 ? "#0e0b09" : "#efe3cc";
+  return l > 140 ? "#000000" : "#f5f5f7";
 }
 
 export function Todo({ children }: { children: ReactNode }) {
