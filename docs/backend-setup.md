@@ -9,6 +9,8 @@ This turns the site from a demo (everything saved in each visitor's browser) int
 
 Until step 6 is done the live site stays in demo mode, so nothing breaks while you set this up.
 
+**Do step 1 and step 6 first, even before Stripe or a domain.** That alone makes the founding list (`/list`, the link for your bio) save real sign-ups. Admin › Founding list shows them, with a CSV download.
+
 Allow about an hour. The only command-line tool you need is the Supabase CLI (`npm i -g supabase`, or `brew install supabase/tap/supabase`).
 
 ---
@@ -19,7 +21,7 @@ Allow about an hour. The only command-line tool you need is the Supabase CLI (`n
    - Name: `tessera`
    - Region: **London (eu-west-2)**
    - Save the database password somewhere safe.
-2. **Plan:** the Free plan is fine while testing. It pauses after a week without visits and has 1 GB of file storage. Move to **Pro ($25 a month)** before you take real orders.
+2. **Plan:** start on the **Free** plan. It has 500 MB of database and 1 GB of files, and the hourly job (step 5) keeps it from pausing. Move to **Pro ($25 a month)** once real orders come in, mainly for daily backups.
 3. In a terminal, in this repository's folder:
 
    ```bash
@@ -84,6 +86,14 @@ The functions are the only code that can charge cards and move money.
    supabase secrets set STRIPE_SECRET_KEY=sk_test_... STRIPE_WEBHOOK_SECRET=whsec_... CRON_SECRET=the-random-string ALLOWED_ORIGINS=https://rachelcooray.github.io,http://localhost:3000
    ```
 
+   For the "ready for painting" email that sends buyers their invite and dashboard links (from step 2's Resend account; skip until you have it, orders work without it):
+
+   ```bash
+   supabase secrets set RESEND_API_KEY=re_... EMAIL_FROM="Tessera <hello@yourdomain>" SITE_URL=https://rachelcooray.github.io/tessera-murals
+   ```
+
+   Once you have your own domain, change `SITE_URL` to it and add it to `ALLOWED_ORIGINS`.
+
 3. Deploy the functions:
 
    ```bash
@@ -138,6 +148,18 @@ On GitHub, go to the repository's **Settings > Secrets and variables > Actions >
 - `STRIPE_PUBLISHABLE_KEY` = `pk_test_…`
 
 Then re-run the Pages workflow (**Actions > Deploy > Run workflow**). The footer's "Demo" note disappears once the site is live.
+
+## 6b. Your own domain (10 minutes, once you've bought it)
+
+1. In the domain's DNS (Cloudflare), add a `CNAME` record: name `@` (or `www`), target `rachelcooray.github.io`. Cloudflare flattens it at the root. Set it to DNS only (grey cloud) so GitHub can issue the certificate.
+2. On GitHub: **Settings > Pages > Custom domain**: enter the domain, save, then tick **Enforce HTTPS** when it appears.
+3. **Settings > Secrets and variables > Actions > Variables**: add `CUSTOM_DOMAIN` = your domain (for example `tesseramosaics.com`). The site then builds for the root of your domain.
+4. Update Supabase **Authentication > URL Configuration** (Site URL and Redirect URLs) and the `SITE_URL` and `ALLOWED_ORIGINS` secrets to the new address.
+5. Re-run the Pages workflow.
+
+## 6c. Your business details
+
+Open `src/config/site.ts` and fill in `contactEmail` and `business` (your trading name and postal address). They appear on the Contact, Terms and Privacy pages, which Stripe checks before it allows live payments. Have the Terms, Privacy and Refunds pages checked by a lawyer before launch.
 
 ## 7. Test it end to end (15 minutes)
 

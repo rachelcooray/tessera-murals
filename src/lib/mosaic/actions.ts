@@ -58,6 +58,27 @@ export function useTileImage(t: MosaicTile | null | undefined): string | null {
   return path ? data : t?.imageUrl ?? null;
 }
 
+/* ---------- founding list ---------- */
+
+export type { ListEntry } from "./remote";
+const LIST_KEY = "tessera:founding-list:v1";
+
+/** Joins the founding list. Demo mode keeps it in this browser only, so a test sign-up shows in Admin. */
+export async function joinFoundingList(e: { email: string; name?: string; occasion?: string | null; wants: string; source?: string }): Promise<void> {
+  if (live) return R.joinWaitlist(e);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.email)) throw new Error("That email doesn’t look right.");
+  try {
+    const list: R.ListEntry[] = JSON.parse(window.localStorage.getItem(LIST_KEY) ?? "[]");
+    const email = e.email.trim().toLowerCase();
+    window.localStorage.setItem(LIST_KEY, JSON.stringify([{ email, name: e.name || null, occasion: e.occasion ?? null, wants: e.wants, source: e.source ?? null, createdAt: new Date().toISOString() }, ...list.filter((x) => x.email !== email)]));
+  } catch { /* storage blocked: nothing to keep in demo mode */ }
+}
+
+export async function loadFoundingList(): Promise<R.ListEntry[]> {
+  if (live) return R.loadWaitlist();
+  try { return JSON.parse(window.localStorage.getItem(LIST_KEY) ?? "[]"); } catch { return []; }
+}
+
 /* ---------- orders ---------- */
 
 export interface OrderInput extends Omit<R.OrderInput, "target"> { target: HTMLCanvasElement; targetUrl: string; priceCents: number; cols: number; rows: number; slots: Mosaic["slots"] }

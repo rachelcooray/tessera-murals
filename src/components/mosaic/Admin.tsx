@@ -1,18 +1,18 @@
 "use client";
 import Link from "next/link";
 import { durationLabel } from "@/lib/mosaic/paint/effort";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { artistCap as cap, mosaicConfig, tileCount } from "@/config/mosaic";
 import { authConfigured, isAdminEmail, useSession } from "@/lib/auth";
 import { balances, formatCents, openRequests, releaseDue } from "@/lib/mosaic/ledger";
 import { payoutProvider } from "@/lib/mosaic/payouts";
-import { amAdmin, live, loadAdmin, removeTile, review, settlePayout, studioFillNow, useLoad, useTileImage } from "@/lib/mosaic/actions";
+import { amAdmin, live, loadAdmin, loadFoundingList, type ListEntry, removeTile, review, settlePayout, studioFillNow, useLoad, useTileImage } from "@/lib/mosaic/actions";
 import { allMosaics, appendLedger, artistTileCount, capFor, progress, resetMosaics, runSplit, slotMap, tilesFor, useMosaicState } from "@/lib/mosaic/store";
 import { TILE_REJECTION_REASONS, type MosaicTile } from "@/lib/mosaic/types";
 import { Mark, Toast, useToast } from "../ui";
 import { Swatch, dateLabel, useHousekeeping } from "./common";
 
-type Tab = "review" | "mosaics" | "payouts" | "settings";
+type Tab = "review" | "mosaics" | "payouts" | "list" | "settings";
 
 export function MosaicAdmin() {
   useHousekeeping();
@@ -35,7 +35,7 @@ export function MosaicAdmin() {
       <nav className="admin__nav" aria-label="Admin">
         <Link href="/" className="wordmark" style={{ marginBottom: 20 }}><Mark size={18} /><span style={{ fontSize: 19 }}>TESSERA</span></Link>
         <span className="eyebrow" style={{ padding: "0 12px 8px" }}>Mosaics admin</span>
-        {([["review", `Tile review`, queue.length], ["mosaics", "Mosaics", null], ["payouts", "Payouts", requests.length], ["settings", "Settings", null]] as const).map(([id, label, n]) => (
+        {([["review", `Tile review`, queue.length], ["mosaics", "Mosaics", null], ["payouts", "Payouts", requests.length], ["list", "Founding list", null], ["settings", "Settings", null]] as const).map(([id, label, n]) => (
           <button key={id} aria-current={tab === id} onClick={() => setTab(id)}>{label}{n ? <span className="tag">{n}</span> : null}</button>
         ))}
         <Link className="small" style={{ padding: "16px 12px 0" }} href="/admin">Season wall admin</Link>
@@ -46,6 +46,7 @@ export function MosaicAdmin() {
         {tab === "review" && <Review queue={queue} notify={notify} />}
         {tab === "mosaics" && <Mosaics notify={notify} />}
         {tab === "payouts" && <Payouts notify={notify} artists={data.data?.artists ?? {}} />}
+        {tab === "list" && <ListTab />}
         {tab === "settings" && <Settings />}
       </main>
       <Toast msg={toast} />
@@ -99,6 +100,7 @@ function Review({ queue, notify }: { queue: MosaicTile[]; notify: (m: string) =>
 
 function ReviewImage({ tile }: { tile: MosaicTile }) {
   const src = useTileImage(tile);
+  // eslint-disable-next-line @next/next/no-img-element -- a signed Storage link; the static site has no image optimiser
   return src ? <img src={src} alt={`Submitted tile for slot ${tile.slot + 1}`} /> : <span aria-hidden="true" style={{ width: 120, height: 120, background: tile.averageHex }} />;
 }
 
@@ -170,6 +172,34 @@ function Payouts({ notify, artists }: { notify: (m: string) => void; artists: Re
         </table></div>
       )}
       {done.length > 0 && <><h2 style={{ fontSize: 24, marginTop: 20 }}>Recent decisions</h2><ul className="small muted" style={{ margin: 0, paddingLeft: 18 }}>{done.map((e) => <li key={e.id}>{dateLabel(e.at)} · {name(e.artistId)} · {formatCents(e.amountCents)} · {e.kind === "paid" ? "paid" : "returned"}{e.note ? ` · ${e.note}` : ""}</li>)}</ul></>}
+    </>
+  );
+}
+
+function ListTab() {
+  const [list, setList] = useState<ListEntry[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  useEffect(() => { let on = true; loadFoundingList().then((l) => { if (on) setList(l); }, (e: Error) => { if (on) setError(e.message); }); return () => { on = false; }; }, []);
+  function csv() {
+    const esc = (v: string | null) => `"${(v ?? "").replace(/"/g, '""')}"`;
+    const rows = [["email", "name", "wants", "occasion", "source", "joined"], ...(list ?? []).map((x) => [x.email, x.name, x.wants, x.occasion, x.source, x.createdAt])];
+    const url = URL.createObjectURL(new Blob([rows.map((r) => r.map(esc).join(",")).join("\n")], { type: "text/csv" }));
+    const a = document.createElement("a"); a.href = url; a.download = `tessera-founding-list-${new Date().toISOString().slice(0, 10)}.csv`; a.click();
+    window.setTimeout(() => URL.revokeObjectURL(url), 2000);
+  }
+  if (error) return <p className="error">{error}</p>;
+  if (!list) return <p className="muted" role="status">Loading…</p>;
+  const n = (w: string) => list.filter((x) => x.wants === w || x.wants === "both").length;
+  return (
+    <>
+      <div className="split"><h1 style={{ fontSize: 34 }}>Founding list</h1><button className="btn" disabled={!list.length} onClick={csv}>Download CSV</button></div>
+      <p className="muted">{list.length.toLocaleString()} people · {n("order")} want to order · {n("paint")} want to paint{live ? "" : " · demo mode: only sign-ups in this browser"}</p>
+      {list.length === 0 ? <p className="muted">Nobody yet. Share <Link href="/list">the list page</Link>: it’s the link for your bio.</p> : (
+        <div className="table-wrap"><table className="table">
+          <thead><tr><th>Email</th><th>Name</th><th>Wants</th><th>For</th><th>From</th><th>Joined</th></tr></thead>
+          <tbody>{list.map((x) => <tr key={x.email}><td>{x.email}</td><td className="muted">{x.name ?? ""}</td><td>{x.wants}</td><td className="muted">{x.occasion ?? ""}</td><td className="muted">{x.source ?? ""}</td><td className="muted">{dateLabel(x.createdAt)}</td></tr>)}</tbody>
+        </table></div>
+      )}
     </>
   );
 }

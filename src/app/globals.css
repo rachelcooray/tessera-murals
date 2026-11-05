@@ -451,3 +451,8 @@ button.mcell { cursor: pointer; }
   .pt-aside .pt-panel--modal.is-active, .pt-aside.is-open .pt-panel--modal.is-active { position: fixed; top: 57px; left: auto; right: 0; max-height: none; bottom: 36px; width: 340px; z-index: 92; overflow-y: auto; background: var(--card); border-left: 1px solid var(--line2); border-top: 0; box-shadow: -20px 0 50px rgba(0,0,0,.45); }
   .pt--full { grid-template-areas: "head head head" "stage stage stage" "stage stage stage" "stage stage stage"; }
 }
+.legal { display: flex; flex-direction: column; gap: 14px; max-width: 720px; }
+.legal h1 { font-size: clamp(34px, 5vw, 46px); line-height: 1.05; }
+.legal h2 { font-size: 22px; margin-top: 18px; }
+.legal p, .legal li { font-size: 15px; line-height: 1.65; color: var(--ink); }
+.legal ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }

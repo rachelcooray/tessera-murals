@@ -11,6 +11,7 @@
 import { ORDER_RULES, findTier } from "../_shared/tiers.ts";
 import { poolFor } from "../_shared/pool.ts";
 import { verifyWebhook, type StripeApi } from "../_shared/stripe.ts";
+import { orderEmail, type Mailer } from "../_shared/emails.ts";
 
 // The Supabase client, typed loosely so the same code works with the Deno and Node builds of supabase-js.
 // deno-lint-ignore no-explicit-any
@@ -26,6 +27,10 @@ export interface OrdersDeps {
   testMode: boolean;
   allowedOrigins: string[];
   now?: () => number;
+  /** Sends the "ready for painting" email. Optional: without it, orders still work. */
+  mailer?: Mailer | null;
+  /** Where the site lives, for the links in emails, e.g. https://tesseramosaics.com */
+  siteUrl?: string;
 }
 
 const DAY = 86400_000;
@@ -60,6 +65,19 @@ export function makeOrdersHandler(deps: OrdersDeps) {
     return { id: data.user.id, email: data.user.email ?? null };
   }
 
+  /** Emails the buyer their invite and dashboard links. Never lets an email problem fail the order. */
+  async function sendReady(mosaicId: string) {
+    if (!deps.mailer || !deps.siteUrl) return;
+    try {
+      const { data: m } = await deps.db.from("mosaics").select("id, email, title, cols, rows, reveal_at, invite_token, payment_mock").eq("id", mosaicId).single();
+      const base = deps.siteUrl.replace(/\/$/, "");
+      await deps.mailer(orderEmail({ to: m.email, title: m.title, tiles: m.cols * m.rows, revealAt: m.reveal_at, test: m.payment_mock,
+        dashboardUrl: `${base}/mosaic/?id=${m.id}`, inviteUrl: `${base}/join/?m=${m.id}&i=${m.invite_token}` }));
+    } catch (e) {
+      console.error("Order email failed", mosaicId, e);
+    }
+  }
+
   /** Marks an order paid once Stripe says so. Safe to call any number of times. */
   async function markPaid(pi: Record<string, unknown>): Promise<"paid" | "ignored"> {
     const meta = (pi.metadata ?? {}) as Record<string, string>;
@@ -73,9 +91,11 @@ export function makeOrdersHandler(deps: OrdersDeps) {
       return "ignored";
     }
     if (m.status !== "awaiting_payment") return "paid";
-    const { error } = await deps.db.from("mosaics").update({ status: "collecting", paid_at: new Date(now()).toISOString() })
-      .eq("id", mosaicId).eq("status", "awaiting_payment");
+    const { data: changed, error } = await deps.db.from("mosaics").update({ status: "collecting", paid_at: new Date(now()).toISOString() })
+      .eq("id", mosaicId).eq("status", "awaiting_payment").select("id");
     if (error) throw new Error(error.message);
+    // Only the call that actually marked it paid sends the email, so the webhook and confirm never both send.
+    if (changed?.length) await sendReady(mosaicId);
     return "paid";
   }
 
@@ -115,7 +135,7 @@ export function makeOrdersHandler(deps: OrdersDeps) {
     }).select("id, invite_token").single();
     if (error) throw new Error(error.message);
 
-    if (!live) return { mosaicId: m.id, mock: true };
+    if (!live) { await sendReady(m.id); return { mosaicId: m.id, mock: true }; }
 
     const pi = await deps.stripe!.post("payment_intents", {
       amount: String(tier.priceCents),

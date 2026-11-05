@@ -238,3 +238,17 @@ test("the hourly limit stops floods", async () => {
   }
   assert.match(last.error?.message ?? "", /last hour/);
 });
+
+test("founding list: anyone can join, nobody but admins can read it", async () => {
+  const visitor = fresh();
+  const email = `fan-${Date.now()}@Example.com`;
+  assert.match((await visitor.rpc("join_waitlist", { p_email: email, p_consent: false })).error?.message ?? "", /tick the box/);
+  assert.equal((await visitor.rpc("join_waitlist", { p_email: email, p_name: "Ana", p_occasion: "wedding", p_consent: true })).error, null);
+  assert.equal((await visitor.rpc("join_waitlist", { p_email: email, p_wants: "paint", p_consent: true })).error, null, "joining twice is fine");
+  assert.match((await visitor.rpc("join_waitlist", { p_email: "nope", p_consent: true })).error?.message ?? "", /look right/);
+  const peek = await visitor.from("waitlist").select("email");
+  assert.deepEqual(peek.data ?? [], [], "visitors can't read the list");
+  const { data } = await adminUser.sb.from("waitlist").select("*").eq("email", email.toLowerCase()).single();
+  assert.equal(data.name, "Ana");
+  assert.equal(data.wants, "both", "ordering and painting both");
+});

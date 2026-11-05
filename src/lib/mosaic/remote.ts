@@ -400,6 +400,20 @@ export async function tileImageUrls(paths: string[]): Promise<Map<string, string
   return out;
 }
 
+export interface ListEntry { email: string; name: string | null; occasion: string | null; wants: string; source: string | null; createdAt: string }
+
+/** Anyone can join the founding list without signing in. */
+export async function joinWaitlist(e: { email: string; name?: string; occasion?: string | null; wants: string; source?: string }): Promise<void> {
+  await rpc("join_waitlist", { p_email: e.email, p_name: e.name ?? null, p_occasion: e.occasion ?? null, p_wants: e.wants, p_source: e.source ?? null, p_consent: true });
+}
+
+/** The whole list, for admins only. */
+export async function loadWaitlist(): Promise<ListEntry[]> {
+  await ensureSession();
+  const rows = await allRows(() => sb().from("waitlist").select("*").order("created_at", { ascending: false }));
+  return rows.map((r) => ({ email: r.email as string, name: (r.name as string) ?? null, occasion: (r.occasion as string) ?? null, wants: r.wants as string, source: (r.source as string) ?? null, createdAt: r.created_at as string }));
+}
+
 /** A short-lived link to a full-size tile image. */
 export async function tileImageUrl(path: string): Promise<string | null> {
   const { data } = await sb().storage.from("tiles").createSignedUrl(path, 3600);

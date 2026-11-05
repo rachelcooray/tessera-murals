@@ -31,6 +31,7 @@ export function SiteHeader({ current }: { current?: string }) {
           <div className="menu__panel">
             {NAV.map(([href, label]) => <Link key={href} href={href}>{label}</Link>)}
             <Link href="/artist">For artists</Link>
+            <Link href="/list">Join the founding list</Link>
             <Link href="/mine">My mosaics</Link>
             <Link href="/start">Start a mosaic</Link>
           </div>
@@ -45,8 +46,10 @@ export function SiteFooter() {
     <footer className="footer">
       <span>Tessera · hidden mosaics, made by people.{remoteMode ? "" : " Demo: data stays in this browser."}</span>
       <nav aria-label="More">
-        <a href={`mailto:${site.contactEmail}`}>Contact</a>
-        <Link href="/about#terms">Terms</Link>
+        <Link href="/contact">Contact</Link>
+        <Link href="/terms">Terms</Link>
+        <Link href="/privacy">Privacy</Link>
+        <Link href="/refunds">Refunds</Link>
         <Link href="/about#policy">Content policy</Link>
         <Link href="/wall">Season 0 wall</Link>
       </nav>

@@ -137,3 +137,27 @@ test("without Stripe: refused, unless test mode is on", async () => {
   const { data: m } = await db.from("mosaics").select("status, payment_mock").eq("id", r.body.mosaicId).single();
   assert.deepEqual(m, { status: "collecting", payment_mock: true });
 });
+
+test("the buyer gets one email with the invite and dashboard links once paid", async () => {
+  const s = fakeStripe();
+  const sent: { to: string; subject: string; text: string }[] = [];
+  const handle = makeOrdersHandler({ db, stripe: s.api, webhookSecret: WHSEC, testMode: false, allowedOrigins: [], mailer: async (e) => { sent.push(e); }, siteUrl: "https://example.com/" });
+  const b = await buyer();
+  const r = await order(handle, b);
+  assert.equal(sent.length, 0, "nothing before payment");
+  const { data: m } = await db.from("mosaics").select("payment_intent_id, invite_token").eq("id", r.body.mosaicId).single();
+  const pi = s.succeed(m!.payment_intent_id);
+  await call(handle, "confirm", b.jwt, { mosaicId: r.body.mosaicId });
+  await sendWebhook(handle, { id: `evt_mail${Date.now()}`, type: "payment_intent.succeeded", data: { object: pi } });
+  assert.equal(sent.length, 1, "confirm and webhook together send one email");
+  assert.equal(sent[0].to, "buyer@example.com");
+  assert.ok(sent[0].text.includes(`https://example.com/join/?m=${r.body.mosaicId}&i=${m!.invite_token}`));
+  assert.ok(sent[0].text.includes(`https://example.com/mosaic/?id=${r.body.mosaicId}`));
+});
+
+test("an email failure never fails the order", async () => {
+  const handle = makeOrdersHandler({ db, stripe: null, webhookSecret: "", testMode: true, allowedOrigins: [], mailer: async () => { throw new Error("down"); }, siteUrl: "https://example.com" });
+  const r = await order(handle, await buyer());
+  assert.equal(r.status, 200);
+  assert.equal(r.body.mock, true);
+});
