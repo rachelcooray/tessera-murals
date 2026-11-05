@@ -41,7 +41,7 @@ Use **https://rachelcooray.github.io/tessera-murals/list/?from=instagram** (or `
 3. **Launch date for founding mosaics.** Only needed for week 3. Until then, say "soon".
 4. **Prices.** Every post uses the four sizes: 10,000 tiles $45 · 20,000 $95 · 30,000 $145 · 40,000 $195.
 
-Replace `@tessera.mosaics` on the designs with your real handle before exporting.
+Every design already shows @tessera.mosaics.
 
 ---
 
