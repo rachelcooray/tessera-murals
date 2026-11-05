@@ -42,7 +42,7 @@ Medium · 20,000 squares · $95
 Large · 30,000 squares · $145
 Grand · 40,000 squares · $195
 
-Guests never pay. Add a print at checkout. Link in bio.
+Guests never pay. Link in bio.
 
 #christmasgift #giftideas #personalisedgift #hiddenmosaic #tessera
 ```
