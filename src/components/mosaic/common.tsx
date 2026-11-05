@@ -8,7 +8,7 @@ import type { Mosaic, MosaicTile } from "@/lib/mosaic/types";
 import { rnd } from "@/lib/rng";
 import { Icon, Mark } from "../ui";
 
-const NAV = [["/", "Commission"], ["/challenge", "Colour challenge"], ["/gallery", "Past mosaics"], ["/about", "About"]] as const;
+const NAV = [["/", "Commission"], ["/occasions", "Occasions"], ["/challenge", "Colour challenge"], ["/gallery", "Past mosaics"], ["/about", "About"]] as const;
 
 /** Runs pool splits and hold releases that are due, once per page view. */
 export function useHousekeeping() {
