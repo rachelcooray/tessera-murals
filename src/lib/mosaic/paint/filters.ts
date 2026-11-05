@@ -255,3 +255,44 @@ export function toneDab(p: Px, mode: ToneMode, strength: number, hardness: numbe
     d[i] = clamp(R); d[i + 1] = clamp(G); d[i + 2] = clamp(B);
   }
 }
+
+/**
+ * Curves through five points: black, shadows, midtones, highlights and white. Each of the middle
+ * three moves its point up or down by up to 64 levels. A smooth (monotone) curve joins them.
+ */
+export function curvesLut(shadows: number, midtones: number, highlights: number): Uint8ClampedArray {
+  const xs = [0, 64, 128, 192, 255];
+  const ys = [0, 64 + shadows, 128 + midtones, 192 + highlights, 255].map((y) => Math.max(0, Math.min(255, y)));
+  for (let i = 1; i < ys.length; i++) ys[i] = Math.max(ys[i], ys[i - 1]);
+  const n = xs.length, d = new Array(n - 1).fill(0).map((_, i) => (ys[i + 1] - ys[i]) / (xs[i + 1] - xs[i]));
+  const m = new Array(n).fill(0);
+  m[0] = d[0]; m[n - 1] = d[n - 2];
+  for (let i = 1; i < n - 1; i++) m[i] = d[i - 1] * d[i] <= 0 ? 0 : (d[i - 1] + d[i]) / 2;
+  const lut = new Uint8ClampedArray(256);
+  for (let x = 0; x < 256; x++) {
+    let k = 0;
+    while (k < n - 2 && x > xs[k + 1]) k++;
+    const h = xs[k + 1] - xs[k], t = (x - xs[k]) / h;
+    const h00 = 2 * t ** 3 - 3 * t ** 2 + 1, h10 = t ** 3 - 2 * t ** 2 + t, h01 = -2 * t ** 3 + 3 * t ** 2, h11 = t ** 3 - t ** 2;
+    lut[x] = h00 * ys[k] + h10 * h * m[k] + h01 * ys[k + 1] + h11 * h * m[k + 1];
+  }
+  return lut;
+}
+
+export function curves(p: Px, shadows: number, midtones: number, highlights: number) {
+  const lut = curvesLut(shadows, midtones, highlights);
+  eachPixel(p, (r, g, b) => [lut[r], lut[g], lut[b]]);
+}
+
+/**
+ * Recolour: every pixel where mask is set takes the new colour, keeping how much lighter or darker
+ * it was than the colour that was tapped, so shading survives.
+ */
+export function recolour(p: Px, mask: Uint8Array, from: RGB, to: RGB) {
+  const d = p.data;
+  for (let i = 0; i < mask.length; i++) {
+    if (!mask[i]) continue;
+    const o = i * 4;
+    for (let c = 0; c < 3; c++) d[o + c] = Math.max(0, Math.min(255, Math.round(to[c] + (d[o + c] - from[c]))));
+  }
+}

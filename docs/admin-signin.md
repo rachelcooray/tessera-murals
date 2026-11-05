@@ -1,5 +1,7 @@
 # Admin sign-in (Supabase Auth)
 
+> **For hidden mosaics, admins are the emails in the database's `admins` table. See [backend-setup.md](backend-setup.md), step 4.** Leave "Allow new users to sign up" on: guests and buyers are signed in anonymously, which needs it. This page covers the older Season 0 wall admin.
+
 Until the settings below are in place, `/admin` stays open to anyone with the link and says so at the top. Everything there only changes that one browser, so nobody can affect the real wall, but switch sign-in on before you share the site widely.
 
 ## 1. Supabase project

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type ReactNode } from "react";
 import { site } from "@/config/site";
 import { artDataUrl } from "@/lib/art";
-import { tick } from "@/lib/mosaic/store";
+import { remoteMode, tick } from "@/lib/mosaic/store";
 import type { Mosaic, MosaicTile } from "@/lib/mosaic/types";
 import { rnd } from "@/lib/rng";
 import { Icon, Mark } from "../ui";
@@ -31,6 +31,8 @@ export function SiteHeader({ current }: { current?: string }) {
           <div className="menu__panel">
             {NAV.map(([href, label]) => <Link key={href} href={href}>{label}</Link>)}
             <Link href="/artist">For artists</Link>
+            <Link href="/list">Join the founding list</Link>
+            <Link href="/mine">My mosaics</Link>
             <Link href="/start">Start a mosaic</Link>
           </div>
         </details>
@@ -42,10 +44,12 @@ export function SiteHeader({ current }: { current?: string }) {
 export function SiteFooter() {
   return (
     <footer className="footer">
-      <span>Tessera · hidden mosaics, made by people. Prototype: data stays in this browser.</span>
+      <span>Tessera · hidden mosaics, made by people.{remoteMode ? "" : " Demo: data stays in this browser."}</span>
       <nav aria-label="More">
-        <a href={`mailto:${site.contactEmail}`}>Contact</a>
-        <Link href="/about#terms">Terms</Link>
+        <Link href="/contact">Contact</Link>
+        <Link href="/terms">Terms</Link>
+        <Link href="/privacy">Privacy</Link>
+        <Link href="/refunds">Refunds</Link>
         <Link href="/about#policy">Content policy</Link>
         <Link href="/wall">Season 0 wall</Link>
       </nav>
@@ -200,8 +204,9 @@ export function MosaicGrid({ mosaic, tiles, mode = "tiles", highlight, marks, pi
 }
 
 /** A single tile at a readable size. */
-export function TileArt({ tile, slotHex, size = 240 }: { tile: MosaicTile; slotHex: string; size?: number }) {
-  if (tile.imageUrl) return <img src={tile.imageUrl} alt={`Tile by ${tile.name ?? "an anonymous contributor"}`} width={size} height={size} style={{ width: size, height: size, objectFit: "cover", display: "block", boxShadow: "0 0 0 1px var(--line)" }} />;
+export function TileArt({ tile, slotHex, size = 240, src }: { tile: MosaicTile; slotHex: string; size?: number; src?: string | null }) {
+  const url = src ?? tile.imageUrl;
+  if (url) return <img src={url} alt={`Tile by ${tile.name ?? "an anonymous contributor"}`} width={size} height={size} style={{ width: size, height: size, objectFit: "cover", display: "block", boxShadow: "0 0 0 1px var(--line)" }} />;
   return (
     <span style={{ position: "relative", display: "block", width: size, height: size, boxShadow: "0 0 0 1px var(--line)" }}>
       {tile.art && <img src={artDataUrl(tile.art, size)} alt={tile.source === "studio" ? "Studio fill artwork" : "Sample artwork"} width={size} height={size} style={{ display: "block", width: size, height: size }} />}

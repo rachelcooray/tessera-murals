@@ -3,6 +3,7 @@
  */
 import { hexToRgb, rgbToHex, rgbToHsl, hslToRgb, type RGB } from "../../colour.ts";
 import type { SlotColour } from "../colours.ts";
+import { myBrushes } from "./mybrushes.ts";
 
 /** How a brush lays down paint. */
 export type Texture = "smooth" | "grain" | "scatter" | "spray" | "bristle" | "nib" | "pixel";
@@ -81,7 +82,7 @@ export const BRUSHES: BrushPreset[] = [
 export const BRUSH_SETS: string[] = [...new Set(BRUSHES.map((x) => x.set))];
 
 export function brushById(id: string): BrushPreset {
-  return BRUSHES.find((x) => x.id === id) ?? BRUSHES[0];
+  return BRUSHES.find((x) => x.id === id) ?? (id.startsWith("my-") ? myBrushes().find((x) => x.id === id) : undefined) ?? BRUSHES[0];
 }
 
 const shift = (hex: string, dh: number, ds: number, dl: number): string => {
@@ -140,4 +141,33 @@ export function harmony(hex: string, kind: "complementary" | "analogous" | "tria
     case "split": return [hex, at(150), at(210)];
     default: return [hex, at(90), at(180), at(270)];
   }
+}
+
+/**
+ * "Stay in my colour": a picked colour that strays further than maxDistance from the slot colour
+ * is pulled back toward it until it's just inside. Nearby colours pass untouched.
+ */
+export function guardColour(hex: string, slotHex: string, maxDistance = 130): string {
+  const a = hexToRgb(hex), s = hexToRgb(slotHex);
+  const dist = (c: RGB) => { const rm = (c[0] + s[0]) / 2, dr = c[0] - s[0], dg = c[1] - s[1], db = c[2] - s[2]; return Math.sqrt((2 + rm / 256) * dr * dr + 4 * dg * dg + (2 + (255 - rm) / 256) * db * db); };
+  if (dist(a) <= maxDistance) return hex;
+  let lo = 0, hi = 1;
+  for (let i = 0; i < 18; i++) {
+    const mid = (lo + hi) / 2, c: RGB = [s[0] + (a[0] - s[0]) * mid, s[1] + (a[1] - s[1]) * mid, s[2] + (a[2] - s[2]) * mid];
+    if (dist(c) > maxDistance) hi = mid; else lo = mid;
+  }
+  return rgbToHex([s[0] + (a[0] - s[0]) * lo, s[1] + (a[1] - s[1]) * lo, s[2] + (a[2] - s[2]) * lo]);
+}
+
+/** One plain sentence on how to bring the whole tile closer to its slot colour. */
+export function lensAdvice(averageHex: string, slotHex: string, match: number): string {
+  if (match >= 0.92) return "Spot on. From a distance your square is your colour.";
+  const [, sa, la] = rgbToHsl(hexToRgb(averageHex)), [, ss, ls] = rgbToHsl(hexToRgb(slotHex));
+  const tips: string[] = [];
+  if (la - ls > 6) tips.push("a little darker");
+  else if (ls - la > 6) tips.push("a little lighter");
+  if (sa - ss > 10) tips.push("a bit more muted");
+  else if (ss - sa > 10) tips.push("a bit more vivid");
+  const tip = tips.length ? tips.join(" and ") : "a touch more of your slot colour";
+  return match >= 0.75 ? `Blends in. ${tip[0].toUpperCase()}${tip.slice(1)} would land it exactly.` : `Drifting from your slot. Try ${tip}, or paint more of your colour.`;
 }

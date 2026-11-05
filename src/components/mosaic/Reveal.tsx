@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { artPalette } from "@/lib/art";
 import { loadImage } from "@/lib/mosaic/image";
+import { live, loadMosaic, tileImageUrls, useLoad } from "@/lib/mosaic/actions";
 import { ownsMosaic, slotMap, tilesFor, useMosaic, useMosaicState } from "@/lib/mosaic/store";
 import type { Mosaic, MosaicTile } from "@/lib/mosaic/types";
 import { rnd } from "@/lib/rng";
@@ -26,9 +27,18 @@ const DETAIL_SPAN = 24, DETAIL_CELL = 96, FULL_MAX = 4000;
 async function renderMosaic(m: Mosaic, tiles: Map<number, MosaicTile>, focus: number): Promise<MosaicImage> {
   const span = Math.min(DETAIL_SPAN, m.cols, m.rows), fx = focus % m.cols, fy = Math.floor(focus / m.cols);
   const dx0 = Math.max(0, Math.min(m.cols - span, fx - Math.floor(span / 2))), dy0 = Math.max(0, Math.min(m.rows - span, fy - Math.floor(span / 2)));
+  // Live mode keeps small copies for the whole picture; fetch the full-size tiles for the close-up.
+  let detailTiles = tiles;
+  if (live) {
+    const near: MosaicTile[] = [];
+    for (let y = dy0; y < dy0 + span; y++) for (let x = dx0; x < dx0 + span; x++) { const t = tiles.get(y * m.cols + x); if (t?.imagePath) near.push(t); }
+    const urls = await tileImageUrls(near.map((t) => t.imagePath!)).catch(() => new Map<string, string>());
+    detailTiles = new Map(tiles);
+    for (const t of near) { const u = urls.get(t.imagePath!); if (u) detailTiles.set(t.slot, { ...t, imageUrl: u }); }
+  }
   const [full, detail] = await Promise.all([
     renderRegion(m, tiles, 0, 0, m.cols, m.rows, Math.max(2, Math.floor(FULL_MAX / Math.max(m.cols, m.rows)))),
-    renderRegion(m, tiles, dx0, dy0, span, span, DETAIL_CELL),
+    renderRegion(m, detailTiles, dx0, dy0, span, span, DETAIL_CELL),
   ]);
   return { full, detail, dx0, dy0, span };
 }
@@ -119,6 +129,7 @@ function drawFrame(ctx: CanvasRenderingContext2D, img: MosaicImage, m: Mosaic, f
 function Reveal({ id, focus: focusParam }: { id: string; focus: number | null }) {
   const s = useMosaicState();
   const m = useMosaic(id);
+  const loaded = useLoad(id, () => loadMosaic(id));
   const tiles = useMemo(() => (m ? slotMap(tilesFor(s, m.id).filter((t) => t.status === "approved")) : new Map<number, MosaicTile>()), [s, m]);
   const contributors = useMemo(() => new Set([...tiles.values()].filter((t) => t.source !== "studio").map((t) => t.contributorId)).size, [tiles]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -181,6 +192,7 @@ function Reveal({ id, focus: focusParam }: { id: string; focus: number | null })
     play(0, () => setTimeout(() => rec.stop(), 1200));
   }
 
+  if (loaded.loading) return <Page narrow><p className="muted" role="status">Loading the reveal…</p></Page>;
   if (!m) return <Page narrow><h1>Reveal not found</h1></Page>;
   if (m.status !== "revealed") return <Page narrow><span className="eyebrow">Not yet</span><h1 style={{ fontSize: 40, margin: "10px 0 16px" }}>{m.title}</h1><p className="muted">This mosaic is revealed on {dateLabel(m.revealAt)}.</p></Page>;
   if (!visible) return <Page narrow><h1>This mosaic is private</h1></Page>;

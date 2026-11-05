@@ -27,6 +27,7 @@ export function MosaicHome() {
           <div className="row">
             <Link className="btn btn--primary" href="/start">Start a mosaic, from {formatCents(mosaicConfig.tiers[0].priceCents).replace(".00", "")}</Link>
             <Link className="btn" href="/reveal?id=sample-dusk"><Icon name="play" size={14} />Watch a reveal</Link>
+            <Link className="btn btn--quiet" href="/list">Join the founding list</Link>
           </div>
         </div>
         {sample && (

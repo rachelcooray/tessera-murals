@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { Page } from "@/components/mosaic/common";
 import { mosaicConfig } from "@/config/mosaic";
@@ -51,7 +52,7 @@ export default function About() {
 
       <section className="section" id="terms" style={{ maxWidth: 760 }}>
         <h2 style={{ fontSize: 28 }}>Terms</h2>
-        <p className="small muted">[Terms of use, privacy notice, contributor licence and payout terms to be written before launch.] <span className="todo" style={{ display: "inline" }}>[TODO: needs lawyer review]</span> Contact: <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>.</p>
+        <p className="small muted">Read the <Link href="/terms">terms of sale and use</Link>, the <Link href="/privacy">privacy policy</Link> and <Link href="/refunds">refunds and cancellations</Link>. <span className="todo" style={{ display: "inline" }}>[TODO: needs lawyer review]</span> Contact: <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>.</p>
       </section>
     </Page>
   );

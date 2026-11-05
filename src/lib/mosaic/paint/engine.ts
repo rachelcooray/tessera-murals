@@ -7,11 +7,15 @@
 import { hexToRgb, rgbToHex, type RGB } from "../../colour.ts";
 import { brushById, type BrushPreset } from "./brushes.ts";
 import { colourMask, floodMask } from "./fill.ts";
+import { GRAIN_PICKUP, paperPits, type Paper } from "./paper.ts";
+import { drawWarped, keystone } from "./warp.ts";
+import { guardColour } from "./brushes.ts";
 import * as F from "./filters.ts";
 import { curvePoints, shapePath, type ShapeKind } from "./shapes.ts";
 import type { StrokeRecord } from "./effort.ts";
 
-export type Tool = "brush" | "retouch" | "eraser" | "fill" | "gradient" | "shapes" | "text" | "select" | "transform" | "picker" | "guides" | "filters";
+export type Tool = "brush" | "retouch" | "eraser" | "fill" | "gradient" | "shapes" | "text" | "select" | "transform" | "picker" | "recolour" | "guides" | "filters";
+export type Stabiliser = "off" | "smooth" | "rope";
 export type RetouchMode = "smudge" | "blur" | "sharpen" | "dodge" | "burn" | "saturate" | "desaturate" | "clone" | "liquify";
 export type GradientKind = "linear" | "radial" | "angle" | "reflected" | "diamond";
 export type SelectKind = "rect" | "ellipse" | "lasso" | "polygon" | "wand";
@@ -48,16 +52,18 @@ export interface Layer {
   reference: boolean;
 }
 
-export interface Point { x: number; y: number; pressure: number }
+/** tilt: 0 with the pen upright to 1 lying flat. azimuth: the direction the pen leans, in radians. t: event time in ms. */
+export interface Point { x: number; y: number; pressure: number; tilt?: number; azimuth?: number; t?: number }
 
 export interface TextStyle { family: string; size: number; bold: boolean; italic: boolean; underline: boolean; strike: boolean; align: CanvasTextAlign; background: boolean }
 
-export interface Transform { dx: number; dy: number; scale: number; rotate: number; skewX: number; skewY: number; flipH: boolean; flipV: boolean }
-const NO_TRANSFORM: Transform = { dx: 0, dy: 0, scale: 1, rotate: 0, skewX: 0, skewY: 0, flipH: false, flipV: false };
+/** perspX, perspY: lean the result back or forward, in percent, across and down. */
+export interface Transform { dx: number; dy: number; scale: number; rotate: number; skewX: number; skewY: number; flipH: boolean; flipV: boolean; perspX: number; perspY: number }
+const NO_TRANSFORM: Transform = { dx: 0, dy: 0, scale: 1, rotate: 0, skewX: 0, skewY: 0, flipH: false, flipV: false, perspX: 0, perspY: 0 };
 
 export type FilterName =
   | "hsb" | "brightnessContrast" | "colourBalance" | "levels" | "invert" | "desaturate" | "posterize" | "threshold" | "gradientMap"
-  | "blur" | "motionBlur" | "sharpen" | "noise" | "pixelate" | "halftone" | "bloom" | "chromatic" | "glitch" | "vignette" | "emboss";
+  | "blur" | "motionBlur" | "sharpen" | "noise" | "pixelate" | "halftone" | "bloom" | "chromatic" | "glitch" | "vignette" | "emboss" | "curves";
 
 interface Entry { label: string; undo(): void; redo(): void }
 
@@ -73,6 +79,8 @@ type Gesture = {
   tool: Tool; start: number; input: string; last: Point; smooth: Point; since: number; travelled: number; origin: Point;
   dirty: [number, number, number, number]; carry?: HTMLCanvasElement; outline?: [number, number][]; straight?: boolean;
   wetColour?: RGB; cloneOffset?: [number, number]; moveFrom?: [number, number];
+  /** Last event time and a smoothed speed in canvas pixels per millisecond, for speed dynamics. */
+  lastT?: number; speed?: number;
 };
 
 export class PaintEngine {
@@ -92,6 +100,19 @@ export class PaintEngine {
   scatter = 0;
   taper = 0;
   wet = 0;
+  /** Pen tilt: how much leaning the pen widens and softens the stroke, 0 to 1. */
+  tiltShade = 0.6;
+  /** Calligraphy nibs and bristles turn with the direction the pen leans. */
+  nibFollowsPen = true;
+  /** How much faster strokes get thinner, 0 to 1. */
+  speedThin = 0;
+  stabiliser: Stabiliser = "smooth";
+  /** Rope stabiliser: how far the brush trails behind, in canvas pixels. */
+  rope = 40;
+  paper: Paper = "smooth";
+  paperStrength = 0.6;
+  /** "Stay in my colour": picked colours are pulled toward the slot colour. */
+  colourGuard = false;
   /** Primary and secondary colours. */
   colour: string;
   colour2 = "#efe3cc";
@@ -125,6 +146,8 @@ export class PaintEngine {
   onChange: () => void = () => {};
   onNotice: (msg: string) => void = () => {};
   onTextTap: (x: number, y: number) => void = () => {};
+  /** After every step that changes the painting: the timelapse records a frame. */
+  onStep: () => void = () => {};
 
   private readonly display: HTMLCanvasElement;
   private readonly maxLayers: number;
@@ -133,6 +156,7 @@ export class PaintEngine {
   private readonly live: HTMLCanvasElement;
   private readonly scratch: HTMLCanvasElement;
   private readonly scratch2: HTMLCanvasElement;
+  private readonly scratch3: HTMLCanvasElement;
   private readonly before: HTMLCanvasElement;
   private undoStack: Entry[] = [];
   private redoStack: Entry[] = [];
@@ -153,6 +177,7 @@ export class PaintEngine {
     this.live = canvasOf(size);
     this.scratch = canvasOf(size);
     this.scratch2 = canvasOf(size);
+    this.scratch3 = canvasOf(size);
     this.before = canvasOf(size);
     const bg = this.makeLayer("Background");
     bg.locked = true;
@@ -186,7 +211,8 @@ export class PaintEngine {
   configure(patch: Partial<Pick<PaintEngine,
     "brushSize" | "brushOpacity" | "hardness" | "flow" | "smoothing" | "sizeJitter" | "opacityJitter" | "scatter" | "taper" | "wet" |
     "fillTolerance" | "fillContiguous" | "fillAllLayers" | "symmetry" | "shape" | "shapeStyle" | "gradientKind" | "gradientToSecondary" |
-    "selectKind" | "selectAdd" | "retouchMode" | "retouchStrength" | "settingCloneSource" | "guide" | "guideSize" | "vanishing">>) {
+    "selectKind" | "selectAdd" | "retouchMode" | "retouchStrength" | "settingCloneSource" | "guide" | "guideSize" | "vanishing" |
+    "tiltShade" | "nibFollowsPen" | "speedThin" | "stabiliser" | "rope" | "paper" | "paperStrength" | "colourGuard">>) {
     if (patch.shape && patch.shape !== "curve") this.commitCurve();
     if (patch.selectKind && patch.selectKind !== "polygon") this.polygon = [];
     Object.assign(this, patch);
@@ -194,7 +220,7 @@ export class PaintEngine {
     this.changed();
   }
 
-  setColour(hex: string) { this.colour = hex; this.changed(); }
+  setColour(hex: string) { this.colour = this.colourGuard ? guardColour(hex, this.slotHex) : hex; this.changed(); }
   setColour2(hex: string) { this.colour2 = hex; this.changed(); }
   swapColours() { [this.colour, this.colour2] = [this.colour2, this.colour]; this.changed(); }
   private useColour() { this.recent = [this.colour, ...this.recent.filter((c) => c !== this.colour)].slice(0, 10); }
@@ -248,7 +274,8 @@ export class PaintEngine {
     if (!this.canPaint()) return;
     if (t === "text") { this.onTextTap(p.x, p.y); return; }
     if (t === "fill") { this.fill(p, input); return; }
-    this.gesture = { tool: t, start: Date.now(), input, last: p, smooth: p, since: 0, travelled: 0, origin: p, dirty: [p.x, p.y, p.x, p.y] };
+    if (t === "recolour") { this.recolourAt(p, input); return; }
+    this.gesture = { tool: t, start: Date.now(), input, last: p, smooth: p, since: 0, travelled: 0, origin: p, dirty: [p.x, p.y, p.x, p.y], lastT: p.t, speed: 0 };
     if (t === "transform") {
       if (!this.floating) this.lift();
       this.gesture.moveFrom = [this.floating!.t.dx - p.x, this.floating!.t.dy - p.y];
@@ -281,8 +308,22 @@ export class PaintEngine {
       if (g.tool === "select") { this.selectMove(p); continue; }
       if (g.tool === "transform") { this.floating!.t.dx = p.x + g.moveFrom![0]; this.floating!.t.dy = p.y + g.moveFrom![1]; continue; }
       if (g.tool === "brush" || g.tool === "eraser" || g.tool === "retouch") {
-        const k = 1 - this.smoothing * 0.85;
-        const s: Point = { x: g.smooth.x + (p.x - g.smooth.x) * k, y: g.smooth.y + (p.y - g.smooth.y) * k, pressure: p.pressure };
+        if (p.t !== undefined && g.lastT !== undefined && p.t > g.lastT) {
+          const v = Math.hypot(p.x - g.last.x, p.y - g.last.y) / (p.t - g.lastT);
+          g.speed = (g.speed ?? 0) * 0.75 + v * 0.25;
+        }
+        g.lastT = p.t ?? g.lastT;
+        let s: Point;
+        if (this.stabiliser === "rope") {
+          // The brush trails the pointer on a rope: it only moves once the rope is pulled tight.
+          const dx = p.x - g.smooth.x, dy = p.y - g.smooth.y, d = Math.hypot(dx, dy);
+          if (d <= this.rope) { g.last = p; continue; }
+          const k = (d - this.rope) / d;
+          s = { ...p, x: g.smooth.x + dx * k, y: g.smooth.y + dy * k };
+        } else {
+          const k = this.stabiliser === "off" ? 1 : 1 - this.smoothing * 0.85;
+          s = { ...p, x: g.smooth.x + (p.x - g.smooth.x) * k, y: g.smooth.y + (p.y - g.smooth.y) * k };
+        }
         if (g.straight) this.straightLine(s);
         else if (g.tool === "retouch") this.retouchTo(g.smooth, s);
         else this.dabsTo(g.smooth, s, false);
@@ -361,11 +402,14 @@ export class PaintEngine {
 
   /* ---------- brushes ---------- */
 
-  private sizeAt(pressure: number) {
+  private sizeAt(pressure: number, tilt = 0) {
     const g = this.gesture;
     const taper = this.taper > 0 && g ? Math.min(1, 0.15 + (0.85 * g.travelled) / this.taper) : 1;
     const jitter = this.sizeJitter ? 1 - Math.random() * this.sizeJitter : 1;
-    return Math.max(1, this.brushSize * (this.brush.pressureSize ? 0.25 + 0.75 * pressure : 1) * taper * jitter);
+    // A pen on its side shades with a wider, lighter mark. A fast stroke gets thinner.
+    const lean = 1 + this.tiltShade * tilt * 1.6;
+    const fast = this.speedThin && g?.speed ? 1 - 0.7 * this.speedThin * Math.min(1, g.speed / 2.5) : 1;
+    return Math.max(1, this.brushSize * (this.brush.pressureSize ? 0.25 + 0.75 * pressure : 1) * taper * jitter * lean * fast);
   }
 
   private mirrors(x: number, y: number): [number, number][] {
@@ -395,25 +439,28 @@ export class PaintEngine {
     const ctx = ctx2d(this.buffer);
     const step = Math.max(0.5, this.brushSize * this.brush.spacing);
     const dist = Math.hypot(b.x - a.x, b.y - a.y);
-    if (first) { this.dab(ctx, a.x, a.y, a.pressure, 0); g.since = 0; return; }
+    if (first) { this.dab(ctx, a.x, a.y, a.pressure, 0, a.tilt ?? 0, a.azimuth); g.since = 0; return; }
     let at = step - g.since;
     const angle = Math.atan2(b.y - a.y, b.x - a.x);
     while (at <= dist) {
       const t = dist ? at / dist : 0;
       g.travelled += step;
-      this.dab(ctx, a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, a.pressure + (b.pressure - a.pressure) * t, angle);
+      this.dab(ctx, a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, a.pressure + (b.pressure - a.pressure) * t, angle, (a.tilt ?? 0) + ((b.tilt ?? 0) - (a.tilt ?? 0)) * t, b.azimuth);
       at += step;
     }
     g.since = dist - (at - step);
   }
 
-  private dab(ctx: CanvasRenderingContext2D, x: number, y: number, pressure: number, angle: number) {
+  private dab(ctx: CanvasRenderingContext2D, x: number, y: number, pressure: number, angle: number, tilt = 0, azimuth?: number) {
     const g = this.gesture!;
-    const size = this.sizeAt(pressure);
+    const size = this.sizeAt(pressure, tilt);
+    // With a pen that reports its angle, nibs and bristles turn with it.
+    if (this.nibFollowsPen && azimuth !== undefined) angle = azimuth - Math.PI / 2;
     const r = size / 2;
     if (this.scatter) { const a = Math.random() * Math.PI * 2, d = Math.random() * this.scatter * size; x += Math.cos(a) * d; y += Math.sin(a) * d; }
     let alpha = Math.min(1, this.flow * (this.brush.pressureOpacity ? 0.2 + 0.8 * pressure : 1));
     if (this.opacityJitter) alpha *= 1 - Math.random() * this.opacityJitter;
+    if (tilt) alpha *= 1 - 0.5 * this.tiltShade * tilt;
     const erase = this.tool === "eraser";
     let rgb: RGB = erase || this.editingMask() ? [0, 0, 0] : hexToRgb(this.colour);
     if (g.wetColour && !erase && !this.editingMask()) {
@@ -443,7 +490,7 @@ export class PaintEngine {
         ctx.fillRect(Math.round(mx - s / 2), Math.round(my - s / 2), s, s);
       } else if (tex === "nib") {
         ctx.fillStyle = `rgb(${cr},${cg},${cb})`;
-        ctx.beginPath(); ctx.ellipse(mx, my, r, Math.max(0.8, r * 0.22), -Math.PI / 4, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(mx, my, r, Math.max(0.8, r * 0.22), this.nibFollowsPen && azimuth !== undefined ? angle : -Math.PI / 4, 0, Math.PI * 2); ctx.fill();
       } else {
         ctx.fillStyle = `rgb(${cr},${cg},${cb})`;
         if (tex === "bristle") {
@@ -626,6 +673,29 @@ export class PaintEngine {
   private pick(p: Point) {
     const d = ctx2d(this.flatten()).getImageData(Math.max(0, Math.min(this.size - 1, Math.floor(p.x))), Math.max(0, Math.min(this.size - 1, Math.floor(p.y))), 1, 1).data;
     this.setColour(rgbToHex([d[0], d[1], d[2]]));
+  }
+
+  /** Recolour: swaps the tapped colour (and colours near it, by tolerance) for the primary, keeping the shading. */
+  private recolourAt(p: Point, input: string) {
+    if (this.editingMask()) { this.onNotice("Recolour works on paint, not on masks."); return; }
+    const start = Date.now();
+    const t = this.target(), img = ctx2d(t).getImageData(0, 0, this.size, this.size);
+    const x = Math.max(0, Math.min(this.size - 1, Math.floor(p.x))), y = Math.max(0, Math.min(this.size - 1, Math.floor(p.y)));
+    const o = (y * this.size + x) * 4;
+    if (img.data[o + 3] < 10) { this.onNotice("Nothing painted there on this layer to recolour."); return; }
+    const mask = this.fillContiguous ? floodMask(img.data, this.size, this.size, x, y, this.fillTolerance, 0) : colourMask(img.data, this.size, this.size, x, y, this.fillTolerance);
+    if (this.selection) {
+      const sel = ctx2d(this.selection).getImageData(0, 0, this.size, this.size).data;
+      for (let i = 0; i < mask.length; i++) if (sel[i * 4 + 3] < 128) mask[i] = 0;
+    }
+    this.beginOp();
+    F.recolour({ data: img.data, width: this.size, height: this.size }, mask, [img.data[o], img.data[o + 1], img.data[o + 2]], hexToRgb(this.colour));
+    ctx2d(t).putImageData(img, 0, 0);
+    this.endOp([0, 0, this.size, this.size], "Recolour");
+    this.useColour();
+    this.records.push({ tool: "recolour", start, end: Date.now(), input });
+    this.render();
+    this.changed();
   }
 
   /** Touch-and-hold eyedropper: drops the stroke in progress and picks the colour under the finger. */
@@ -850,6 +920,18 @@ export class PaintEngine {
   }
 
   private drawFloating(ctx: CanvasRenderingContext2D) {
+    const f = this.floating!, t = f.t;
+    if (t.perspX || t.perspY) {
+      // Perspective: lay out the move, scale and turn first, then lean the result.
+      const flat = canvasOf(this.size);
+      this.drawAffine(ctx2d(flat));
+      drawWarped(ctx, flat, keystone(this.size, t.perspX, t.perspY));
+      return;
+    }
+    this.drawAffine(ctx);
+  }
+
+  private drawAffine(ctx: CanvasRenderingContext2D) {
     const f = this.floating!, t = f.t, [cx, cy] = f.centre;
     ctx.save();
     ctx.translate(cx + t.dx, cy + t.dy);
@@ -867,7 +949,7 @@ export class PaintEngine {
     const start = Date.now();
     this.drawFloating(ctx2d(this.target()));
     const t = this.floating.t;
-    if (this.selection && (t.dx || t.dy || t.scale !== 1 || t.rotate || t.skewX || t.skewY || t.flipH || t.flipV)) {
+    if (this.selection && (t.dx || t.dy || t.scale !== 1 || t.rotate || t.skewX || t.skewY || t.flipH || t.flipV || t.perspX || t.perspY)) {
       const sel = canvasOf(this.size);
       const was = this.floating.canvas;
       this.floating.canvas = this.selection;
@@ -920,6 +1002,7 @@ export class PaintEngine {
       case "glitch": F.glitch(p, v.amount ?? 40); break;
       case "vignette": F.vignette(p, v.strength ?? 0.5); break;
       case "emboss": F.emboss(p); break;
+      case "curves": F.curves(p, v.shadows ?? 0, v.midtones ?? 0, v.highlights ?? 0); break;
     }
     ctx2d(t).putImageData(img, 0, 0);
     this.maskToSelection();
@@ -1067,6 +1150,7 @@ export class PaintEngine {
     const now = ctx2d(this.target()).getImageData(x, y, w, h);
     const put = (img: ImageData) => { const l = this.layers.find((z) => z.id === layerId); const c = l && (onMask ? l.mask : l.canvas); if (c) ctx2d(c).putImageData(img, x, y); };
     this.push({ label, undo: () => put(was), redo: () => put(now) });
+    this.onStep();
   }
 
   private push(e: Entry) {
@@ -1106,9 +1190,25 @@ export class PaintEngine {
 
   /* ---------- drawing to the screen ---------- */
 
+  /** Paper grain: a copy of the stroke with paint knocked out of the paper's pits. */
+  private papered(src: HTMLCanvasElement): HTMLCanvasElement {
+    if (this.paper === "smooth" || this.tool !== "brush" || this.editingMask()) return src;
+    const pick = (GRAIN_PICKUP[this.brush.texture] ?? 0.5) * this.paperStrength;
+    if (pick <= 0) return src;
+    const c = ctx2d(this.scratch3);
+    c.save();
+    c.clearRect(0, 0, this.size, this.size);
+    c.drawImage(src, 0, 0);
+    c.globalCompositeOperation = "destination-out";
+    c.globalAlpha = Math.min(1, pick);
+    c.drawImage(paperPits(this.paper, this.size), 0, 0);
+    c.restore();
+    return this.scratch3;
+  }
+
   private commitBuffer(erase: boolean) {
     const t = this.target();
-    let src = this.buffer;
+    let src = this.papered(this.buffer);
     if (this.selection) {
       const s = ctx2d(this.scratch2);
       s.save(); s.clearRect(0, 0, this.size, this.size); s.drawImage(this.buffer, 0, 0);
@@ -1133,7 +1233,7 @@ export class PaintEngine {
     ctx.drawImage(this.target(), 0, 0);
     const buffered = (g && (g.tool === "brush" || g.tool === "eraser" || g.tool === "gradient" || g.tool === "shapes")) || this.pendingCurve;
     if (buffered) {
-      let src = this.buffer;
+      let src = g && g.tool === "brush" ? this.papered(this.buffer) : this.buffer;
       if (this.selection) {
         const s = ctx2d(this.scratch2);
         s.save(); s.clearRect(0, 0, this.size, this.size); s.drawImage(this.buffer, 0, 0);
@@ -1300,7 +1400,7 @@ export class PaintEngine {
   }
 }
 
-const FILTER_LABELS: Record<FilterName, string> = {
+const FILTER_LABELS: Record<FilterName, string> = { curves: "Curves",
   hsb: "Hue, saturation, brightness", brightnessContrast: "Brightness and contrast", colourBalance: "Colour balance", levels: "Levels", invert: "Invert",
   desaturate: "Black and white", posterize: "Posterize", threshold: "Threshold", gradientMap: "Gradient map", blur: "Blur", motionBlur: "Motion blur",
   sharpen: "Sharpen", noise: "Noise", pixelate: "Pixelate", halftone: "Halftone", bloom: "Bloom", chromatic: "Chromatic aberration", glitch: "Glitch",

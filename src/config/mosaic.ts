@@ -1,35 +1,21 @@
 /**
  * Every setting for commissioned hidden mosaics, in one place.
  * Money is always whole cents. Change a number here and the whole site follows.
- * The payments server keeps its own copy of the tier prices (MOSAIC_TIERS), because that is what actually charges.
+ * Tier prices and order rules come from supabase/functions/_shared/tiers.ts, which the server charges from.
  */
 
-export interface MosaicTier {
-  id: "small" | "medium" | "large" | "grand";
-  name: string;
-  /** Grid size. Tiles = cols × rows. */
-  cols: number;
-  rows: number;
-  priceCents: number;
-  fits: string;
-}
+import { ORDER_RULES, POOL_RULES, TIERS, artistCapFor, type MosaicTier } from "../../supabase/functions/_shared/tiers.ts";
+
+export type { MosaicTier };
 
 export const mosaicConfig = {
-  /**
-   * Sizes customers can buy. 10,000 tiles is the minimum: real photos (faces especially) only read clearly from there.
-   * See docs/research for the comparison. Faces become recognisable from about 20,000 tiles; the gain flattens past 30,000.
-   */
-  tiers: [
-    { id: "small", name: "Small", cols: 100, rows: 100, priceCents: 4500, fits: "Landscapes, pets and silhouettes" },
-    { id: "medium", name: "Medium", cols: 142, rows: 142, priceCents: 9500, fits: "One or two faces you can recognise" },
-    { id: "large", name: "Large", cols: 174, rows: 174, priceCents: 14500, fits: "Group photos and sharp faces" },
-    { id: "grand", name: "Grand", cols: 200, rows: 200, priceCents: 19500, fits: "Big groups and large prints" },
-  ] as MosaicTier[],
+  /** Sizes customers can buy. Defined in supabase/functions/_shared/tiers.ts, shared with the server that charges. */
+  tiers: TIERS,
 
   /** Reveal date options offered at checkout, in days from today. */
   revealOptionsDays: [21, 42],
   /** Shortest reveal date a customer can pick by hand. */
-  minRevealDays: 7,
+  minRevealDays: ORDER_RULES.minRevealDays,
 
   /** How long a claimed slot is held for one contributor before it is offered to someone else. */
   slotHoldHours: 48,
@@ -40,7 +26,7 @@ export const mosaicConfig = {
   minColourMatch: 0.55,
 
   /** Studio fill: slots still empty this many days before the reveal are filled and clearly labelled. */
-  studioFillDaysBefore: 2,
+  studioFillDaysBefore: POOL_RULES.studioFillDaysBefore,
 
   /** Contributed art must be made by people. AI-generated uploads are rejected. */
   humanMadeOnly: true,
@@ -53,26 +39,9 @@ export const mosaicConfig = {
     submissionsPerHour: 20,
   },
 
-  /** Artist pool: the share of each order paid to public artists, split by accepted tiles. */
-  pool: {
-    /** Share of the order price set aside for public artists, in basis points (3000 = 30%). */
-    shareBps: 3000,
-    /** Each artist can place at most max(minCap, capPercent of the mosaic's tiles) tiles in one mosaic. */
-    minCap: 10,
-    capPercent: 3,
-    /** After the reveal the customer has this many days to favourite tiles. The split runs after. */
-    favouritesWindowDays: 7,
-    /** How many tiles a customer can favourite. */
-    favouritesMax: 5,
-    /** A favourited tile counts as this many tiles in the split. */
-    favouriteMultiplier: 2,
-    /** Earnings stay pending this many days after the reveal, for reports and removed tiles. */
-    holdDays: 14,
-    /** Smallest payout an artist can request, in cents. Smaller balances roll over. */
-    payoutMinimumCents: 1000,
-    /** Accepted tiles an artist needs before their first payout. Earnings build up from the first tile. */
-    firstPayoutTiles: 20,
-  },
+  /** Artist pool: the share of each order paid to public artists, split by accepted tiles. Rules live in _shared/tiers.ts. */
+  pool: { shareBps: ORDER_RULES.poolShareBps, ...POOL_RULES },
+
 
   /**
    * Voice clips from the season wall. Off for mosaics. The recorder and player code is kept
@@ -104,6 +73,4 @@ export function tileCount(t: Pick<MosaicTier, "cols" | "rows">): number {
 }
 
 /** Most tiles one artist may place in a mosaic of this size. */
-export function artistCap(totalTiles: number): number {
-  return Math.max(mosaicConfig.pool.minCap, Math.floor((totalTiles * mosaicConfig.pool.capPercent) / 100));
-}
+export const artistCap = artistCapFor;
