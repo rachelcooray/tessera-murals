@@ -13,7 +13,7 @@ export interface CampaignPost {
 }
 
 export interface Campaign {
-  id: "christmas" | "weddings" | "valentines" | "mothers-day" | "birthdays" | "leaving-gifts" | "fathers-day";
+  id: "christmas" | "weddings" | "valentines" | "mothers-day" | "birthdays" | "leaving-gifts" | "anniversaries" | "fathers-day";
   /** The page address, e.g. /christmas/ */
   href: string;
   name: string;
@@ -225,6 +225,32 @@ export const CAMPAIGNS: Campaign[] = [
       ...COMMON_FAQS,
     ],
     credits: ["Umbrella Sky: Helen Cheng / Unsplash"],
+  },
+  {
+    id: "anniversaries",
+    href: "/anniversaries",
+    name: "Anniversaries",
+    eyebrow: "Anniversaries",
+    title: "Fifty years married, painted by everyone they love.",
+    lede: "One photo, and a square from the children, the grandchildren and the friends who were at the wedding. Nobody sees the picture until the anniversary.",
+    suggestedTier: "medium",
+    steps: [
+      { title: "Choose a photo", text: "Their wedding photo, their home, a place they love. Set the reveal for the anniversary or the party." },
+      { title: "Share one link", text: "Send it to the family and old friends. They never see it." },
+      { title: "Everyone paints", text: "Each person gets one colour. The Tessera studio finishes the rest." },
+      { title: "The anniversary", text: "Everyone sees it at once, with a reveal video for the party." },
+    ],
+    strips: [{ src: "strip1.jpg", alt: "A golden forest by a mountain lake, made of painted squares" }],
+    reels: [{ src: "reel1.mp4", poster: "reel1.jpg", title: "Fifty years married" }],
+    posts: [
+      { title: "How it works", slides: slides(1, 5) },
+      { title: "Who paints", slides: slides(2, 2) },
+    ],
+    faqs: [
+      { q: "When should I order?", a: "About three weeks before the anniversary, so everyone has time to paint." },
+      ...COMMON_FAQS,
+    ],
+    credits: ["Golden Forest Lake: Tobias Reich / Unsplash"],
   },
   {
     id: "fathers-day",
