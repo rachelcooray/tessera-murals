@@ -44,7 +44,7 @@ export function SiteHeader({ current }: { current?: string }) {
 export function SiteFooter() {
   return (
     <footer className="footer">
-      <span>Tessera · hidden mosaics, made by people.{remoteMode ? "" : " Demo: data stays in this browser."}</span>
+      <span>Tessera · digital mosaics, painted by your people.{remoteMode ? "" : " Demo: data stays in this browser."}</span>
       <nav aria-label="More">
         <Link href="/contact">Contact</Link>
         <Link href="/terms">Terms</Link>

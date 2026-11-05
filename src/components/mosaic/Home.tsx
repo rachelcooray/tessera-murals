@@ -7,7 +7,7 @@ import { SAMPLE_HIGHLIGHT } from "@/lib/mosaic/sample";
 import { allTiles, slotMap, useMosaic, useMosaicState } from "@/lib/mosaic/store";
 import { Icon } from "../ui";
 import { MosaicGrid, Page } from "./common";
-import { CampaignBanner, OccasionCards } from "./Campaign";
+import { CampaignBanner, OccasionCards, WhyDigital } from "./Campaign";
 
 const HIGHLIGHT = SAMPLE_HIGHLIGHT;
 
@@ -16,16 +16,15 @@ export function MosaicHome() {
   const s = useMosaicState();
   const tiles = useMemo(() => slotMap(allTiles(s).filter((t) => t.mosaicId === "sample-dusk")), [s]);
   const [view, setView] = useState<"finished" | "contributor">("finished");
-  const poolPct = mosaicConfig.pool.shareBps / 100;
 
   return (
     <Page current="/">
       <CampaignBanner />
       <section className="hero">
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-          <span className="eyebrow">Hidden mosaics, made by people</span>
-          <h1 style={{ fontSize: "clamp(40px, 6.4vw, 64px)", lineHeight: 1.02 }}>Your photo, made from other people’s art.</h1>
-          <p className="muted" style={{ fontSize: 17, lineHeight: 1.65, maxWidth: 520 }}>Upload a picture you love. We cut it into slots and send each person one colour, never the picture. Your friends paint some, our artists paint more, and nobody sees what they made until the last tile lands.</p>
+          <span className="eyebrow">Digital mosaics, painted by your people</span>
+          <h1 style={{ fontSize: "clamp(40px, 6.4vw, 64px)", lineHeight: 1.02 }}>Your photo, painted square by square by everyone who loves you.</h1>
+          <p className="muted" style={{ fontSize: 17, lineHeight: 1.65, maxWidth: 520 }}>A Tessera is a digital mosaic. You upload a photo, we cut it into thousands of squares, and everyone you invite gets one colour, never the picture. They paint their square on their phone, our studio finishes the rest, and on the day you choose everyone sees it at once.</p>
           <div className="row">
             <Link className="btn btn--primary" href="/start">Start a mosaic, from {formatCents(mosaicConfig.tiers[0].priceCents).replace(".00", "")}</Link>
             <Link className="btn" href="/reveal?id=sample-dusk"><Icon name="play" size={14} />Watch a reveal</Link>
@@ -50,7 +49,7 @@ export function MosaicHome() {
         <ol className="steps">
           <li><span className="serif" style={{ fontSize: 22, color: "var(--accent)" }}>I</span><h3 style={{ fontFamily: "var(--sans)", fontSize: 17, fontWeight: 600 }}>You upload one image</h3><p className="small muted">A wedding photo, a portrait, your logo. Only you and Tessera’s reviewers see it whole before the reveal.</p></li>
           <li><span className="serif" style={{ fontSize: 22, color: "var(--accent)" }}>II</span><h3 style={{ fontFamily: "var(--sans)", fontSize: 17, fontWeight: 600 }}>Your circle paints first</h3><p className="small muted">Share a private link. Each guest gets a slot and its colour, and makes anything they like in it, by hand.</p></li>
-          <li><span className="serif" style={{ fontSize: 22, color: "var(--accent)" }}>III</span><h3 style={{ fontFamily: "var(--sans)", fontSize: 17, fontWeight: 600 }}>Artists fill the rest</h3><p className="small muted">Open slots go to the colour challenge, where Tessera artists pick them up and share {poolPct}% of the price between them. Anything still empty near your date gets a clearly marked studio fill, so it always finishes on time.</p></li>
+          <li><span className="serif" style={{ fontSize: 22, color: "var(--accent)" }}>III</span><h3 style={{ fontFamily: "var(--sans)", fontSize: 17, fontWeight: 600 }}>Our studio finishes it</h3><p className="small muted">Squares nobody paints are finished by the Tessera studio before your date, and marked as studio squares, so it is always ready on time.</p></li>
           <li><span className="serif" style={{ fontSize: 22, color: "var(--accent)" }}>IV</span><h3 style={{ fontFamily: "var(--sans)", fontSize: 17, fontWeight: 600 }}>Everyone sees it at once</h3><p className="small muted">The reveal zooms out from one tile to the whole picture. You get a vertical video for TikTok and Reels, and every contributor gets a link to their own tile.</p></li>
         </ol>
       </section>
@@ -67,8 +66,9 @@ export function MosaicHome() {
             </article>
           ))}
         </div>
-        <p className="small faint">Every size includes a private invite link, an optional public colour challenge, studio fill before your date, and the reveal video. Every contributed tile is human-made.</p>
+        <p className="small faint">Every size is a digital mosaic: a private invite link, the paint tool, studio finishing before your date, the reveal video and a link to keep. Nothing is posted, so it arrives on the day wherever they live.</p>
       </section>
+      <WhyDigital />
       <OccasionCards />
     </Page>
   );

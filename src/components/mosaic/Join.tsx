@@ -207,7 +207,7 @@ function MakeTile({ mosaic: m, slot, fitFirst, source, token, upload, setUpload,
             : <button className="btn btn--quiet" onClick={() => fileRef.current?.click()}>Choose a different picture</button>}
         </>
       )}
-      <p className="note"><Icon name="hand" size={16} /> Tessera only accepts work made by people. Every tile is checked for AI before it’s placed.</p>
+      <p className="note"><Icon name="hand" size={16} /> Tessera only accepts work made by people. Every tile is checked by a person before it’s placed.</p>
       {!painted && <div className="field"><label htmlFor="medium">What did you make it with?</label>
         <select id="medium" className="input" value={medium} onChange={(e) => setMedium(e.target.value)}>{MEDIUMS.map((x) => <option key={x}>{x}</option>)}</select>
       </div>}

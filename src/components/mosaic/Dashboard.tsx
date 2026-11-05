@@ -47,7 +47,7 @@ function Dashboard({ id, fresh }: { id: string; fresh: boolean }) {
         <div className="row" style={{ marginTop: 20 }}><Link className="btn btn--primary" href={`/reveal?id=${m.id}`}>Watch the reveal</Link></div>
       </Page>
     );
-    return <Page narrow><span className="eyebrow">A hidden mosaic</span><h1 style={{ fontSize: 40, margin: "10px 0 16px" }}>{m.title}</h1><p className="muted">This picture is still being made. It will be revealed on {dateLabel(m.revealAt)}.</p></Page>;
+    return <Page narrow><span className="eyebrow">A digital mosaic</span><h1 style={{ fontSize: 40, margin: "10px 0 16px" }}>{m.title}</h1><p className="muted">This picture is still being made. It will be revealed on {dateLabel(m.revealAt)}.</p></Page>;
   }
 
   if (m.status === "awaiting_payment" || m.status === "cancelled") return (

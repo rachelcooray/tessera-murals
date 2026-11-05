@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "sw
 
 export const metadata: Metadata = {
   title: { default: "Tessera", template: "%s · Tessera" },
-  description: "Hidden mosaics made by people: upload a photo, everyone paints one colour, and nobody sees the picture until the reveal.",
+  description: "Digital mosaics painted by your people: upload a photo, everyone paints one square, and nobody sees the picture until the reveal.",
 };
 
 export const viewport: Viewport = { themeColor: "#000000", viewportFit: "cover", width: "device-width", initialScale: 1 };

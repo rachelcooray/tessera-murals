@@ -38,7 +38,7 @@ export function Wordmark() {
   return <Link href="/wall" className="wordmark" aria-label="Tessera, back to the mural"><Mark /><span>Tessera</span></Link>;
 }
 
-const NAV = [["/wall", "Season 0 wall"], ["/seasons", "Past seasons"], ["/", "Hidden mosaics"]] as const;
+const NAV = [["/wall", "Season 0 wall"], ["/seasons", "Past seasons"], ["/", "Digital mosaics"]] as const;
 
 export function Header({ current, overlay = false }: { current?: string; overlay?: boolean }) {
   const s = useLocalState();
