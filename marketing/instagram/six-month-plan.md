@@ -13,6 +13,7 @@ Everything here is also on the website: **Admin › Marketing**, with a download
 - **Fri 6 Nov** · Story: Orders open soon (until orders open)
 - **Fri 6 Nov** · Story: Orders are open
 - **Sun 8 Nov** · Reel: One square: Yosemite firefall
+- **Mon 9 Nov** · Story: Why digital? (4 Stories in a row)
 - **Wed 11 Nov** · Reel: Guess what it is: a barn owl
 - **Fri 13 Nov** · Reel: Guess what it is: jellyfish
 - **Sun 15 Nov** · Carousel: How it works (Christmas row 1 (posts 1 to 3)) · *orders must be open*
@@ -31,11 +32,13 @@ Everything here is also on the website: **Admin › Marketing**, with a download
 ## December 2026
 
 - **Wed 2 Dec** · Reel: Your colour
-- **Fri 4 Dec** · Story: Last day to order for Christmas
+- **Fri 4 Dec** · Story: Three weeks of painting: order today
 - **Sun 6 Dec** · Reel: Guess what it is: a red panda
 - **Wed 9 Dec** · Reel: A wave paints the canyon
+- **Thu 10 Dec** · Story: Why digital? (4 Stories in a row)
 - **Sun 13 Dec** · Reel: Squares arrive: jellyfish
 - **Wed 16 Dec** · Reel: Zoom out: Mount Fuji
+- **Fri 18 Dec** · Story: Last day to order for Christmas
 - **Fri 25 Dec** · Story: Merry Christmas
 - **Sun 27 Dec** · Carousel: How it works (Wedding row (posts 7 to 9))
 - **Sun 27 Dec** · Carousel: Guest questions (Wedding row (posts 7 to 9))
@@ -50,7 +53,7 @@ Everything here is also on the website: **Admin › Marketing**, with a download
 - **Wed 13 Jan** · Reel: Zoom out: a waterfall
 - **Sun 17 Jan** · Story: One week left for Valentine's
 - **Wed 20 Jan** · Reel: Guess what it is: a tree frog
-- **Sun 24 Jan** · Story: Last day to order for Valentine's
+- **Sun 24 Jan** · Story: Valentine's: three weeks of painting, order today
 - **Tue 26 Jan** · Carousel: How it works (Mother's Day row (posts 13 to 15)) · *orders must be open*
 - **Tue 26 Jan** · Carousel: Order by 14 Feb (Mother's Day row (posts 13 to 15)) · *orders must be open*
 - **Tue 26 Jan** · Reel: The reveal (Mother's Day row (posts 13 to 15)) · *orders must be open*
@@ -59,13 +62,16 @@ Everything here is also on the website: **Admin › Marketing**, with a download
 
 - **Wed 3 Feb** · Reel: Guess what it is: a sea turtle
 - **Sun 7 Feb** · Story: One week left for Mother's Day
+- **Sun 7 Feb** · Story: Last day to order for Valentine's
+- **Wed 10 Feb** · Story: Why digital? (4 Stories in a row)
 - **Sun 14 Feb** · Story: Happy Valentine's Day
-- **Sun 14 Feb** · Story: Last day to order for Mother's Day
+- **Sun 14 Feb** · Story: Mother's Day: three weeks of painting, order today
 - **Wed 17 Feb** · Reel: Zoom out: Santorini
 - **Sun 21 Feb** · Carousel: How it works (Big birthdays row (posts 16 to 18)) · *orders must be open*
 - **Sun 21 Feb** · Carousel: Birthday ideas (Big birthdays row (posts 16 to 18)) · *orders must be open*
 - **Sun 21 Feb** · Reel: The reveal (Big birthdays row (posts 16 to 18)) · *orders must be open*
 - **Wed 24 Feb** · You film: Your own paint-a-square Reel
+- **Sun 28 Feb** · Story: Last day to order for Mother's Day
 - **Sun 28 Feb** · Story: Question: who would you make one for?
 
 ## March 2027
@@ -109,7 +115,11 @@ Everything here is also on the website: **Admin › Marketing**, with a download
 - **Sun 9 May** · Reel: The reveal (Father's Day row (posts 31 to 33)) · *orders must be open*
 - **Sun 16 May** · Reel: Guess what it is: king penguins
 - **Sun 23 May** · Story: One week left for Father's Day
-- **Sun 30 May** · Story: Last day to order for Father's Day
+- **Sun 30 May** · Story: Father's Day: three weeks of painting, order today
+
+## June 2027
+
+- **Sun 13 Jun** · Story: Last day to order for Father's Day
 
 ## Photo credits
 
