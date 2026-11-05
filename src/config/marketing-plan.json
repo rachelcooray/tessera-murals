@@ -1,0 +1,1986 @@
+{
+ "photoCredits": [
+  "\"Antelope Canyon\" by Madhu Shesharam on Unsplash (https://unsplash.com/photos/EVZxXuOEk3w)",
+  "\"Jellyfish\" by Joel Filipe on Unsplash (https://unsplash.com/photos/_AjqGGafofE)",
+  "\"Yosemite firefall\" by Stephen Leonardi on Unsplash (https://unsplash.com/photos/MDmwQVgDHHM)",
+  "\"Fox\" by Sunyu on Unsplash (https://unsplash.com/photos/tIfrzHxhPYQ)",
+  "\"Tree by the Fireplace\" by Mike Cox on Unsplash (https://unsplash.com/photos/3UQybRpwpso)",
+  "\"Christmas Baubles\" by Eric Prouzet on Unsplash (https://unsplash.com/photos/Y5k4nhyHluo)",
+  "\"Blossoms by the Lake\" by Mark Tegethoff on Unsplash (https://unsplash.com/photos/NMLv5HQZnK4)",
+  "\"Red Tulips\" by Aaron Burden on Unsplash (https://unsplash.com/photos/DjsBoWp7HV0)",
+  "\"Rows of Pink Tulips\" by Tom Robak on Unsplash (https://unsplash.com/photos/7W4JNJpxq5w)",
+  "\"Balloons over Cappadocia\" by Darren Lee on Unsplash (https://unsplash.com/photos/0kEvX-9hJyQ)",
+  "\"Umbrella Sky\" by Helen Cheng on Unsplash (https://unsplash.com/photos/ty3FAU-hLUM)",
+  "\"Lavender Fields\" by Antony BEC on Unsplash (https://unsplash.com/photos/nD9tEn63suc)",
+  "\"Moraine Lake\" by garrett parker on Unsplash (https://unsplash.com/photos/DlkF4-dbCOU)",
+  "\"Barn Owl in Flowers\" by Andy Chilton on Unsplash (https://unsplash.com/photos/zICEeDwWH0o)",
+  "\"Puffins among Flowers\" by Wynand van Poortvliet on Unsplash (https://unsplash.com/photos/4AmyOdXZAQc)",
+  "\"Red Panda\" by Jessica Weiller on Unsplash (https://unsplash.com/photos/GAw5wFLVWVo)",
+  "\"Red-eyed Tree Frog\" by Zdeněk Macháček on Unsplash (https://unsplash.com/photos/HYTwWSE5ztw)",
+  "\"Sea Turtle\" by Kris-Mikael Krister on Unsplash (https://unsplash.com/photos/aGihPIbrtVE)",
+  "\"Kingfisher on a Branch\" by Hans Veth on Unsplash (https://unsplash.com/photos/UVm3RhdOqOU)",
+  "\"Canals of Burano\" by Dorian Mongel on Unsplash (https://unsplash.com/photos/BSOv5_J0eSg)",
+  "\"Fuji in Blossom\" by JJ Ying on Unsplash (https://unsplash.com/photos/9Qwbfa_RM94)",
+  "\"Turquoise Falls\" by Jonatan Pie on Unsplash (https://unsplash.com/photos/OPOg0fz5uIs)",
+  "\"Blue Domes of Santorini\" by Jonathan Gallegos on Unsplash (https://unsplash.com/photos/_vA2q0-NroU)",
+  "\"Golden Forest Lake\" by Tobias Reich on Unsplash (https://unsplash.com/photos/kOFvKxzph30)",
+  "\"Hallstatt by the Lake\" by Joss Woodhead on Unsplash (https://unsplash.com/photos/3wFRlwS91yk)",
+  "\"Scarlet Macaw\" by Tim Mossholder on Unsplash (https://unsplash.com/photos/cO5-QcKIR9o)",
+  "\"Red Koi\" by Tifenn Degornet on Unsplash (https://unsplash.com/photos/PpwK032gSao)",
+  "\"Bengal Tiger\" by A G on Unsplash (https://unsplash.com/photos/YuQgNYku1M8)",
+  "\"Little Owl\" by Zdeněk Macháček on Unsplash (https://unsplash.com/photos/oqYHtXrLXLo)",
+  "\"Hummingbird\" by James Wainscoat on Unsplash (https://unsplash.com/photos/hjmED1qivmc)",
+  "\"King Penguins\" by Ian Parker on Unsplash (https://unsplash.com/photos/2CA93gJIh98)",
+  "\"Lofoten Fishing Village\" by John O'Nolan on Unsplash (https://unsplash.com/photos/6f_ANCcbj3o)",
+  "\"Lighthouse at Dusk\" by Jonathan Ford on Unsplash (https://unsplash.com/photos/c9bEyA_xFIk)",
+  "\"Blue Hydrangeas\" by Gaetano Cessati on Unsplash (https://unsplash.com/photos/CCy2UFLO1Mg)"
+ ],
+ "entries": [
+  {
+   "id": "2026-11-06-orders-open-soon-until-orders-open",
+   "date": "2026-11-06",
+   "kind": "Story",
+   "title": "Orders open soon (until orders open)",
+   "group": null,
+   "files": [
+    {
+     "name": "01-story-orders-open-soon.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "",
+   "notes": [
+    "Use this one while orders aren't open yet. Add a link sticker to the founding list."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2026-11-06-orders-are-open",
+   "date": "2026-11-06",
+   "kind": "Story",
+   "title": "Orders are open",
+   "group": null,
+   "files": [
+    {
+     "name": "01-st-orders-open.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "",
+   "notes": [
+    "Add a link sticker over the dashed box, pointing to the founding list (or the shop once orders are open).",
+    "Post this on the day orders open. Until then, post the 'orders open soon' Story above instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2026-11-08-one-square-yosemite-firefall",
+   "date": "2026-11-08",
+   "kind": "Reel",
+   "title": "One square: Yosemite firefall",
+   "group": null,
+   "files": [
+    {
+     "name": "01-reel-firefall-one-square.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "This is one square. One person painted it, and they never saw the rest. 🔥\n\nThat's how every Tessera mosaic is made: your photo, painted square by square by the people who love you, hidden until the reveal.\n\nJoin the founding list. Link in bio.\n\nSample photo: Stephen Leonardi on Unsplash.\n\n#hiddenmosaic #tessera #yosemite #mosaicart #giftideas",
+   "notes": [
+    "Cover: the frame at about 11.5 seconds (the whole waterfall).",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2026-11-11-guess-what-it-is-a-barn-owl",
+   "date": "2026-11-11",
+   "kind": "Reel",
+   "title": "Guess what it is: a barn owl",
+   "group": null,
+   "files": [
+    {
+     "name": "01-out-g-owl.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Guess what it is before it ends. 👀 Comment your guess first, no cheating.\n\nOne photo, thousands of squares. Make one from yours. Link in bio.\n\nSample photo: Andy Chilton on Unsplash.\n\n#guesswhat #hiddenmosaic #mosaicart #satisfying #tessera",
+   "notes": [
+    "Cover: the first frame, so people have to watch.",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2026-11-13-guess-what-it-is-jellyfish",
+   "date": "2026-11-13",
+   "kind": "Reel",
+   "title": "Guess what it is: jellyfish",
+   "group": null,
+   "files": [
+    {
+     "name": "01-reel-jellyfish-guess.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Guess what it is before it ends. 👀 Comment your guess first, no cheating.\n\nEvery one of those squares could be painted by a different person. Make one from your photo. Link in bio.\n\nSample photo: Joel Filipe on Unsplash.\n\n#hiddenmosaic #tessera #guesswhat #mosaicart #satisfying",
+   "notes": [
+    "Cover: the first frame (just squares).",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2026-11-15-how-it-works",
+   "date": "2026-11-15",
+   "kind": "Carousel",
+   "title": "How it works",
+   "group": "Christmas row 1 (posts 1 to 3)",
+   "files": [
+    {
+     "name": "01-grid-1-how-it-works.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-post1-slide-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    },
+    {
+     "name": "03-post1-slide-3.jpg",
+     "type": "image",
+     "thumb": "thumbs/03.jpg"
+    },
+    {
+     "name": "04-post1-slide-4.jpg",
+     "type": "image",
+     "thumb": "thumbs/04.jpg"
+    },
+    {
+     "name": "05-post1-slide-5.jpg",
+     "type": "image",
+     "thumb": "thumbs/05.jpg"
+    }
+   ],
+   "caption": "The Christmas gift for the family that has everything. 🎄\n\nSend us one family photo. We cut it into thousands of squares and send one to everyone: grandparents, cousins abroad, the kids. Each person paints their square in the colour they're given, without ever seeing the picture.\n\nOn Christmas morning, it comes together.\n\nOrder by 4 December. Link in bio.\n\nSample photo: Mike Cox on Unsplash.\n\n#christmasgift #familygift #giftideas #hiddenmosaic #tessera",
+   "notes": [
+    "Lands on the right of the row.",
+    "Post the row right to left on the same day, a few minutes apart: right, then middle, then left."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2026-11-15-order-by-4-december",
+   "date": "2026-11-15",
+   "kind": "Carousel",
+   "title": "Order by 4 December",
+   "group": "Christmas row 1 (posts 1 to 3)",
+   "files": [
+    {
+     "name": "01-grid-2-order-by.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-post2-slide-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    }
+   ],
+   "caption": "Christmas morning reveal? Order by 4 December. 📅\n\nThat gives everyone three weeks to paint their square.\n\nSmall · 10,000 squares · $45\nMedium · 20,000 squares · $95\nLarge · 30,000 squares · $145\nGrand · 40,000 squares · $195\n\nGuests never pay. Link in bio.\n\n#christmasgift #giftideas #personalisedgift #hiddenmosaic #tessera",
+   "notes": [
+    "Lands on the middle of the row."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2026-11-15-the-reveal",
+   "date": "2026-11-15",
+   "kind": "Reel",
+   "title": "The reveal",
+   "group": "Christmas row 1 (posts 1 to 3)",
+   "files": [
+    {
+     "name": "01-reel-christmas.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-grid-3-the-reveal.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    }
+   ],
+   "caption": "One family photo. Everyone paints one square. Nobody sees the picture until Christmas morning. ✨\n\nShare this with whoever's organising Christmas this year.\n\nOrder by 4 December. Link in bio.\n\nSample photo: Mike Cox on Unsplash.\n\n#christmasgift #christmas2026 #familychristmas #hiddenmosaic #tessera",
+   "notes": [
+    "Lands on the left of the row.",
+    "Reel cover: in the Reel editor tap Edit cover, then Add from camera roll, and pick the cover image here. That keeps the grid joined up."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2026-11-18-zoom-out-a-fox",
+   "date": "2026-11-18",
+   "kind": "Reel",
+   "title": "Zoom out: a fox",
+   "group": null,
+   "files": [
+    {
+     "name": "01-clip-fox-zoom.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Up close: squares. From afar: a fox. 🦊\n\nSample photo: Sunyu on Unsplash.\n\n#mosaicart #satisfying #tessera",
+   "notes": [
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2026-11-20-guess-what-it-is-puffins",
+   "date": "2026-11-20",
+   "kind": "Reel",
+   "title": "Guess what it is: puffins",
+   "group": null,
+   "files": [
+    {
+     "name": "01-out-g-puffins.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Guess what it is before it ends. 👀 Comment your guess first, no cheating.\n\nOne photo, thousands of squares. Make one from yours. Link in bio.\n\nSample photo: Wynand van Poortvliet on Unsplash.\n\n#guesswhat #hiddenmosaic #mosaicart #satisfying #tessera",
+   "notes": [
+    "Cover: the first frame, so people have to watch.",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2026-11-22-who-it-s-for",
+   "date": "2026-11-22",
+   "kind": "Carousel",
+   "title": "Who it's for",
+   "group": "Christmas row 2 (posts 4 to 6)",
+   "files": [
+    {
+     "name": "01-grid-4-who-its-for.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-post4-slide-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    },
+    {
+     "name": "03-post4-slide-3.jpg",
+     "type": "image",
+     "thumb": "thumbs/03.jpg"
+    },
+    {
+     "name": "04-post4-slide-4.jpg",
+     "type": "image",
+     "thumb": "thumbs/04.jpg"
+    },
+    {
+     "name": "05-post4-slide-5.jpg",
+     "type": "image",
+     "thumb": "thumbs/05.jpg"
+    },
+    {
+     "name": "06-post4-slide-6.jpg",
+     "type": "image",
+     "thumb": "thumbs/06.jpg"
+    }
+   ],
+   "caption": "Stuck on what to get them? Four people this is perfect for. 🎁\n\n1. Grandparents, painted by every grandchild.\n2. The family that can't be home, painted from everywhere.\n3. A baby's first Christmas, painted by everyone waiting to meet them.\n4. The person who has everything, except this.\n\nSave this, then send it to whoever's organising Christmas.\n\nOrder by 4 December. Link in bio.\n\n#christmasgift #giftsforgrandparents #giftideas #hiddenmosaic #tessera",
+   "notes": [
+    "Lands on the right of the row.",
+    "Post the row right to left on the same day, a few minutes apart: right, then middle, then left."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2026-11-22-what-happens-next",
+   "date": "2026-11-22",
+   "kind": "Carousel",
+   "title": "What happens next",
+   "group": "Christmas row 2 (posts 4 to 6)",
+   "files": [
+    {
+     "name": "01-grid-5-what-happens-next.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-post5-slide-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    }
+   ],
+   "caption": "What happens after you order? Four steps to Christmas morning. 🎄\n\nToday: upload one photo and pick a size.\nSame day: share one link with everyone.\nNext 3 weeks: everyone paints. Nobody peeks.\n25 December: the reveal, with a video to share.\n\nOrder by 4 December. Guests never pay. Link in bio.\n\n#christmasgift #familychristmas #giftideas #hiddenmosaic #tessera",
+   "notes": [
+    "Lands on the middle of the row."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2026-11-22-your-square",
+   "date": "2026-11-22",
+   "kind": "Reel",
+   "title": "Your square",
+   "group": "Christmas row 2 (posts 4 to 6)",
+   "files": [
+    {
+     "name": "01-reel-christmas-baubles.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-grid-6-your-square.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    }
+   ],
+   "caption": "This square could be yours. 🔴\n\nEveryone gets one square and one colour. Nobody sees the picture until Christmas morning.\n\nOrder by 4 December. Link in bio.\n\nSample photo: Eric Prouzet on Unsplash.\n\n#christmasgift #christmas2026 #hiddenmosaic #satisfying #tessera",
+   "notes": [
+    "Lands on the left of the row.",
+    "Reel cover: in the Reel editor tap Edit cover, then Add from camera roll, and pick the cover image here. That keeps the grid joined up."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2026-11-25-zoom-out-burano",
+   "date": "2026-11-25",
+   "kind": "Reel",
+   "title": "Zoom out: Burano",
+   "group": null,
+   "files": [
+    {
+     "name": "01-out-z-burano.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Up close: squares. From afar: Burano. ✨\n\nYour photo could be next. Link in bio.\n\nSample photo: Dorian Mongel on Unsplash.\n\n#mosaicart #satisfying #hiddenmosaic #tessera",
+   "notes": [
+    "Short clip: also works as a Story with a link sticker.",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2026-11-27-one-week-left-for-christmas",
+   "date": "2026-11-27",
+   "kind": "Story",
+   "title": "One week left for Christmas",
+   "group": null,
+   "files": [
+    {
+     "name": "01-st-xmas-week.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "",
+   "notes": [
+    "Add a link sticker over the dashed box, pointing to the founding list (or the shop once orders are open)."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2026-11-27-squares-fill-in-the-canyon",
+   "date": "2026-11-27",
+   "kind": "Reel",
+   "title": "Squares fill in: the canyon",
+   "group": null,
+   "files": [
+    {
+     "name": "01-reel-canyon-fill.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "10,800 squares. Imagine each one painted by a different person, and none of them ever saw the picture. ✨\n\nUntil the reveal.\n\nJoin the founding list. Link in bio.\n\nSample photo: Madhu Shesharam on Unsplash.\n\n#hiddenmosaic #tessera #satisfying #mosaicart #giftideas",
+   "notes": [
+    "Cover: the frame at about 12 seconds (the full picture).",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2026-11-29-poll-hardest-to-buy-for",
+   "date": "2026-11-29",
+   "kind": "Story",
+   "title": "Poll: hardest to buy for",
+   "group": null,
+   "files": [
+    {
+     "name": "01-st-poll-hardest.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "",
+   "notes": [
+    "Add the sticker over the dashed box.",
+    "Poll options: Mum / Dad / Grandparents / Partner."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2026-12-02-your-colour",
+   "date": "2026-12-02",
+   "kind": "Reel",
+   "title": "Your colour",
+   "group": null,
+   "files": [
+    {
+     "name": "01-clip-your-colour.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "This is all a guest sees. One colour. Then the reveal. ✨\n\nLink in bio.\n\n#hiddenmosaic #tessera",
+   "notes": [
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2026-12-04-last-day-to-order-for-christmas",
+   "date": "2026-12-04",
+   "kind": "Story",
+   "title": "Last day to order for Christmas",
+   "group": null,
+   "files": [
+    {
+     "name": "01-st-xmas-last.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "",
+   "notes": [
+    "Add a link sticker over the dashed box, pointing to the founding list (or the shop once orders are open)."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2026-12-06-guess-what-it-is-a-red-panda",
+   "date": "2026-12-06",
+   "kind": "Reel",
+   "title": "Guess what it is: a red panda",
+   "group": null,
+   "files": [
+    {
+     "name": "01-out-g-redpanda.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Guess what it is before it ends. 👀 Comment your guess first, no cheating.\n\nOne photo, thousands of squares. Make one from yours. Link in bio.\n\nSample photo: Jessica Weiller on Unsplash.\n\n#guesswhat #hiddenmosaic #mosaicart #satisfying #tessera",
+   "notes": [
+    "Cover: the first frame, so people have to watch.",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2026-12-09-a-wave-paints-the-canyon",
+   "date": "2026-12-09",
+   "kind": "Reel",
+   "title": "A wave paints the canyon",
+   "group": null,
+   "files": [
+    {
+     "name": "01-clip-canyon-wave.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Painted blind. Revealed together. ✨\n\nSample photo: Madhu Shesharam on Unsplash.\n\n#mosaicart #satisfying #tessera",
+   "notes": [
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2026-12-13-squares-arrive-jellyfish",
+   "date": "2026-12-13",
+   "kind": "Reel",
+   "title": "Squares arrive: jellyfish",
+   "group": null,
+   "files": [
+    {
+     "name": "01-out-rush.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Squares arrive one at a time, then all at once. 10,800 of them. ✨\n\nSample photo: Joel Filipe on Unsplash.\n\n#mosaicart #satisfying #tessera",
+   "notes": [
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2026-12-16-zoom-out-mount-fuji",
+   "date": "2026-12-16",
+   "kind": "Reel",
+   "title": "Zoom out: Mount Fuji",
+   "group": null,
+   "files": [
+    {
+     "name": "01-out-z-fuji.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Up close: squares. From afar: Mount Fuji. ✨\n\nYour photo could be next. Link in bio.\n\nSample photo: JJ Ying on Unsplash.\n\n#mosaicart #satisfying #hiddenmosaic #tessera",
+   "notes": [
+    "Short clip: also works as a Story with a link sticker.",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2026-12-25-merry-christmas",
+   "date": "2026-12-25",
+   "kind": "Story",
+   "title": "Merry Christmas",
+   "group": null,
+   "files": [
+    {
+     "name": "01-st-xmas-day.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "",
+   "notes": [
+    "Add a link sticker over the dashed box, pointing to the founding list (or the shop once orders are open)."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2026-12-27-how-it-works",
+   "date": "2026-12-27",
+   "kind": "Carousel",
+   "title": "How it works",
+   "group": "Wedding row (posts 7 to 9)",
+   "files": [
+    {
+     "name": "01-grid-7-how-it-works.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-post7-slide-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    },
+    {
+     "name": "03-post7-slide-3.jpg",
+     "type": "image",
+     "thumb": "thumbs/03.jpg"
+    },
+    {
+     "name": "04-post7-slide-4.jpg",
+     "type": "image",
+     "thumb": "thumbs/04.jpg"
+    },
+    {
+     "name": "05-post7-slide-5.jpg",
+     "type": "image",
+     "thumb": "thumbs/05.jpg"
+    }
+   ],
+   "caption": "The guest book every guest paints. 💐\n\nInstead of signing a book, every guest at your wedding paints one square of a photo you choose. They get a link and a colour. That's all they see.\n\nYou pick the reveal: the morning after, the end of the honeymoon, or your first anniversary.\n\nJoin the founding list. Link in bio.\n\nSample photo: Mark Tegethoff on Unsplash.\n\n#weddingguestbook #guestbookalternative #weddingideas #wedding2027 #tessera",
+   "notes": [
+    "Lands on the right of the row.",
+    "Post the row right to left on the same day, a few minutes apart: right, then middle, then left."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2026-12-27-guest-questions",
+   "date": "2026-12-27",
+   "kind": "Carousel",
+   "title": "Guest questions",
+   "group": "Wedding row (posts 7 to 9)",
+   "files": [
+    {
+     "name": "01-grid-8-guest-questions.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-post8-slide-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    },
+    {
+     "name": "03-post8-slide-3.jpg",
+     "type": "image",
+     "thumb": "thumbs/03.jpg"
+    }
+   ],
+   "caption": "What your guests will ask, answered. 👇\n\nNo app. One link, any phone.\nNo art skills. Any mark in your colour works.\nAbout a minute each.\nNobody sees the picture until you say so.\nGuests never pay.\n\nSave this for when you're planning. Link in bio.\n\n#weddingplanning #bridetobe #engaged #weddinginspo #tessera",
+   "notes": [
+    "Lands on the middle of the row."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2026-12-27-the-reveal",
+   "date": "2026-12-27",
+   "kind": "Reel",
+   "title": "The reveal",
+   "group": "Wedding row (posts 7 to 9)",
+   "files": [
+    {
+     "name": "01-reel-wedding-guest-book.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-grid-9-the-reveal.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    }
+   ],
+   "caption": "One guest. One square. Nobody sees the picture until your first anniversary. 🌸\n\nThe guest book every guest paints. Join the list, link in bio.\n\nSample photo: Mark Tegethoff on Unsplash.\n\n#weddingreels #weddingguestbook #weddingideas #anniversarygift #tessera",
+   "notes": [
+    "Lands on the left of the row.",
+    "Reel cover: in the Reel editor tap Edit cover, then Add from camera roll, and pick the cover image here. That keeps the grid joined up."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-01-03-a-love-letter",
+   "date": "2027-01-03",
+   "kind": "Carousel",
+   "title": "A love letter",
+   "group": "Valentine's row (posts 10 to 12)",
+   "files": [
+    {
+     "name": "01-grid-10-a-love-letter.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-post10-slide-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    },
+    {
+     "name": "03-post10-slide-3.jpg",
+     "type": "image",
+     "thumb": "thumbs/03.jpg"
+    },
+    {
+     "name": "04-post10-slide-4.jpg",
+     "type": "image",
+     "thumb": "thumbs/04.jpg"
+    },
+    {
+     "name": "05-post10-slide-5.jpg",
+     "type": "image",
+     "thumb": "thumbs/05.jpg"
+    }
+   ],
+   "caption": "A Valentine's gift written by everyone who loves them. ❤️\n\nSend us one photo of the two of you. Friends and family each paint one square, without ever seeing the picture. On Valentine's morning, your person sees it all at once.\n\nOrder by 24 January. Link in bio.\n\nSample photo: Aaron Burden on Unsplash.\n\n#valentinesgift #valentinesday #giftforher #giftforhim #tessera",
+   "notes": [
+    "Lands on the right of the row.",
+    "Post the row right to left on the same day, a few minutes apart: right, then middle, then left."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2027-01-03-order-by-24-january",
+   "date": "2027-01-03",
+   "kind": "Carousel",
+   "title": "Order by 24 January",
+   "group": "Valentine's row (posts 10 to 12)",
+   "files": [
+    {
+     "name": "01-grid-11-order-by.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-post11-slide-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    }
+   ],
+   "caption": "Valentine's falls on a Sunday this year. 🌷\n\nOrder by 24 January for three weeks of painting and a reveal on the morning of 14 February.\n\nFrom $45. Guests never pay. Link in bio.\n\n#valentines2027 #valentinesgiftideas #couplegoals #tessera",
+   "notes": [
+    "Lands on the middle of the row."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2027-01-03-the-reveal",
+   "date": "2027-01-03",
+   "kind": "Reel",
+   "title": "The reveal",
+   "group": "Valentine's row (posts 10 to 12)",
+   "files": [
+    {
+     "name": "01-reel-valentine.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-grid-12-the-reveal.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    }
+   ],
+   "caption": "Everyone who loves you paints a square. Nobody sees the picture until Valentine's morning. ❤️\n\nOrder by 24 January. Link in bio.\n\nSample photo: Aaron Burden on Unsplash.\n\n#valentinesreels #valentinesgift #lovenotes #tessera",
+   "notes": [
+    "Lands on the left of the row.",
+    "Reel cover: in the Reel editor tap Edit cover, then Add from camera roll, and pick the cover image here. That keeps the grid joined up."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2027-01-10-question-what-would-you-paint",
+   "date": "2027-01-10",
+   "kind": "Story",
+   "title": "Question: what would you paint?",
+   "group": null,
+   "files": [
+    {
+     "name": "01-st-q-square.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "",
+   "notes": [
+    "Add the sticker over the dashed box."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-01-13-zoom-out-a-waterfall",
+   "date": "2027-01-13",
+   "kind": "Reel",
+   "title": "Zoom out: a waterfall",
+   "group": null,
+   "files": [
+    {
+     "name": "01-out-z-falls.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Up close: squares. From afar: a waterfall. ✨\n\nYour photo could be next. Link in bio.\n\nSample photo: Jonatan Pie on Unsplash.\n\n#mosaicart #satisfying #hiddenmosaic #tessera",
+   "notes": [
+    "Short clip: also works as a Story with a link sticker.",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-01-17-one-week-left-for-valentine-s",
+   "date": "2027-01-17",
+   "kind": "Story",
+   "title": "One week left for Valentine's",
+   "group": null,
+   "files": [
+    {
+     "name": "01-st-val-week.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "",
+   "notes": [
+    "Add a link sticker over the dashed box, pointing to the founding list (or the shop once orders are open)."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-01-20-guess-what-it-is-a-tree-frog",
+   "date": "2027-01-20",
+   "kind": "Reel",
+   "title": "Guess what it is: a tree frog",
+   "group": null,
+   "files": [
+    {
+     "name": "01-out-g-frog.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Guess what it is before it ends. 👀 Comment your guess first, no cheating.\n\nOne photo, thousands of squares. Make one from yours. Link in bio.\n\nSample photo: Zdeněk Macháček on Unsplash.\n\n#guesswhat #hiddenmosaic #mosaicart #satisfying #tessera",
+   "notes": [
+    "Cover: the first frame, so people have to watch.",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-01-24-last-day-to-order-for-valentine-s",
+   "date": "2027-01-24",
+   "kind": "Story",
+   "title": "Last day to order for Valentine's",
+   "group": null,
+   "files": [
+    {
+     "name": "01-st-val-last.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "",
+   "notes": [
+    "Add a link sticker over the dashed box, pointing to the founding list (or the shop once orders are open)."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-01-26-how-it-works",
+   "date": "2027-01-26",
+   "kind": "Carousel",
+   "title": "How it works",
+   "group": "Mother's Day row (posts 13 to 15)",
+   "files": [
+    {
+     "name": "01-grid-13-how-it-works.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-mothers-1-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    },
+    {
+     "name": "03-mothers-1-3.jpg",
+     "type": "image",
+     "thumb": "thumbs/03.jpg"
+    },
+    {
+     "name": "04-mothers-1-4.jpg",
+     "type": "image",
+     "thumb": "thumbs/04.jpg"
+    },
+    {
+     "name": "05-mothers-1-5.jpg",
+     "type": "image",
+     "thumb": "thumbs/05.jpg"
+    }
+   ],
+   "caption": "The Mother's Day gift she'll never see coming. 🌷\n\nSend us one photo of Mum. Everyone who loves her paints one square of it, without ever seeing the picture. On Mother's Day, she sees it all at once.\n\nOrder by 14 February. Link in bio.\n\nSample photo: Tom Robak on Unsplash\n\n#mothersday #mothersdaygift #giftformum #mumgift #tessera",
+   "notes": [
+    "Lands on the right of the row.",
+    "Post the row right to left on the same day, a few minutes apart: right, then middle, then left."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2027-01-26-order-by-14-feb",
+   "date": "2027-01-26",
+   "kind": "Carousel",
+   "title": "Order by 14 Feb",
+   "group": "Mother's Day row (posts 13 to 15)",
+   "files": [
+    {
+     "name": "01-grid-14-order-by-14-feb.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-mothers-2-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    }
+   ],
+   "caption": "Mother's Day is Sunday 7 March. 📅\n\nOrder by 14 February for three weeks of painting. Our studio finishes any squares left, so it's always ready on the day.\n\nThe people painting never pay. Link in bio.\n\n#mothersday2027 #mothersdayideas #giftformum #tessera",
+   "notes": [
+    "Lands on the middle of the row."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2027-01-26-the-reveal",
+   "date": "2027-01-26",
+   "kind": "Reel",
+   "title": "The reveal",
+   "group": "Mother's Day row (posts 13 to 15)",
+   "files": [
+    {
+     "name": "01-out-r-mothers.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-grid-15-the-reveal.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    }
+   ],
+   "caption": "One photo of Mum. Everyone paints one square. Nobody tells her. 🌷\n\nOrder by 14 February. Link in bio.\n\nSample photo: Tom Robak on Unsplash\n\n#mothersdaygift #reels #giftideas #tessera",
+   "notes": [
+    "Lands on the left of the row.",
+    "Reel cover: in the Reel editor tap Edit cover, then Add from camera roll, and pick the cover image here. That keeps the grid joined up."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2027-02-03-guess-what-it-is-a-sea-turtle",
+   "date": "2027-02-03",
+   "kind": "Reel",
+   "title": "Guess what it is: a sea turtle",
+   "group": null,
+   "files": [
+    {
+     "name": "01-out-g-turtle.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Guess what it is before it ends. 👀 Comment your guess first, no cheating.\n\nOne photo, thousands of squares. Make one from yours. Link in bio.\n\nSample photo: Kris-Mikael Krister on Unsplash.\n\n#guesswhat #hiddenmosaic #mosaicart #satisfying #tessera",
+   "notes": [
+    "Cover: the first frame, so people have to watch.",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-02-07-one-week-left-for-mother-s-day",
+   "date": "2027-02-07",
+   "kind": "Story",
+   "title": "One week left for Mother's Day",
+   "group": null,
+   "files": [
+    {
+     "name": "01-st-mum-week.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "",
+   "notes": [
+    "Add a link sticker over the dashed box, pointing to the founding list (or the shop once orders are open)."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-02-14-happy-valentine-s-day",
+   "date": "2027-02-14",
+   "kind": "Story",
+   "title": "Happy Valentine's Day",
+   "group": null,
+   "files": [
+    {
+     "name": "01-st-val-day.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "",
+   "notes": [
+    "Add a link sticker over the dashed box, pointing to the founding list (or the shop once orders are open)."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-02-14-last-day-to-order-for-mother-s-day",
+   "date": "2027-02-14",
+   "kind": "Story",
+   "title": "Last day to order for Mother's Day",
+   "group": null,
+   "files": [
+    {
+     "name": "01-st-mum-last.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "",
+   "notes": [
+    "Add a link sticker over the dashed box, pointing to the founding list (or the shop once orders are open)."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-02-17-zoom-out-santorini",
+   "date": "2027-02-17",
+   "kind": "Reel",
+   "title": "Zoom out: Santorini",
+   "group": null,
+   "files": [
+    {
+     "name": "01-out-z-santorini.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Up close: squares. From afar: Santorini. ✨\n\nYour photo could be next. Link in bio.\n\nSample photo: Jonathan Gallegos on Unsplash.\n\n#mosaicart #satisfying #hiddenmosaic #tessera",
+   "notes": [
+    "Short clip: also works as a Story with a link sticker.",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-02-21-how-it-works",
+   "date": "2027-02-21",
+   "kind": "Carousel",
+   "title": "How it works",
+   "group": "Big birthdays row (posts 16 to 18)",
+   "files": [
+    {
+     "name": "01-grid-16-how-it-works.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-birthdays-1-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    },
+    {
+     "name": "03-birthdays-1-3.jpg",
+     "type": "image",
+     "thumb": "thumbs/03.jpg"
+    },
+    {
+     "name": "04-birthdays-1-4.jpg",
+     "type": "image",
+     "thumb": "thumbs/04.jpg"
+    },
+    {
+     "name": "05-birthdays-1-5.jpg",
+     "type": "image",
+     "thumb": "thumbs/05.jpg"
+    }
+   ],
+   "caption": "The birthday present everyone they know made. 🎈\n\nOne photo, cut into thousands of squares. Everyone gets one colour and paints a square without seeing the picture. On their birthday, it all comes together.\n\nOrder three weeks before. Link in bio.\n\nSample photo: Darren Lee on Unsplash\n\n#birthdaygift #30thbirthday #50thbirthday #80thbirthday #tessera",
+   "notes": [
+    "Lands on the right of the row.",
+    "Post the row right to left on the same day, a few minutes apart: right, then middle, then left."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2027-02-21-birthday-ideas",
+   "date": "2027-02-21",
+   "kind": "Carousel",
+   "title": "Birthday ideas",
+   "group": "Big birthdays row (posts 16 to 18)",
+   "files": [
+    {
+     "name": "01-grid-17-birthday-ideas.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-birthdays-2-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    },
+    {
+     "name": "03-birthdays-2-3.jpg",
+     "type": "image",
+     "thumb": "thumbs/03.jpg"
+    }
+   ],
+   "caption": "Save this for the next big birthday. 🎂\n\n18th: school friends.\n30th: every chapter so far.\n50th: family near and far.\n80th: the grandchildren.\n\nWhich one's coming up for you? Link in bio.\n\n#birthdayideas #giftideas #milestonebirthday #tessera",
+   "notes": [
+    "Lands on the middle of the row."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2027-02-21-the-reveal",
+   "date": "2027-02-21",
+   "kind": "Reel",
+   "title": "The reveal",
+   "group": "Big birthdays row (posts 16 to 18)",
+   "files": [
+    {
+     "name": "01-out-r-birthdays.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-grid-18-the-reveal.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    }
+   ],
+   "caption": "One square. Everyone they know paints one. Nobody sees the picture until their birthday. 🎈\n\nLink in bio.\n\nSample photo: Darren Lee on Unsplash\n\n#birthdaygift #reels #giftideas #tessera",
+   "notes": [
+    "Lands on the left of the row.",
+    "Reel cover: in the Reel editor tap Edit cover, then Add from camera roll, and pick the cover image here. That keeps the grid joined up."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2027-02-24-your-own-paint-a-square-reel",
+   "date": "2027-02-24",
+   "kind": "You film",
+   "title": "Your own paint-a-square Reel",
+   "group": null,
+   "files": [],
+   "caption": "",
+   "notes": [
+    "Film your phone screen (Control Centre > Screen Recording) while you paint one square in the paint tool, start to finish.",
+    "Then film your hand holding the phone for 2 seconds at the start, so people see it's real.",
+    "Keep it under 20 seconds. Add trending music in Instagram. Caption idea: 'This is what a guest sees. One square, one colour, about a minute.'",
+    "Keep the rows lined up: after posting, open your Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-02-28-question-who-would-you-make-one-for",
+   "date": "2027-02-28",
+   "kind": "Story",
+   "title": "Question: who would you make one for?",
+   "group": null,
+   "files": [
+    {
+     "name": "01-st-q-who.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "",
+   "notes": [
+    "Add the sticker over the dashed box."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-03-03-guess-what-it-is-a-kingfisher",
+   "date": "2027-03-03",
+   "kind": "Reel",
+   "title": "Guess what it is: a kingfisher",
+   "group": null,
+   "files": [
+    {
+     "name": "01-out-g-kingfisher.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Guess what it is before it ends. 👀 Comment your guess first, no cheating.\n\nOne photo, thousands of squares. Make one from yours. Link in bio.\n\nSample photo: Hans Veth on Unsplash.\n\n#guesswhat #hiddenmosaic #mosaicart #satisfying #tessera",
+   "notes": [
+    "Cover: the first frame, so people have to watch.",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-03-07-happy-mother-s-day",
+   "date": "2027-03-07",
+   "kind": "Story",
+   "title": "Happy Mother's Day",
+   "group": null,
+   "files": [
+    {
+     "name": "01-st-mum-day.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "",
+   "notes": [
+    "Add a link sticker over the dashed box, pointing to the founding list (or the shop once orders are open)."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-03-10-guess-what-it-is-a-scarlet-macaw",
+   "date": "2027-03-10",
+   "kind": "Reel",
+   "title": "Guess what it is: a scarlet macaw",
+   "group": null,
+   "files": [
+    {
+     "name": "01-out-g-macaw.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Guess what it is before it ends. 👀 Comment your guess first, no cheating.\n\nOne photo, thousands of squares. Make one from yours. Link in bio.\n\nSample photo: Tim Mossholder on Unsplash.\n\n#guesswhat #hiddenmosaic #mosaicart #satisfying #tessera",
+   "notes": [
+    "Cover: the first frame, so people have to watch.",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-03-14-how-it-works",
+   "date": "2027-03-14",
+   "kind": "Carousel",
+   "title": "How it works",
+   "group": "Leaving gifts row (posts 19 to 21)",
+   "files": [
+    {
+     "name": "01-grid-19-how-it-works.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-leaving-1-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    },
+    {
+     "name": "03-leaving-1-3.jpg",
+     "type": "image",
+     "thumb": "thumbs/03.jpg"
+    },
+    {
+     "name": "04-leaving-1-4.jpg",
+     "type": "image",
+     "thumb": "thumbs/04.jpg"
+    },
+    {
+     "name": "05-leaving-1-5.jpg",
+     "type": "image",
+     "thumb": "thumbs/05.jpg"
+    }
+   ],
+   "caption": "The leaving card, but everyone paints a square. ☂️\n\nOne link in the team chat. Everyone gets one colour and paints a square of a photo, without seeing it. On their last day, the picture comes together.\n\nWorks for remote teams too. Link in bio.\n\nSample photo: Helen Cheng on Unsplash\n\n#leavinggift #retirementgift #officegift #teamgift #tessera",
+   "notes": [
+    "Lands on the right of the row.",
+    "Post the row right to left on the same day, a few minutes apart: right, then middle, then left."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2027-03-14-for-teams",
+   "date": "2027-03-14",
+   "kind": "Carousel",
+   "title": "For teams",
+   "group": "Leaving gifts row (posts 19 to 21)",
+   "files": [
+    {
+     "name": "01-grid-20-for-teams.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-leaving-2-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    },
+    {
+     "name": "03-leaving-2-3.jpg",
+     "type": "image",
+     "thumb": "thumbs/03.jpg"
+    }
+   ],
+   "caption": "Four moments worth more than a card. 👇\n\nLeaving. Retirement. A new baby. Ten years at the company.\n\nNo accounts, no app, about a minute each. The people painting never pay.\n\nSave this for the next collection. Link in bio.\n\n#officelife #leavinggift #workanniversary #tessera",
+   "notes": [
+    "Lands on the middle of the row."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2027-03-14-the-reveal",
+   "date": "2027-03-14",
+   "kind": "Reel",
+   "title": "The reveal",
+   "group": "Leaving gifts row (posts 19 to 21)",
+   "files": [
+    {
+     "name": "01-out-r-leaving.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-grid-21-the-reveal.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    }
+   ],
+   "caption": "Everyone in the office paints one square. They never see the picture, until the last day. ☂️\n\nLink in bio.\n\nSample photo: Helen Cheng on Unsplash\n\n#leavinggift #reels #officegift #tessera",
+   "notes": [
+    "Lands on the left of the row.",
+    "Reel cover: in the Reel editor tap Edit cover, then Add from camera roll, and pick the cover image here. That keeps the grid joined up."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2027-03-17-zoom-out-lofoten",
+   "date": "2027-03-17",
+   "kind": "Reel",
+   "title": "Zoom out: Lofoten",
+   "group": null,
+   "files": [
+    {
+     "name": "01-out-z-lofoten.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Up close: squares. From afar: Lofoten. ✨\n\nYour photo could be next. Link in bio.\n\nSample photo: John O'Nolan on Unsplash.\n\n#mosaicart #satisfying #hiddenmosaic #tessera",
+   "notes": [
+    "Short clip: also works as a Story with a link sticker.",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-03-21-poll-when-would-you-reveal-it",
+   "date": "2027-03-21",
+   "kind": "Story",
+   "title": "Poll: when would you reveal it?",
+   "group": null,
+   "files": [
+    {
+     "name": "01-st-poll-reveal.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "",
+   "notes": [
+    "Add the sticker over the dashed box.",
+    "Poll options: The morning after / First anniversary."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-03-24-behind-the-scenes-reviewing-squares",
+   "date": "2027-03-24",
+   "kind": "You film",
+   "title": "Behind the scenes: reviewing squares",
+   "group": null,
+   "files": [],
+   "caption": "",
+   "notes": [
+    "Film the admin page as you approve a few squares (blur any names).",
+    "Caption idea: 'Every square is checked by a person before it goes into a mosaic.'",
+    "Keep the rows lined up: after posting, open your Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-03-28-how-it-works",
+   "date": "2027-03-28",
+   "kind": "Carousel",
+   "title": "How it works",
+   "group": "Anniversaries row (posts 22 to 24)",
+   "files": [
+    {
+     "name": "01-grid-22-how-it-works.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-anniversary-1-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    },
+    {
+     "name": "03-anniversary-1-3.jpg",
+     "type": "image",
+     "thumb": "thumbs/03.jpg"
+    },
+    {
+     "name": "04-anniversary-1-4.jpg",
+     "type": "image",
+     "thumb": "thumbs/04.jpg"
+    },
+    {
+     "name": "05-anniversary-1-5.jpg",
+     "type": "image",
+     "thumb": "thumbs/05.jpg"
+    }
+   ],
+   "caption": "Fifty years married. One picture, painted by everyone they love. 💛\n\nOne photo, cut into thousands of squares. The children, the grandchildren and old friends each paint one, without seeing the picture. On the anniversary, it all comes together.\n\nLink in bio.\n\nSample photo: Tobias Reich on Unsplash\n\n#anniversarygift #goldenanniversary #rubyanniversary #giftforparents #tessera",
+   "notes": [
+    "Lands on the right of the row.",
+    "Post the row right to left on the same day, a few minutes apart: right, then middle, then left."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-03-28-who-paints",
+   "date": "2027-03-28",
+   "kind": "Carousel",
+   "title": "Who paints",
+   "group": "Anniversaries row (posts 22 to 24)",
+   "files": [
+    {
+     "name": "01-grid-23-who-paints.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-anniversary-2-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    }
+   ],
+   "caption": "Who paints an anniversary mosaic? Everyone in their story. 👇\n\nThe children. The grandchildren. The friends who were at the wedding. The neighbours from every street they've lived on.\n\nSave this for the next big anniversary. Link in bio.\n\n#anniversaryideas #familygift #tessera",
+   "notes": [
+    "Lands on the middle of the row."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-03-28-the-reveal",
+   "date": "2027-03-28",
+   "kind": "Reel",
+   "title": "The reveal",
+   "group": "Anniversaries row (posts 22 to 24)",
+   "files": [
+    {
+     "name": "01-out-r-anniversary.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-grid-24-the-reveal.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    }
+   ],
+   "caption": "Fifty years married. Everyone they love paints one square. Revealed on the day. 💛\n\nLink in bio.\n\nSample photo: Tobias Reich on Unsplash\n\n#anniversarygift #reels #giftideas #tessera",
+   "notes": [
+    "Lands on the left of the row.",
+    "Reel cover: in the Reel editor tap Edit cover, then Add from camera roll, and pick the cover image here. That keeps the grid joined up."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-03-31-guess-what-it-is-a-tiger",
+   "date": "2027-03-31",
+   "kind": "Reel",
+   "title": "Guess what it is: a tiger",
+   "group": null,
+   "files": [
+    {
+     "name": "01-out-g-tiger.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Guess what it is before it ends. 👀 Comment your guess first, no cheating.\n\nOne photo, thousands of squares. Make one from yours. Link in bio.\n\nSample photo: A G on Unsplash.\n\n#guesswhat #hiddenmosaic #mosaicart #satisfying #tessera",
+   "notes": [
+    "Cover: the first frame, so people have to watch.",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-04-01-poll-a-place-or-your-people",
+   "date": "2027-04-01",
+   "kind": "Story",
+   "title": "Poll: a place or your people?",
+   "group": null,
+   "files": [
+    {
+     "name": "01-st-poll-photo.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "",
+   "notes": [
+    "Add the sticker over the dashed box.",
+    "Poll options: A place I love / My people."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-04-04-the-first-real-reveal",
+   "date": "2027-04-04",
+   "kind": "You film",
+   "title": "The first real reveal",
+   "group": null,
+   "files": [],
+   "caption": "",
+   "notes": [
+    "Only with the buyer's written permission. Ask them to film the moment they open the reveal.",
+    "Post their video with their name only if they say yes. This will be the most trusted post on the profile.",
+    "Keep the rows lined up: after posting, open your Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-04-07-zoom-out-a-lighthouse",
+   "date": "2027-04-07",
+   "kind": "Reel",
+   "title": "Zoom out: a lighthouse",
+   "group": null,
+   "files": [
+    {
+     "name": "01-out-z-lighthouse.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Up close: squares. From afar: a lighthouse. ✨\n\nYour photo could be next. Link in bio.\n\nSample photo: Jonathan Ford on Unsplash.\n\n#mosaicart #satisfying #hiddenmosaic #tessera",
+   "notes": [
+    "Short clip: also works as a Story with a link sticker.",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-04-11-wedding-season",
+   "date": "2027-04-11",
+   "kind": "Carousel",
+   "title": "Wedding season",
+   "group": "Wedding season row (posts 25 to 27)",
+   "files": [
+    {
+     "name": "01-grid-25-wedding-season.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-weddings2-1-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    },
+    {
+     "name": "03-weddings2-1-3.jpg",
+     "type": "image",
+     "thumb": "thumbs/03.jpg"
+    },
+    {
+     "name": "04-weddings2-1-4.jpg",
+     "type": "image",
+     "thumb": "thumbs/04.jpg"
+    }
+   ],
+   "caption": "Planning a summer wedding? 💜\n\nSkip the guest book nobody opens. Every guest paints one square of a photo you choose, without seeing it. You see it all together on the day you pick.\n\nJoin the list. Link in bio.\n\nSample photo: Antony BEC on Unsplash\n\n#weddingguestbook #summerwedding #wedding2027 #weddingideas #tessera",
+   "notes": [
+    "Lands on the right of the row.",
+    "Post the row right to left on the same day, a few minutes apart: right, then middle, then left."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2027-04-11-what-if",
+   "date": "2027-04-11",
+   "kind": "Carousel",
+   "title": "What if…",
+   "group": "Wedding season row (posts 25 to 27)",
+   "files": [
+    {
+     "name": "01-grid-26-what-if.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-weddings2-2-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    },
+    {
+     "name": "03-weddings2-2-3.jpg",
+     "type": "image",
+     "thumb": "thumbs/03.jpg"
+    }
+   ],
+   "caption": "What if guests don't paint many squares? Our studio finishes the rest, so it's always done on time. 👇\n\nSwipe for the other questions couples ask us most. Got another? Ask in the comments.\n\n#weddingplanning #bridetobe #engaged #tessera",
+   "notes": [
+    "Lands on the middle of the row."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2027-04-11-the-reveal",
+   "date": "2027-04-11",
+   "kind": "Reel",
+   "title": "The reveal",
+   "group": "Wedding season row (posts 25 to 27)",
+   "files": [
+    {
+     "name": "01-out-r-weddings2.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-grid-27-the-reveal.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    }
+   ],
+   "caption": "Guess what it is before it ends. 💜 Every guest paints one square.\n\nThe guest book every guest paints. Link in bio.\n\nSample photo: Antony BEC on Unsplash\n\n#weddingreels #guestbookalternative #tessera",
+   "notes": [
+    "Lands on the left of the row.",
+    "Reel cover: in the Reel editor tap Edit cover, then Add from camera roll, and pick the cover image here. That keeps the grid joined up."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2027-04-14-guess-what-it-is-a-little-owl",
+   "date": "2027-04-14",
+   "kind": "Reel",
+   "title": "Guess what it is: a little owl",
+   "group": null,
+   "files": [
+    {
+     "name": "01-out-g-littleowl.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Guess what it is before it ends. 👀 Comment your guess first, no cheating.\n\nOne photo, thousands of squares. Make one from yours. Link in bio.\n\nSample photo: Zdeněk Macháček on Unsplash.\n\n#guesswhat #hiddenmosaic #mosaicart #satisfying #tessera",
+   "notes": [
+    "Cover: the first frame, so people have to watch.",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-04-18-zoom-out-hydrangeas",
+   "date": "2027-04-18",
+   "kind": "Reel",
+   "title": "Zoom out: hydrangeas",
+   "group": null,
+   "files": [
+    {
+     "name": "01-out-z-hydrangeas.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Up close: squares. From afar: hydrangeas. ✨\n\nYour photo could be next. Link in bio.\n\nSample photo: Gaetano Cessati on Unsplash.\n\n#mosaicart #satisfying #hiddenmosaic #tessera",
+   "notes": [
+    "Short clip: also works as a Story with a link sticker.",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-04-21-a-guest-s-square-up-close",
+   "date": "2027-04-21",
+   "kind": "You film",
+   "title": "A guest's square, up close",
+   "group": null,
+   "files": [],
+   "caption": "",
+   "notes": [
+    "Ask a guest from a real mosaic (with permission) if you can share their square and the timelapse of them painting it.",
+    "Caption idea: 'This square was painted by [first name], who never saw the picture.'",
+    "Keep the rows lined up: after posting, open your Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-04-25-start-here",
+   "date": "2027-04-25",
+   "kind": "Carousel",
+   "title": "Start here",
+   "group": "Start here row (posts 28 to 30)",
+   "files": [
+    {
+     "name": "01-grid-28-start-here.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-start-1-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    },
+    {
+     "name": "03-start-1-3.jpg",
+     "type": "image",
+     "thumb": "thumbs/03.jpg"
+    },
+    {
+     "name": "04-start-1-4.jpg",
+     "type": "image",
+     "thumb": "thumbs/04.jpg"
+    },
+    {
+     "name": "05-start-1-5.jpg",
+     "type": "image",
+     "thumb": "thumbs/05.jpg"
+    }
+   ],
+   "caption": "New here? This is Tessera. 👋\n\nYou send one photo. We cut it into thousands of squares and send each person one colour, never the picture. Everyone paints a square. Our studio finishes the rest. On the day you choose, everyone sees it at once.\n\nLink in bio.\n\nSample photo: Joss Woodhead on Unsplash\n\n#hiddenmosaic #giftideas #collaborativeart #tessera",
+   "notes": [
+    "Lands on the right of the row.",
+    "Post the row right to left on the same day, a few minutes apart: right, then middle, then left."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-04-25-questions",
+   "date": "2027-04-25",
+   "kind": "Carousel",
+   "title": "Questions",
+   "group": "Start here row (posts 28 to 30)",
+   "files": [
+    {
+     "name": "01-grid-29-questions.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-start-2-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    },
+    {
+     "name": "03-start-2-3.jpg",
+     "type": "image",
+     "thumb": "thumbs/03.jpg"
+    }
+   ],
+   "caption": "The four things everyone asks us. 👇\n\nCan guests see the picture? No, only their colour.\nWhat if they don't paint? Our studio finishes it.\nDo they need an app? No, one link.\nDo they pay? Never.\n\nGot another one? Ask in the comments.\n\n#howitworks #hiddenmosaic #tessera",
+   "notes": [
+    "Lands on the middle of the row."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-04-25-what-a-guest-sees",
+   "date": "2027-04-25",
+   "kind": "Reel",
+   "title": "What a guest sees",
+   "group": "Start here row (posts 28 to 30)",
+   "files": [
+    {
+     "name": "01-out-r-start.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-grid-30-what-a-guest-sees.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    }
+   ],
+   "caption": "This is what a guest sees. One square, one colour, never the picture. 👀\n\nMake one from your photo. Link in bio.\n\nSample photo: Joss Woodhead on Unsplash\n\n#hiddenmosaic #reels #tessera",
+   "notes": [
+    "Lands on the left of the row.",
+    "Reel cover: in the Reel editor tap Edit cover, then Add from camera roll, and pick the cover image here. That keeps the grid joined up."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-04-28-guess-what-it-is-a-hummingbird",
+   "date": "2027-04-28",
+   "kind": "Reel",
+   "title": "Guess what it is: a hummingbird",
+   "group": null,
+   "files": [
+    {
+     "name": "01-out-g-hummingbird.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Guess what it is before it ends. 👀 Comment your guess first, no cheating.\n\nOne photo, thousands of squares. Make one from yours. Link in bio.\n\nSample photo: James Wainscoat on Unsplash.\n\n#guesswhat #hiddenmosaic #mosaicart #satisfying #tessera",
+   "notes": [
+    "Cover: the first frame, so people have to watch.",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-05-02-question-box-ask-us-anything",
+   "date": "2027-05-02",
+   "kind": "Story",
+   "title": "Question box: ask us anything",
+   "group": null,
+   "files": [
+    {
+     "name": "01-st-q-ask.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "",
+   "notes": [
+    "Add the sticker over the dashed box."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-05-05-guess-what-it-is-koi",
+   "date": "2027-05-05",
+   "kind": "Reel",
+   "title": "Guess what it is: koi",
+   "group": null,
+   "files": [
+    {
+     "name": "01-out-g-koi.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Guess what it is before it ends. 👀 Comment your guess first, no cheating.\n\nOne photo, thousands of squares. Make one from yours. Link in bio.\n\nSample photo: Tifenn Degornet on Unsplash.\n\n#guesswhat #hiddenmosaic #mosaicart #satisfying #tessera",
+   "notes": [
+    "Cover: the first frame, so people have to watch.",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-05-09-how-it-works",
+   "date": "2027-05-09",
+   "kind": "Carousel",
+   "title": "How it works",
+   "group": "Father's Day row (posts 31 to 33)",
+   "files": [
+    {
+     "name": "01-grid-31-how-it-works.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-fathers-1-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    },
+    {
+     "name": "03-fathers-1-3.jpg",
+     "type": "image",
+     "thumb": "thumbs/03.jpg"
+    },
+    {
+     "name": "04-fathers-1-4.jpg",
+     "type": "image",
+     "thumb": "thumbs/04.jpg"
+    },
+    {
+     "name": "05-fathers-1-5.jpg",
+     "type": "image",
+     "thumb": "thumbs/05.jpg"
+    }
+   ],
+   "caption": "The Father's Day gift he can't buy himself. ⛰️\n\nOne photo of Dad. Everyone who loves him paints one square, without seeing the picture. On Father's Day, he sees it all at once.\n\nOrder by 30 May. Link in bio.\n\nSample photo: garrett parker on Unsplash\n\n#fathersday #fathersdaygift #giftfordad #dadgift #tessera",
+   "notes": [
+    "Lands on the right of the row.",
+    "Post the row right to left on the same day, a few minutes apart: right, then middle, then left."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2027-05-09-order-by-30-may",
+   "date": "2027-05-09",
+   "kind": "Carousel",
+   "title": "Order by 30 May",
+   "group": "Father's Day row (posts 31 to 33)",
+   "files": [
+    {
+     "name": "01-grid-32-order-by-30-may.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-fathers-2-2.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    }
+   ],
+   "caption": "Father's Day is Sunday 20 June. 📅\n\nOrder by 30 May for three weeks of painting. Our studio finishes any squares left, so it's ready on the day.\n\nThe people painting never pay. Link in bio.\n\n#fathersday2027 #fathersdayideas #giftfordad #tessera",
+   "notes": [
+    "Lands on the middle of the row."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2027-05-09-the-reveal",
+   "date": "2027-05-09",
+   "kind": "Reel",
+   "title": "The reveal",
+   "group": "Father's Day row (posts 31 to 33)",
+   "files": [
+    {
+     "name": "01-out-r-fathers.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    },
+    {
+     "name": "02-grid-33-the-reveal.jpg",
+     "type": "image",
+     "thumb": "thumbs/02.jpg"
+    }
+   ],
+   "caption": "One square. Everyone paints one for Dad. He never sees it coming. ⛰️\n\nOrder by 30 May. Link in bio.\n\nSample photo: garrett parker on Unsplash\n\n#fathersdaygift #reels #giftideas #tessera",
+   "notes": [
+    "Lands on the left of the row.",
+    "Reel cover: in the Reel editor tap Edit cover, then Add from camera roll, and pick the cover image here. That keeps the grid joined up."
+   ],
+   "needsOrdersOpen": true
+  },
+  {
+   "id": "2027-05-16-guess-what-it-is-king-penguins",
+   "date": "2027-05-16",
+   "kind": "Reel",
+   "title": "Guess what it is: king penguins",
+   "group": null,
+   "files": [
+    {
+     "name": "01-out-g-penguins.mp4",
+     "type": "video",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "Guess what it is before it ends. 👀 Comment your guess first, no cheating.\n\nOne photo, thousands of squares. Make one from yours. Link in bio.\n\nSample photo: Ian Parker on Unsplash.\n\n#guesswhat #hiddenmosaic #mosaicart #satisfying #tessera",
+   "notes": [
+    "Cover: the first frame, so people have to watch.",
+    "Keep the rows lined up: after posting, open this Reel, tap ··· and choose Remove from profile grid (it stays in your Reels tab). If your app doesn't offer that, share it as a Story instead."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-05-23-one-week-left-for-father-s-day",
+   "date": "2027-05-23",
+   "kind": "Story",
+   "title": "One week left for Father's Day",
+   "group": null,
+   "files": [
+    {
+     "name": "01-st-dad-week.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "",
+   "notes": [
+    "Add a link sticker over the dashed box, pointing to the founding list (or the shop once orders are open)."
+   ],
+   "needsOrdersOpen": false
+  },
+  {
+   "id": "2027-05-30-last-day-to-order-for-father-s-day",
+   "date": "2027-05-30",
+   "kind": "Story",
+   "title": "Last day to order for Father's Day",
+   "group": null,
+   "files": [
+    {
+     "name": "01-st-dad-last.jpg",
+     "type": "image",
+     "thumb": "thumbs/01.jpg"
+    }
+   ],
+   "caption": "",
+   "notes": [
+    "Add a link sticker over the dashed box, pointing to the founding list (or the shop once orders are open)."
+   ],
+   "needsOrdersOpen": false
+  }
+ ]
+}

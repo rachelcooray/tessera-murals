@@ -7,6 +7,7 @@ import { SAMPLE_HIGHLIGHT } from "@/lib/mosaic/sample";
 import { allTiles, slotMap, useMosaic, useMosaicState } from "@/lib/mosaic/store";
 import { Icon } from "../ui";
 import { MosaicGrid, Page } from "./common";
+import { CampaignBanner, OccasionCards } from "./Campaign";
 
 const HIGHLIGHT = SAMPLE_HIGHLIGHT;
 
@@ -19,6 +20,7 @@ export function MosaicHome() {
 
   return (
     <Page current="/">
+      <CampaignBanner />
       <section className="hero">
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
           <span className="eyebrow">Hidden mosaics, made by people</span>
@@ -67,6 +69,7 @@ export function MosaicHome() {
         </div>
         <p className="small faint">Every size includes a private invite link, an optional public colour challenge, studio fill before your date, and the reveal video. Every contributed tile is human-made.</p>
       </section>
+      <OccasionCards />
     </Page>
   );
 }

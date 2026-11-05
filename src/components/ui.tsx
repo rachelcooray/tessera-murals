@@ -29,13 +29,13 @@ export function Icon({ name, size = 18 }: { name: keyof typeof paths | string; s
   return <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" {...P}>{paths[name]}</svg>;
 }
 
-const MARK = ["#c9a24f", "#6e7f8c", "#8a2e2a", "#4f6b5e", "#c9a24f", "#3f5b7a", "#9a7a4a", "#5b4a6e", "#c9a24f"];
+const MARK = ["#f5f5f7", "#6e7f8c", "#8a2e2a", "#4f6b5e", "#f5f5f7", "#3f5b7a", "#9a7a4a", "#5b4a6e", "#f5f5f7"];
 export function Mark({ size = 20 }: { size?: number }) {
   return <span className="mark" style={{ width: size }} aria-hidden="true">{MARK.map((c, i) => <i key={i} style={{ background: c }} />)}</span>;
 }
 
 export function Wordmark() {
-  return <Link href="/wall" className="wordmark" aria-label="Tessera, back to the mural"><Mark /><span>TESSERA</span></Link>;
+  return <Link href="/wall" className="wordmark" aria-label="Tessera, back to the mural"><Mark /><span>Tessera</span></Link>;
 }
 
 const NAV = [["/wall", "Season 0 wall"], ["/seasons", "Past seasons"], ["/", "Hidden mosaics"]] as const;

@@ -7,12 +7,13 @@ import { authConfigured, isAdminEmail, useSession } from "@/lib/auth";
 import { balances, formatCents, openRequests, releaseDue } from "@/lib/mosaic/ledger";
 import { payoutProvider } from "@/lib/mosaic/payouts";
 import { amAdmin, live, loadAdmin, loadFoundingList, type ListEntry, removeTile, review, settlePayout, studioFillNow, useLoad, useTileImage } from "@/lib/mosaic/actions";
+import { MarketingTab } from "./MarketingTab";
 import { allMosaics, appendLedger, artistTileCount, capFor, progress, resetMosaics, runSplit, slotMap, tilesFor, useMosaicState } from "@/lib/mosaic/store";
 import { TILE_REJECTION_REASONS, type MosaicTile } from "@/lib/mosaic/types";
 import { Mark, Toast, useToast } from "../ui";
 import { Swatch, dateLabel, useHousekeeping } from "./common";
 
-type Tab = "review" | "mosaics" | "payouts" | "list" | "settings";
+type Tab = "review" | "mosaics" | "payouts" | "list" | "marketing" | "settings";
 
 export function MosaicAdmin() {
   useHousekeeping();
@@ -33,9 +34,9 @@ export function MosaicAdmin() {
   return (
     <div className="admin">
       <nav className="admin__nav" aria-label="Admin">
-        <Link href="/" className="wordmark" style={{ marginBottom: 20 }}><Mark size={18} /><span style={{ fontSize: 19 }}>TESSERA</span></Link>
+        <Link href="/" className="wordmark" style={{ marginBottom: 20 }}><Mark size={18} /><span style={{ fontSize: 19 }}>Tessera</span></Link>
         <span className="eyebrow" style={{ padding: "0 12px 8px" }}>Mosaics admin</span>
-        {([["review", `Tile review`, queue.length], ["mosaics", "Mosaics", null], ["payouts", "Payouts", requests.length], ["list", "Founding list", null], ["settings", "Settings", null]] as const).map(([id, label, n]) => (
+        {([["review", `Tile review`, queue.length], ["mosaics", "Mosaics", null], ["payouts", "Payouts", requests.length], ["list", "Founding list", null], ["marketing", "Marketing", null], ["settings", "Settings", null]] as const).map(([id, label, n]) => (
           <button key={id} aria-current={tab === id} onClick={() => setTab(id)}>{label}{n ? <span className="tag">{n}</span> : null}</button>
         ))}
         <Link className="small" style={{ padding: "16px 12px 0" }} href="/admin">Season wall admin</Link>
@@ -47,6 +48,7 @@ export function MosaicAdmin() {
         {tab === "mosaics" && <Mosaics notify={notify} />}
         {tab === "payouts" && <Payouts notify={notify} artists={data.data?.artists ?? {}} />}
         {tab === "list" && <ListTab />}
+        {tab === "marketing" && <MarketingTab notify={notify} />}
         {tab === "settings" && <Settings />}
       </main>
       <Toast msg={toast} />

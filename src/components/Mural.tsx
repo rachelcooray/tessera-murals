@@ -165,9 +165,9 @@ export function Mural(props: MuralProps) {
       const b0x = sx(-0.4), b0y = sy(-0.4), bs = (n + 0.8) * s;
       ctx.save();
       ctx.shadowColor = "rgba(0,0,0,0.65)"; ctx.shadowBlur = 60; ctx.shadowOffsetY = 30;
-      ctx.fillStyle = "#080605"; ctx.fillRect(b0x, b0y, bs, bs);
+      ctx.fillStyle = "#000000"; ctx.fillRect(b0x, b0y, bs, bs);
       ctx.restore();
-      ctx.strokeStyle = "#2a211a"; ctx.lineWidth = 1; ctx.strokeRect(b0x + 0.5, b0y + 0.5, bs - 1, bs - 1);
+      ctx.strokeStyle = "#2c2c2e"; ctx.lineWidth = 1; ctx.strokeRect(b0x + 0.5, b0y + 0.5, bs - 1, bs - 1);
 
       const x0 = Math.max(0, Math.floor(wxOf(0))), x1 = Math.min(n - 1, Math.floor(wxOf(W)));
       const y0 = Math.max(0, Math.floor(wyOf(0))), y1 = Math.min(n - 1, Math.floor(wyOf(H)));
@@ -186,14 +186,14 @@ export function Mural(props: MuralProps) {
           const fresh = t.approvedAt && Date.now() - Date.parse(t.approvedAt) < 15 * 60000;
           if (a < 1 || fresh) {
             ctx.save();
-            ctx.shadowColor = "rgba(201,162,79,0.9)"; ctx.shadowBlur = 18;
+            ctx.shadowColor = "rgba(245,245,247,0.9)"; ctx.shadowBlur = 18;
             ctx.strokeStyle = `rgba(221,187,110,${a < 1 ? (1 - a) * 0.7 : 0.35 + 0.4 * pulse})`; ctx.lineWidth = 2;
             ctx.strokeRect(px, py, ps, ps);
             ctx.restore();
           }
         } else if (t && t.status === "pending") {
-          ctx.fillStyle = "rgba(201,162,79,0.06)"; ctx.fillRect(px, py, ps, ps);
-          ctx.strokeStyle = `rgba(201,162,79,${0.25 + 0.35 * pulse})`; ctx.lineWidth = 1.5;
+          ctx.fillStyle = "rgba(245,245,247,0.06)"; ctx.fillRect(px, py, ps, ps);
+          ctx.strokeStyle = `rgba(245,245,247,${0.25 + 0.35 * pulse})`; ctx.lineWidth = 1.5;
           ctx.strokeRect(px + 0.75, py + 0.75, ps - 1.5, ps - 1.5);
         } else if (t && t.id === p.hiddenId) {
           ctx.fillStyle = "#050403"; ctx.fillRect(px, py, ps, ps);
@@ -221,7 +221,7 @@ export function Mural(props: MuralProps) {
           ctx.fillText("Claim this spot", sx(st.hover.x + 0.5), sy(st.hover.y + 1) + 16);
         }
       }
-      ring(st.focus, "#c9a24f", 2);
+      ring(st.focus, "#f5f5f7", 2);
 
       if (p.onTint && now - st.tintAt > 400) {
         st.tintAt = now;

@@ -10,8 +10,8 @@ import { ClaimCard, TileCard } from "./TileCard";
 import { closeDate, Header, Icon, Reasons, Toast, useClosesIn, useToast } from "./ui";
 
 function useAccent(tint: string | null) {
-  useEffect(() => { document.documentElement.style.setProperty("--accent", tint ?? "#c9a24f"); }, [tint]);
-  useEffect(() => () => { document.documentElement.style.setProperty("--accent", "#c9a24f"); }, []);
+  useEffect(() => { document.documentElement.style.setProperty("--accent", tint ?? "#f5f5f7"); }, [tint]);
+  useEffect(() => () => { document.documentElement.style.setProperty("--accent", "#f5f5f7"); }, []);
 }
 
 export function MuralExperience({ seasonId, flyToId = null, gift = false }: { seasonId?: string; flyToId?: string | null; gift?: boolean }) {
