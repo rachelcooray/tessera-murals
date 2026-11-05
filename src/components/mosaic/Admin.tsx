@@ -79,6 +79,8 @@ function Review({ queue, notify }: { queue: MosaicTile[]; notify: (m: string) =>
               <span className="eyebrow">{m.title} · slot {t.slot + 1}</span>
               <span className="serif" style={{ fontSize: 22 }}>{t.name ?? "Anonymous"}</span>
               <span className="small muted row" style={{ gap: 8 }}><Swatch hex={slot.hex} /> Slot colour {slot.hex.toUpperCase()} · {t.source === "artist" ? `Tessera artist, ${artistTileCount(s, m.id, t.contributorId)} of ${capFor(m)} tiles` : "Customer’s circle"} · {t.medium}</span>
+              {/* eslint-disable-next-line @next/next/no-img-element -- frames recorded by the paint tool */}
+              {t.painted?.strip && <img className="qrow__strip" src={t.painted.strip} alt="Timelapse: eight moments while this tile was painted" />}
               <div className="tags">{checks.map(([ok, label]) => <span key={label} className={`tag${ok ? "" : " tag--warn"}`}>{label}</span>)}{t.flags.filter((f) => !/AI|generation|Credentials|Colour match|little painting/i.test(f)).map((f) => <span key={f} className="tag tag--warn">{f}</span>)}</div>
               <label className="small muted" htmlFor={`r-${t.id}`}>If rejecting, why</label>
               <select id={`r-${t.id}`} className="input" style={{ padding: "8px 10px", fontSize: 14 }} value={r} onChange={(e) => setReason({ ...reason, [t.id]: e.target.value })}>{TILE_REJECTION_REASONS.map((x) => <option key={x}>{x}</option>)}</select>

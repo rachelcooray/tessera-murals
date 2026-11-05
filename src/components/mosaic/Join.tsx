@@ -110,7 +110,7 @@ function Join({ mosaicId, token, slotParam, artist }: { mosaicId: string; token:
 
   if (step === "paint" && colour) return (
     <Paint slot={colour} slotNumber={slot + 1} draftId={draftKey(m.id, slot)} onBack={() => setStep("slot")}
-      onDone={(r) => { setUpload(preparePainting(r)); setPainted(r.stats); setStep("make"); }} />
+      onDone={(r) => { setUpload(preparePainting(r)); setPainted({ ...r.stats, strip: r.strip }); setStep("make"); }} />
   );
 
   return <MakeTile mosaic={m} slot={slot} fitFirst={slot < 0} source={source} token={token} upload={upload} setUpload={setUpload} painted={painted} onRepaint={() => setStep("paint")}
@@ -173,7 +173,7 @@ function MakeTile({ mosaic: m, slot, fitFirst, source, token, upload, setUpload,
       t = await sendTile({
       mosaicId: m.id, slot, source, name: anon ? null : name.trim() || null, medium, imageUrl: result.url, art: null,
       averageHex: result.averageHex, match: result.match, tint, hash: upload.hash, flags,
-      painted: painted ? { strokes: painted.strokes, activeMs: painted.activeMs, inputs: painted.inputs, tools: painted.tools } : null,
+      painted: painted ? { strokes: painted.strokes, activeMs: painted.activeMs, inputs: painted.inputs, tools: painted.tools, strip: painted.strip ?? null } : null,
       }, token);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Your tile didn’t send. Please try again.");

@@ -73,7 +73,11 @@ export interface MosaicTile {
   reviewedAt: string | null;
 }
 
-export interface PaintedSummary { strokes: number; activeMs: number; inputs: string[]; tools: string[] }
+export interface PaintedSummary {
+  strokes: number; activeMs: number; inputs: string[]; tools: string[];
+  /** Eight timelapse frames side by side (512 × 64 JPEG data URL), so the reviewer sees it was painted by hand. */
+  strip?: string | null;
+}
 
 export interface Claim { mosaicId: string; slot: number; contributorId: string; source: "circle" | "artist"; at: string }
 

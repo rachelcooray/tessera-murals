@@ -18,6 +18,8 @@ export interface PaintStats {
   activeMs: number;
   inputs: string[];
   tools: string[];
+  /** Timelapse frames for the reviewer, from the paint tool. */
+  strip?: string | null;
 }
 
 export function paintStats(records: StrokeRecord[], idleCapMs = 30_000): PaintStats {
