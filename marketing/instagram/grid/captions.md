@@ -57,7 +57,7 @@ Post in number order, 1 first. Post 1 lands bottom-right, post 9 top-left.
 >
 > The canyon on this page is about a Small. Imagine your own photo at four times that.
 >
-> Guests never pay. Add a print at checkout. Link in bio.
+> Guests never pay. Link in bio.
 >
 > #hiddenmosaic #tessera #weddinggift #anniversarygift #personalisedgift
 

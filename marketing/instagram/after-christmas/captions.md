@@ -118,7 +118,7 @@ From $45. Guests never pay. Link in bio.
 **Cover:** `valentine-row/grid-12-the-reveal.png` (Edit cover > Add from camera roll)
 
 ```
-Every square, from someone who loves you. Nobody sees the picture until Valentine's morning. ❤️
+Everyone who loves you paints a square. Nobody sees the picture until Valentine's morning. ❤️
 
 Order by 24 January. Link in bio.
 
