@@ -138,3 +138,11 @@ Sample photo: Eric Prouzet on Unsplash.
 | As soon as orders open | Row 1 (posts 1 to 3) |
 | About a week later | Row 2 (posts 4 to 6) |
 | 1 to 4 December | Stories only: countdown sticker, "Last days to order for Christmas", share post 5 |
+
+---
+
+## Until orders open: the Story to post now
+
+The Christmas posts say "Order by 4 December". Until orders are open, post `story-orders-open-soon.png` as a Story with a link sticker over the dashed box, pointing to the founding list page (see "The link in your bio" in the Instagram plan). Add it to the "How it works" highlight too, so anyone clicking through from the posts finds it.
+
+Sticker text: **Join the list**

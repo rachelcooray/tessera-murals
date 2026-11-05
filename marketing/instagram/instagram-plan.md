@@ -30,6 +30,10 @@ Goal for the first three weeks: **people joining the founding mosaics list.** Ev
 
 ---
 
+## The link in your bio
+
+Use **https://rachelcooray.github.io/tessera-murals/list/?from=instagram** (or `yourdomain/list/?from=instagram` once you have your own domain). It's the founding list sign-up page, and `?from=instagram` lets Admin › Founding list show who came from Instagram. Label it "Join the founding list". For TikTok or Facebook use `?from=tiktok` or `?from=facebook`.
+
 ## Before you start: decide these
 
 1. **Handle.** Try these in order and take the first one that's free: `@tessera.mosaics`, `@tesseramosaics`, `@tessera.studio`, `@hiddenmosaics`, `@tessera.hq`. Use the same one on TikTok and Facebook if you can.
@@ -37,7 +41,7 @@ Goal for the first three weeks: **people joining the founding mosaics list.** Ev
 3. **Launch date for founding mosaics.** Only needed for week 3. Until then, say "soon".
 4. **Prices.** Every post uses the four sizes: 10,000 tiles $45 · 20,000 $95 · 30,000 $145 · 40,000 $195.
 
-Replace `@[HANDLE]` on the designs with your real handle before exporting.
+Replace `@tessera.mosaics` on the designs with your real handle before exporting.
 
 ---
 
