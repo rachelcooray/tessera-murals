@@ -13,7 +13,7 @@ export interface CampaignPost {
 }
 
 export interface Campaign {
-  id: "christmas" | "weddings" | "valentines";
+  id: "christmas" | "weddings" | "valentines" | "mothers-day" | "birthdays" | "leaving-gifts" | "fathers-day";
   /** The page address, e.g. /christmas/ */
   href: string;
   name: string;
@@ -100,14 +100,18 @@ export const CAMPAIGNS: Campaign[] = [
       { title: "Guests paint", text: "Each guest gets one colour and paints a square. The Tessera studio finishes the rest before the reveal." },
       { title: "The reveal", text: "Everyone sees it at once, and you get a video to send to every guest." },
     ],
-    strips: [{ src: "strip1.jpg", alt: "Cherry blossom trees by a lake, made of painted squares" }],
-    reels: [{ src: "reel1.mp4", poster: "reel1.jpg", title: "One guest. One square." }],
+    strips: [{ src: "strip1.jpg", alt: "Cherry blossom trees by a lake, made of painted squares" }, { src: "strip2.jpg", alt: "A lavender field at dusk, made of painted squares" }],
+    reels: [{ src: "reel1.mp4", poster: "reel1.jpg", title: "One guest. One square." }, { src: "reel2.mp4", poster: "reel2.jpg", title: "Guess what it is" }],
     posts: [
       { title: "How it works", slides: slides(1, 5) },
       { title: "Guest questions", slides: slides(2, 3) },
+      { title: "Wedding season", slides: slides(4, 4) },
+      { title: "What if…", slides: slides(5, 3) },
     ],
     faqs: [
       { q: "When is the reveal?", a: "Whenever you choose, from a week to a year after you order. Lots of couples pick their first anniversary." },
+      { q: "What if someone paints something rude?", a: "Every square is checked by a person before it goes into your mosaic." },
+      { q: "What if Grandma isn't online?", a: "Someone can paint her square with her, on their phone." },
       ...COMMON_FAQS,
     ],
     credits: ["Blossoms by the Lake: Mark Tegethoff / Unsplash"],
@@ -140,6 +144,116 @@ export const CAMPAIGNS: Campaign[] = [
       ...COMMON_FAQS,
     ],
     credits: ["Red Tulips: Aaron Burden / Unsplash"],
+  },
+  {
+    id: "mothers-day",
+    href: "/mothers-day",
+    name: "Mother's Day",
+    eyebrow: "Mother's Day 2027",
+    title: "Made for Mum, by everyone who loves her.",
+    lede: "One photo of Mum. Her children, grandchildren and oldest friends each paint a square, without ever seeing the picture. On Mother's Day, she sees it all at once.",
+    orderBy: "2027-02-14",
+    revealOn: "2027-03-07",
+    promoteFrom: "2027-01-25",
+    suggestedTier: "medium",
+    steps: [
+      { title: "Upload a photo of Mum", text: "Pick a size. The reveal is set for Sunday 7 March." },
+      { title: "Share one link", text: "Send it to the family, quietly. She never sees it." },
+      { title: "Everyone paints", text: "Three weeks of squares. The Tessera studio finishes the rest." },
+      { title: "Mother's Day", text: "She sees the whole picture at once, with a reveal video to keep." },
+    ],
+    strips: [{ src: "strip1.jpg", alt: "Rows of pink tulips, made of painted squares" }],
+    reels: [{ src: "reel1.mp4", poster: "reel1.jpg", title: "One photo of Mum" }],
+    posts: [
+      { title: "How it works", slides: slides(1, 5) },
+      { title: "Order by 14 February", slides: slides(2, 2) },
+    ],
+    faqs: [
+      { q: "When do I need to order?", a: "By 14 February. That gives everyone three weeks to paint before the reveal on Sunday 7 March." },
+      ...COMMON_FAQS,
+    ],
+    credits: ["Rows of Pink Tulips: Tom Robak / Unsplash"],
+  },
+  {
+    id: "birthdays",
+    href: "/birthdays",
+    name: "Big birthdays",
+    eyebrow: "Big birthdays",
+    title: "Turning 30, 50 or 80? Everyone paints a square.",
+    lede: "One photo, and a square from everyone they know: school friends, work friends, family abroad. Nobody sees the picture until their birthday.",
+    suggestedTier: "medium",
+    steps: [
+      { title: "Choose a photo", text: "A place they love, a pet, their face or a group photo. Set the reveal for the birthday or the party." },
+      { title: "Share one link", text: "One link for everyone, from every part of their life." },
+      { title: "Everyone paints", text: "Each person gets one colour. The Tessera studio finishes the rest." },
+      { title: "Their birthday", text: "Everyone sees it at once, with a reveal video for the party." },
+    ],
+    strips: [{ src: "strip1.jpg", alt: "Hot air balloons over Cappadocia, made of painted squares" }],
+    reels: [{ src: "reel1.mp4", poster: "reel1.jpg", title: "One square" }],
+    posts: [
+      { title: "How it works", slides: slides(1, 5) },
+      { title: "Birthday ideas", slides: slides(2, 3) },
+    ],
+    faqs: [
+      { q: "When should I order?", a: "About three weeks before the birthday, so everyone has time to paint." },
+      ...COMMON_FAQS,
+    ],
+    credits: ["Balloons over Cappadocia: Darren Lee / Unsplash"],
+  },
+  {
+    id: "leaving-gifts",
+    href: "/leaving-gifts",
+    name: "Leaving gifts",
+    eyebrow: "For teams",
+    title: "The leaving card the whole office paints.",
+    lede: "Instead of signing a card, everyone paints one square of a photo. One link in the team chat, about a minute each, and they see nothing until their last day.",
+    suggestedTier: "small",
+    steps: [
+      { title: "Choose a photo", text: "Their favourite place, the team, the office dog. Set the reveal for their last day." },
+      { title: "Share one link", text: "In the team chat. No accounts, no app, any phone or laptop." },
+      { title: "Everyone paints", text: "Every office and every time zone. The Tessera studio finishes the rest." },
+      { title: "Their last day", text: "The picture comes together, with a video for the leaving do." },
+    ],
+    strips: [{ src: "strip1.jpg", alt: "Colourful umbrellas hung over a street, made of painted squares" }],
+    reels: [{ src: "reel1.mp4", poster: "reel1.jpg", title: "Everyone in the office paints one square" }],
+    posts: [
+      { title: "How it works", slides: slides(1, 5) },
+      { title: "For teams", slides: slides(2, 3) },
+    ],
+    faqs: [
+      { q: "Does it work for retirements and new babies too?", a: "Yes. Any team collection works: leaving, retirement, a new baby, a work anniversary." },
+      ...COMMON_FAQS,
+    ],
+    credits: ["Umbrella Sky: Helen Cheng / Unsplash"],
+  },
+  {
+    id: "fathers-day",
+    href: "/fathers-day",
+    name: "Father's Day",
+    eyebrow: "Father's Day 2027",
+    title: "For Dad, from everyone he loves.",
+    lede: "One photo of Dad. The kids, the grandkids and his oldest mates each paint a square, without ever seeing the picture. On Father's Day, he sees it all at once.",
+    orderBy: "2027-05-30",
+    revealOn: "2027-06-20",
+    promoteFrom: "2027-05-01",
+    suggestedTier: "medium",
+    steps: [
+      { title: "Upload a photo of Dad", text: "Pick a size. The reveal is set for Sunday 20 June." },
+      { title: "Share one link", text: "Send it to everyone, quietly. He never sees it." },
+      { title: "Everyone paints", text: "Three weeks of squares. The Tessera studio finishes the rest." },
+      { title: "Father's Day", text: "He sees the whole picture at once, with a reveal video to keep." },
+    ],
+    strips: [{ src: "strip1.jpg", alt: "Moraine Lake and its mountains, made of painted squares" }],
+    reels: [{ src: "reel1.mp4", poster: "reel1.jpg", title: "One square for Dad" }],
+    posts: [
+      { title: "How it works", slides: slides(1, 5) },
+      { title: "Order by 30 May", slides: slides(2, 2) },
+    ],
+    faqs: [
+      { q: "When do I need to order?", a: "By 30 May. That gives everyone three weeks to paint before the reveal on Sunday 20 June." },
+      ...COMMON_FAQS,
+    ],
+    credits: ["Moraine Lake: garrett parker / Unsplash"],
   },
 ];
 

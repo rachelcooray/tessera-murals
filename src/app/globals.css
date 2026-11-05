@@ -593,3 +593,32 @@ h2, h3 { line-height: 1.12; letter-spacing: -.022em !important; }
 .cp-banner b { font-weight: 600; }
 .cp-banner__go { margin-left: auto; color: var(--link); white-space: nowrap; }
 @media (max-width: 520px) { .cp-banner { flex-wrap: wrap; } .cp-banner__go { margin-left: 86px; } }
+
+/* Admin: Marketing tab, the six-month posting calendar. */
+.mk-month { display: flex; flex-direction: column; gap: 18px; padding-top: 28px; }
+.mk-month h2 { font-size: 26px; margin: 0; }
+.mk-day { display: grid; grid-template-columns: 110px 1fr; gap: 16px; align-items: start; }
+.mk-day--past .mk-date { color: var(--faint); }
+@media (max-width: 700px) { .mk-day { grid-template-columns: 1fr; gap: 8px; } }
+.mk-date { display: flex; flex-direction: column; gap: 6px; padding-top: 14px; font-size: 15px; }
+.mk-list { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.mk-group { margin: 4px 0 6px; font-size: 14px; font-weight: 600; color: var(--muted); }
+.mk-card { background: var(--card); border-radius: var(--r-l); padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.mk-card--done { opacity: .55; }
+.mk-card__head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.mk-card__head h3 { font-size: 17px; margin: 0; flex: 1 1 160px; }
+.mk-kind { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: var(--pill); background: var(--raise); color: var(--ink); }
+.mk-kind[data-kind="Reel"] { background: #3a2a4a; }
+.mk-kind[data-kind="Story"] { background: #1f3a4a; }
+.mk-kind[data-kind="You film"] { background: #4a3a1f; }
+.mk-flag { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: var(--pill); background: var(--oxblood); color: var(--oxblood-ink); }
+.mk-done { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--muted); cursor: pointer; }
+.mk-done input { width: 18px; height: 18px; accent-color: var(--link); }
+.mk-files { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+.mk-thumb { position: relative; flex: 0 0 auto; display: block; border-radius: var(--r-s); overflow: hidden; background: #111; }
+.mk-thumb img { display: block; width: 90px; height: 120px; object-fit: cover; }
+.mk-play { position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-size: 22px; text-shadow: 0 1px 8px rgba(0, 0, 0, .7); }
+.mk-num { position: absolute; left: 6px; top: 6px; min-width: 20px; height: 20px; border-radius: 10px; background: rgba(0, 0, 0, .7); color: #fff; font-size: 12px; font-weight: 600; display: grid; place-items: center; }
+.mk-notes { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+.mk-caption summary { cursor: pointer; font-size: 14px; font-weight: 600; color: var(--link); }
+.mk-caption pre { white-space: pre-wrap; font-family: var(--sans); font-size: 14px; line-height: 1.5; margin: 10px 0 0; padding: 12px 14px; border-radius: var(--r-m); background: var(--wall); color: var(--ink); }
