@@ -71,10 +71,10 @@ export function RevealHero({ src, alt, credit }: { src: string; alt: string; cre
       if (Math.abs(d) > 0.003) { s.shown[i] += reduced ? d : d * 0.2; moving = true; } else s.shown[i] = s.target[i];
     }
     const cell = s.cell;
-    g.fillStyle = "#0a0a0b"; g.fillRect(0, 0, c.width, c.height);
+    g.fillStyle = "#000a16"; g.fillRect(0, 0, c.width, c.height);
     for (let y = 0; y < s.rows; y++) for (let x = 0; x < s.cols; x++) {
       const i = y * s.cols + x, v = s.shown[i];
-      if (v < 1) { g.fillStyle = "#161618"; g.fillRect(x * cell + 1, y * cell + 1, cell - 2, cell - 2); }
+      if (v < 1) { g.fillStyle = "#03203D"; g.fillRect(x * cell + 1, y * cell + 1, cell - 2, cell - 2); }
       if (v > 0) {
         const k = v * v * (3 - 2 * v), sz = cell * (0.55 + 0.45 * k), off = (cell - sz) / 2;
         g.globalAlpha = k; g.drawImage(s.sprite, x * cell, y * cell, cell, cell, x * cell + off, y * cell + off, sz, sz); g.globalAlpha = 1;
