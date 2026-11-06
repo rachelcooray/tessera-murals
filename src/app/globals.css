@@ -622,3 +622,16 @@ h2, h3 { line-height: 1.12; letter-spacing: -.022em !important; }
 .mk-notes { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
 .mk-caption summary { cursor: pointer; font-size: 14px; font-weight: 600; color: var(--link); }
 .mk-caption pre { white-space: pre-wrap; font-family: var(--sans); font-size: 14px; line-height: 1.5; margin: 10px 0 0; padding: 12px 14px; border-radius: var(--r-m); background: var(--wall); color: var(--ink); }
+
+/* ==========================================================================
+   Type v4: Syne headings, Onest text. Same colours as v3.
+   ========================================================================== */
+:root {
+  --sans: var(--font-onest, "Onest"), system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --serif: var(--font-syne, "Syne"), var(--font-onest, "Onest"), system-ui, sans-serif;
+}
+html, body { font-family: var(--sans); font-feature-settings: normal; letter-spacing: -.005em; }
+h1, h2, .wordmark span, .cp-title { font-family: var(--serif); font-weight: 700 !important; letter-spacing: -.02em !important; }
+h3, .serif { font-family: var(--serif); font-weight: 600 !important; letter-spacing: -.01em !important; }
+.btn, .pill, .input, .eyebrow, .lede, .small, p, li, dd, dt, label, summary { font-family: var(--sans); }
+.lede { letter-spacing: -.01em; }
