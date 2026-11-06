@@ -300,6 +300,19 @@ export function lastOrderDay(c: Campaign): string | null {
   return d.toISOString().slice(0, 10);
 }
 
+/** Whole days from today (UK calendar date) to a YYYY-MM-DD date. */
+export function daysUntil(day: string, now: number): number {
+  const today = new Date(now).toLocaleDateString("en-CA", { timeZone: "Europe/London" });
+  return Math.round((Date.parse(`${day}T12:00:00Z`) - Date.parse(`${today}T12:00:00Z`)) / 86400_000);
+}
+
+/** If you order today: how many days everyone gets to paint, and how many days until last orders. Null when it doesn't apply. */
+export function urgency(c: Campaign, now: number): { paint: number; last: number } | null {
+  const last = lastOrderDay(c);
+  if (!c.revealOn || !last || campaignState(c, now) === "closed") return null;
+  return { paint: daysUntil(c.revealOn, now), last: daysUntil(last, now) };
+}
+
 /** "open" until the last order day passes, then "closed". Occasions without a date are always open. */
 export function campaignState(c: Campaign, now: number): "open" | "closed" {
   const last = lastOrderDay(c);

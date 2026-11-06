@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element -- static export with no image optimiser; these are pre-sized JPEGs in public/campaigns. */
 import Link from "next/link";
 import { useSyncExternalStore } from "react";
-import { CAMPAIGNS, campaignAsset, campaignState, currentCampaign, formatDay, formatShortDay, lastOrderDay, type Campaign } from "@/config/campaigns";
+import { CAMPAIGNS, campaignAsset, campaignState, currentCampaign, formatDay, formatShortDay, lastOrderDay, urgency, type Campaign } from "@/config/campaigns";
 import { mosaicConfig, tileCount } from "@/config/mosaic";
 import { formatCents } from "@/lib/mosaic/ledger";
 import { Page } from "./common";
@@ -36,6 +36,7 @@ export function CampaignPage({ campaign: c }: { campaign: Campaign }) {
             {c.revealOn && <span className="cp-date"><b>Revealed</b>{formatDay(c.revealOn)}</span>}
           </div>
         )}
+        {now !== null && urgency(c, now) && <Urgent c={c} now={now} />}
         {closed && <p className="cp-closed" role="status">Orders for {c.eyebrow} have closed. Join the list and we’ll tell you when the next one opens.</p>}
         <div className="row">
           <Link className="btn btn--primary" href={listHref}>Join the founding list</Link>
@@ -121,6 +122,19 @@ export function CampaignPage({ campaign: c }: { campaign: Campaign }) {
   );
 }
 
+const lastLabel = (n: number) => (n <= 0 ? "Last orders today" : n === 1 ? "Last orders tomorrow" : `Last orders in ${n} days`);
+
+/** The honest countdown: every day you wait is a day less for everyone to paint. */
+function Urgent({ c, now }: { c: Campaign; now: number }) {
+  const u = urgency(c, now)!;
+  return (
+    <>
+      <p className="cp-urgent" role="status"><b>Order today and everyone gets {u.paint} days to paint.</b> Every day you wait is a day less, and our studio paints more of it. {lastLabel(u.last)}.</p>
+      <div className="cp-sticky"><span><b>{u.paint} days</b> of painting left</span><Link className="btn btn--primary" href={`/start?tier=${c.suggestedTier}`}>Start yours</Link></div>
+    </>
+  );
+}
+
 /** Every occasion, with its strip, as one index page. */
 export function OccasionsPage() {
   const now = useNow();
@@ -154,12 +168,13 @@ export function OccasionsPage() {
 export function CampaignBanner() {
   const now = useNow();
   const c = now === null ? null : currentCampaign(now);
-  if (!c) return null;
+  if (!c || now === null) return null;
+  const u = urgency(c, now);
   return (
     <Link href={c.href} className="cp-banner">
       <img src={campaignAsset(c, c.strips[0].src)} alt="" width={1800} height={800} />
-      <span><b>{c.name}:</b> order by {formatShortDay(c.orderBy!)}, revealed {formatShortDay(c.revealOn!)}.</span>
-      <span className="cp-banner__go">See how ›</span>
+      <span><b>{c.name}:</b> {u ? <>order today and everyone gets <b>{u.paint} days</b> to paint. {lastLabel(u.last)}.</> : <>order by {formatShortDay(c.orderBy!)}, revealed {formatShortDay(c.revealOn!)}.</>}</span>
+      <span className="cp-banner__go">Start yours ›</span>
     </Link>
   );
 }
