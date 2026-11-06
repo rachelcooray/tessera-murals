@@ -10,7 +10,7 @@ import { Page } from "./common";
 /** The time the page loaded in the browser, or null while the static HTML is showing (so it hydrates cleanly). */
 const loadedAt = typeof window === "undefined" ? 0 : Date.now();
 const noSubscribe = () => () => {};
-function useNow(): number | null {
+export function useNow(): number | null {
   return useSyncExternalStore(noSubscribe, () => loadedAt, () => null);
 }
 
