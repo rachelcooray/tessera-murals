@@ -610,7 +610,7 @@ h2, h3 { line-height: 1.12; letter-spacing: -.022em !important; }
 .mk-kind { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: var(--pill); background: var(--raise); color: var(--ink); }
 .mk-kind[data-kind="Reel"] { background: #3a2a4a; }
 .mk-kind[data-kind="Story"] { background: #1f3a4a; }
-.mk-kind[data-kind="You film"] { background: #4a3a1f; }
+.mk-kind[data-kind="You film"], .mk-kind[data-kind="You make"], .mk-kind[data-kind="You do"] { background: #4a3a1f; }
 .mk-flag { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: var(--pill); background: var(--oxblood); color: var(--oxblood-ink); }
 .mk-done { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--muted); cursor: pointer; }
 .mk-done input { width: 18px; height: 18px; accent-color: var(--link); }

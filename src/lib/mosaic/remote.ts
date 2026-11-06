@@ -304,7 +304,7 @@ async function upload(bucket: "targets" | "tiles", blob: Blob): Promise<string> 
 
 export interface OrderInput {
   tierId: string; title: string; occasion: string; email: string; revealAt: string; visibility: string; openToArtists: boolean;
-  slotsPacked: string; target: HTMLCanvasElement;
+  slotsPacked: string; target: HTMLCanvasElement; promoCode?: string | null;
 }
 
 export async function createOrder(o: OrderInput): Promise<{ mosaicId: string; clientSecret?: string; mock?: boolean }> {

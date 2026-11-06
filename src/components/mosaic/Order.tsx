@@ -1,7 +1,7 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { mosaicConfig, tierById, tileCount } from "@/config/mosaic";
+import { applyPromo, mosaicConfig, tierById, tileCount } from "@/config/mosaic";
 import { sampleGrid, type SlotColour } from "@/lib/mosaic/colours";
 import { ACCEPTED, MAX_BYTES, loadImage, pixels, readAsDataUrl, squareCanvas } from "@/lib/mosaic/image";
 import { formatCents } from "@/lib/mosaic/ledger";
@@ -29,6 +29,9 @@ export function OrderFlow() {
   const [own, setOwn] = useState(false);
   const [adult, setAdult] = useState(false);
   const [startNow, setStartNow] = useState(false);
+  const [codeInput, setCodeInput] = useState(q.get("code") ?? "");
+  const [code, setCode] = useState<string | null>(null);
+  const [codeMsg, setCodeMsg] = useState<string | null>(null);
   const [tierId, setTierId] = useState(q.get("tier") ?? "medium");
   const [dateMode, setDateMode] = useState<number | "pick">(1);
   // eslint-disable-next-line react-hooks/purity -- a default date, read once when the page opens
@@ -79,6 +82,14 @@ export function OrderFlow() {
     router.push(`/mosaic?id=${mosaicId}&new=1`);
   }
 
+  const priced = applyPromo(tier.priceCents, code, opened);
+  const price = "error" in priced ? tier.priceCents : priced.priceCents;
+  function applyCode() {
+    const r = applyPromo(tier.priceCents, codeInput, Date.now());
+    if ("error" in r) { setCode(null); setCodeMsg(r.error); return; }
+    setCode(r.code); setCodeMsg(r.code ? `${r.label}. You save ${formatCents(tier.priceCents - r.priceCents)}.` : null);
+  }
+
   async function pay() {
     setError(null);
     if (!/^\S+@\S+\.\S+$/.test(email.trim())) { setError("Please add an email so we can send your links."); return; }
@@ -86,7 +97,7 @@ export function OrderFlow() {
     try {
       const r = await placeOrder({
         tierId: tier.id, title: title.trim() || "Untitled mosaic", occasion, email: email.trim(), revealAt: revealAt.toISOString(), visibility, openToArtists,
-        slotsPacked: packHex(slots.map((x) => x.hex)), target: target!.canvas, targetUrl: target!.url, priceCents: tier.priceCents, cols: tier.cols, rows: tier.rows, slots,
+        slotsPacked: packHex(slots.map((x) => x.hex)), target: target!.canvas, targetUrl: target!.url, priceCents: price, cols: tier.cols, rows: tier.rows, slots, promoCode: code,
       });
       if (r.clientSecret) setIntent({ clientSecret: r.clientSecret, mosaicId: r.mosaicId });
       else await finish(r.mosaicId);
@@ -167,7 +178,7 @@ export function OrderFlow() {
 
   return (
     <FlowShell step={3} of={3} title={`${tileCount(tier).toLocaleString()} slots, ${tileCount(tier).toLocaleString()} colours`} actions={intent ? null : <>
-      <button className="btn btn--primary btn--block" disabled={busy || !startNow} onClick={() => void pay()}>{busy ? "Working…" : !startNow ? "Tick the box above to continue" : paymentsLive ? `Continue to payment, ${formatCents(tier.priceCents)}` : `Test mode: create without paying`}</button>
+      <button className="btn btn--primary btn--block" disabled={busy || !startNow} onClick={() => void pay()}>{busy ? "Working…" : !startNow ? "Tick the box above to continue" : paymentsLive ? `Continue to payment, ${formatCents(price)}` : `Test mode: create without paying`}</button>
       <button className="btn btn--quiet btn--block" onClick={() => setStep(2)}>Back</button>
     </>}>
       <p className="small muted">Each square is one person’s tile. This is all a contributor gets: the colour of their square.</p>
@@ -177,16 +188,21 @@ export function OrderFlow() {
         <button className="switch" role="switch" aria-checked={openToArtists} aria-label="Open spare slots to Tessera artists" onClick={() => setOpenToArtists(!openToArtists)} />
       </div>
       <div className="field"><label htmlFor="email">Your email</label><input id="email" className="input" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" /><span className="small faint">For your receipt, your links and the reveal.</span></div>
+      {!intent && <div className="field"><label htmlFor="promo">Discount code <span className="faint">(optional)</span></label>
+        <div className="row" style={{ flexWrap: "nowrap" }}><input id="promo" className="input" autoCapitalize="characters" autoComplete="off" value={codeInput} onChange={(e) => { setCodeInput(e.target.value); setCode(null); setCodeMsg(null); }} placeholder="FOUNDING15" style={{ flex: 1, minWidth: 0 }} /><button type="button" className="btn" onClick={applyCode} disabled={!codeInput.trim()}>Apply</button></div>
+        {codeMsg && <span className={`small ${code ? "muted" : "error"}`} role="status">{codeMsg}</span>}
+      </div>}
       <dl className="small" style={{ margin: 0, display: "grid", gap: 8 }}>
         <div className="split"><dt className="muted">{tier.name}, {tileCount(tier).toLocaleString()} tiles</dt><dd style={{ margin: 0 }}>{formatCents(tier.priceCents)}</dd></div>
         <div className="split"><dt className="muted">Reveal date</dt><dd style={{ margin: 0 }}>{revealAt.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</dd></div>
         <div className="split"><dt className="muted">After the reveal</dt><dd style={{ margin: 0 }}>{visibility === "public" ? "Public" : "Private"}</dd></div>
-        <div className="split" style={{ borderTop: "1px solid var(--line)", paddingTop: 10 }}><dt className="serif" style={{ fontSize: 18 }}>Total</dt><dd className="serif" style={{ margin: 0, fontSize: 18 }}>{formatCents(tier.priceCents)}</dd></div>
+        {code && <div className="split"><dt className="muted">Code {code}</dt><dd style={{ margin: 0 }}>−{formatCents(tier.priceCents - price)}</dd></div>}
+        <div className="split" style={{ borderTop: "1px solid var(--line)", paddingTop: 10 }}><dt className="serif" style={{ fontSize: 18 }}>Total</dt><dd className="serif" style={{ margin: 0, fontSize: 18 }}>{formatCents(price)}</dd></div>
       </dl>
       <p className="small muted">This is a digital mosaic. Nothing is posted: you get the finished mosaic online, a reveal video and a link to keep.</p>
       <label className="row small" style={{ alignItems: "flex-start", flexWrap: "nowrap", cursor: "pointer" }}><input type="checkbox" checked={startNow} onChange={(e) => setStartNow(e.target.checked)} style={{ width: 20, height: 20, accentColor: "var(--gold)", flex: "0 0 auto" }} /><span>Please start my mosaic straight away. I understand that once the first square is painted I lose my right to cancel for a full refund within 14 days. See <a href={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/refunds/`} target="_blank" rel="noreferrer">refunds</a>.</span></label>
       {!paymentsLive && <p className="note">Payments are in test mode, so no card is charged. {live ? "The mosaic is saved on Tessera’s server." : "Your mosaic is created in this browser."}</p>}
-      {intent && <StripePay clientSecret={intent.clientSecret} label={`Pay ${formatCents(tier.priceCents)} and get your invite link`} onPaid={() => void paid()} />}
+      {intent && <StripePay clientSecret={intent.clientSecret} label={`Pay ${formatCents(price)} and get your invite link`} onPaid={() => void paid()} />}
       {error && <p className="error" role="alert">{error}</p>}
     </FlowShell>
   );
