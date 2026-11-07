@@ -36,6 +36,37 @@ export const ORDER_RULES = {
   poolShareBps: 3000,
 };
 
+/**
+ * Discount codes. Public codes, shared on Instagram and with the founding list. The server applies them,
+ * so the price shown is the price charged, and each one stops working at the end of its last day (UK time).
+ * Word them as an offer ("15% off your first mosaic"), never as a "was" price that was never charged.
+ */
+export interface PromoCode { code: string; percentOff: number; endsOn: string; label: string }
+export const PROMO_CODES: PromoCode[] = [
+  { code: "FOUNDING15", percentOff: 15, endsOn: "2026-12-31", label: "Founding offer: 15% off" },
+  { code: "EARLYBIRD", percentOff: 10, endsOn: "2026-11-22", label: "Early-bird Christmas offer: 10% off" },
+];
+
+/** The price after a code, or a message saying why the code doesn't apply. An empty code is no code. */
+export function applyPromo(priceCents: number, raw: string | null | undefined, now: number):
+  { priceCents: number; code: string | null; percentOff: number; label: string | null } | { error: string } {
+  const code = String(raw ?? "").trim().toUpperCase();
+  if (!code) return { priceCents, code: null, percentOff: 0, label: null };
+  const p = PROMO_CODES.find((x) => x.code === code);
+  if (!p) return { error: "That code isn’t recognised. Check the spelling and try again." };
+  // End of the last day in London. UK clocks are on GMT in winter and BST in summer, so allow for both.
+  const ends = Date.parse(`${p.endsOn}T23:59:59Z`) - (isBst(p.endsOn) ? 3600_000 : 0);
+  if (now > ends) return { error: `${p.code} ended on ${new Date(`${p.endsOn}T12:00:00Z`).toLocaleDateString("en-GB", { day: "numeric", month: "long", timeZone: "UTC" })}.` };
+  return { priceCents: Math.round(priceCents * (100 - p.percentOff) / 100), code: p.code, percentOff: p.percentOff, label: p.label };
+}
+
+/** British Summer Time runs from the last Sunday in March to the last Sunday in October. */
+function isBst(day: string): boolean {
+  const d = new Date(`${day}T12:00:00Z`), y = d.getUTCFullYear();
+  const lastSunday = (m: number) => { const x = new Date(Date.UTC(y, m + 1, 0)); x.setUTCDate(x.getUTCDate() - x.getUTCDay()); return x; };
+  return d >= lastSunday(2) && d < lastSunday(9);
+}
+
 export function findTier(id: string): MosaicTier | undefined {
   return TIERS.find((t) => t.id === id);
 }

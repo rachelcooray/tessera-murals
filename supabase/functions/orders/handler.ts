@@ -8,7 +8,7 @@
  * Prices come from _shared/tiers.ts on the server, never from the browser. The handler takes its
  * database and Stripe client as arguments so it runs the same in the Edge Function and in Node tests.
  */
-import { ORDER_RULES, findTier } from "../_shared/tiers.ts";
+import { ORDER_RULES, applyPromo, findTier } from "../_shared/tiers.ts";
 import { poolFor } from "../_shared/pool.ts";
 import { verifyWebhook, type StripeApi } from "../_shared/stripe.ts";
 import { orderEmail, type Mailer } from "../_shared/emails.ts";
@@ -123,12 +123,16 @@ export function makeOrdersHandler(deps: OrdersDeps) {
     const { data: found } = await deps.db.storage.from("targets").list(folder, { search: file });
     if (!found?.some((o: { name: string }) => o.name === file)) throw new HttpError(400, "Your picture didn't upload. Please try again.");
 
+    const promo = applyPromo(tier.priceCents, b.promoCode as string | undefined, now());
+    if ("error" in promo) throw new HttpError(400, promo.error);
+    const price = promo.priceCents;
+
     const live = Boolean(deps.stripe);
     if (!live && !deps.testMode) throw new HttpError(503, "Payments aren't switched on yet.");
 
     const { data: m, error } = await deps.db.from("mosaics").insert({
       owner_id: user.id, email, title, occasion, tier_id: tier.id, cols: tier.cols, rows: tier.rows,
-      price_cents: tier.priceCents, currency: ORDER_RULES.currency, pool_cents: poolFor(tier.priceCents, ORDER_RULES.poolShareBps),
+      price_cents: price, currency: ORDER_RULES.currency, pool_cents: poolFor(price, ORDER_RULES.poolShareBps), promo_code: promo.code,
       reveal_at: new Date(revealAt).toISOString(), visibility, open_to_artists: b.openToArtists !== false,
       target_path: targetPath, slots_packed: slots,
       status: live ? "awaiting_payment" : "collecting", payment_mock: !live, paid_at: live ? null : new Date(now()).toISOString(),
@@ -138,7 +142,7 @@ export function makeOrdersHandler(deps: OrdersDeps) {
     if (!live) { await sendReady(m.id); return { mosaicId: m.id, mock: true }; }
 
     const pi = await deps.stripe!.post("payment_intents", {
-      amount: String(tier.priceCents),
+      amount: String(price),
       currency: ORDER_RULES.currency,
       "automatic_payment_methods[enabled]": "true",
       receipt_email: email,
@@ -147,7 +151,7 @@ export function makeOrdersHandler(deps: OrdersDeps) {
       "metadata[tier]": tier.id,
     }, `mosaic-${m.id}`);
     await deps.db.from("mosaics").update({ payment_intent_id: pi.id }).eq("id", m.id);
-    return { mosaicId: m.id, clientSecret: pi.client_secret, amount: tier.priceCents, currency: ORDER_RULES.currency };
+    return { mosaicId: m.id, clientSecret: pi.client_secret, amount: price, currency: ORDER_RULES.currency };
   }
 
   async function confirm(req: Request) {

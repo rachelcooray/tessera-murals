@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element -- static export with no image optimiser; these are pre-sized JPEGs in public/campaigns. */
 import Link from "next/link";
 import { useSyncExternalStore } from "react";
-import { CAMPAIGNS, campaignAsset, campaignState, currentCampaign, formatDay, formatShortDay, type Campaign } from "@/config/campaigns";
+import { CAMPAIGNS, campaignAsset, campaignState, currentCampaign, formatDay, formatShortDay, lastOrderDay, urgency, type Campaign } from "@/config/campaigns";
 import { mosaicConfig, tileCount } from "@/config/mosaic";
 import { formatCents } from "@/lib/mosaic/ledger";
 import { Page } from "./common";
@@ -10,7 +10,7 @@ import { Page } from "./common";
 /** The time the page loaded in the browser, or null while the static HTML is showing (so it hydrates cleanly). */
 const loadedAt = typeof window === "undefined" ? 0 : Date.now();
 const noSubscribe = () => () => {};
-function useNow(): number | null {
+export function useNow(): number | null {
   return useSyncExternalStore(noSubscribe, () => loadedAt, () => null);
 }
 
@@ -32,9 +32,11 @@ export function CampaignPage({ campaign: c }: { campaign: Campaign }) {
         {(c.orderBy || c.revealOn) && (
           <div className="cp-dates" aria-label="Key dates">
             {c.orderBy && <span className={`cp-date${closed ? " cp-date--past" : ""}`}><b>Order by</b>{formatDay(c.orderBy)}</span>}
+            {c.orderBy && lastOrderDay(c) !== c.orderBy && <span className={`cp-date${closed ? " cp-date--past" : ""}`}><b>Last orders</b>{formatDay(lastOrderDay(c)!)}</span>}
             {c.revealOn && <span className="cp-date"><b>Revealed</b>{formatDay(c.revealOn)}</span>}
           </div>
         )}
+        {now !== null && urgency(c, now) && <Urgent c={c} now={now} />}
         {closed && <p className="cp-closed" role="status">Orders for {c.eyebrow} have closed. Join the list and we’ll tell you when the next one opens.</p>}
         <div className="row">
           <Link className="btn btn--primary" href={listHref}>Join the founding list</Link>
@@ -52,6 +54,8 @@ export function CampaignPage({ campaign: c }: { campaign: Campaign }) {
           {c.steps.map((s, i) => <li key={s.title}><span className="cp-num">{i + 1}</span><h3>{s.title}</h3><p className="small muted">{s.text}</p></li>)}
         </ol>
       </section>
+
+      <WhyDigital campaign={c} />
 
       <section className="section">
         <div className="split"><h2 className="cp-h2">Watch</h2><span className="small muted">Sound on</span></div>
@@ -118,6 +122,19 @@ export function CampaignPage({ campaign: c }: { campaign: Campaign }) {
   );
 }
 
+const lastLabel = (n: number) => (n <= 0 ? "Last orders today" : n === 1 ? "Last orders tomorrow" : `Last orders in ${n} days`);
+
+/** The honest countdown: every day you wait is a day less for everyone to paint. */
+function Urgent({ c, now }: { c: Campaign; now: number }) {
+  const u = urgency(c, now)!;
+  return (
+    <>
+      <p className="cp-urgent" role="status"><b>Order today and everyone gets {u.paint} days to paint.</b> Every day you wait is a day less, and our studio paints more of it. {lastLabel(u.last)}.</p>
+      <div className="cp-sticky"><span><b>{u.paint} days</b> of painting left</span><Link className="btn btn--primary" href={`/start?tier=${c.suggestedTier}`}>Start yours</Link></div>
+    </>
+  );
+}
+
 /** Every occasion, with its strip, as one index page. */
 export function OccasionsPage() {
   const now = useNow();
@@ -151,13 +168,31 @@ export function OccasionsPage() {
 export function CampaignBanner() {
   const now = useNow();
   const c = now === null ? null : currentCampaign(now);
-  if (!c) return null;
+  if (!c || now === null) return null;
+  const u = urgency(c, now);
   return (
     <Link href={c.href} className="cp-banner">
       <img src={campaignAsset(c, c.strips[0].src)} alt="" width={1800} height={800} />
-      <span><b>{c.name}:</b> order by {formatShortDay(c.orderBy!)}, revealed {formatShortDay(c.revealOn!)}.</span>
-      <span className="cp-banner__go">See how ›</span>
+      <span><b>{c.name}:</b> {u ? <>order today and everyone gets <b>{u.paint} days</b> to paint. {lastLabel(u.last)}.</> : <>order by {formatShortDay(c.orderBy!)}, revealed {formatShortDay(c.revealOn!)}.</>}</span>
+      <span className="cp-banner__go">Start yours ›</span>
     </Link>
+  );
+}
+
+/** Why a digital mosaic: the reasons it suits gifts better than something in the post. */
+export function WhyDigital({ campaign }: { campaign?: Campaign }) {
+  const day = campaign?.revealOn ? `on ${formatShortDay(campaign.revealOn)}` : "on the day you choose";
+  const points = [
+    { t: "Arrives on the day", d: `Nothing to post, nothing to wrap. It’s revealed ${day}, wherever they live.` },
+    { t: "Painted from anywhere", d: "One link works on any phone. Family abroad and friends in other cities all add their square." },
+    { t: "Kept for good", d: "Zoom into any square, share the reveal video in one tap, and keep the link for years." },
+    { t: "Never too late", d: campaign?.orderBy ? `Order by ${formatShortDay(campaign.orderBy)} for three weeks of painting. Last orders ${formatShortDay(lastOrderDay(campaign)!)}.` : "Order three weeks ahead for the most squares, or as little as a week before." },
+  ];
+  return (
+    <section className="section">
+      <h2 className="cp-h2">Why a digital mosaic</h2>
+      <ol className="cp-steps cp-why">{points.map((p) => <li key={p.t}><h3>{p.t}</h3><p className="small muted">{p.d}</p></li>)}</ol>
+    </section>
   );
 }
 

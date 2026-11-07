@@ -192,6 +192,7 @@ Open `src/config/site.ts` and fill in `contactEmail` and `business` (your tradin
 - **Prices come from the server** (`supabase/functions/_shared/tiers.ts`). The website reads the same file, so what buyers see is what they pay.
 - **An order counts only when Stripe says it's paid,** for the right amount. The webhook makes sure of this even if the buyer closes the tab. Unpaid orders are cancelled after 48 hours.
 - **Every tile is reviewed by an admin.** Slots, holds, the hourly limit, duplicate checks and artist caps are enforced by the database, not the browser.
+- **Discount codes** live in `PROMO_CODES` in `supabase/functions/_shared/tiers.ts`: a code, a percentage and a last day. The server applies them, so the price shown is the price charged, and each stops at the end of its last day (UK time). Change or add one there, then redeploy the `orders` function and re-run the Pages workflow.
 - **Artist payouts:** artists request a payout; you pay them by hand (bank transfer, PayPal), then press Approve and enter the reference. No payout provider is connected yet.
 
 ## Running it on your computer

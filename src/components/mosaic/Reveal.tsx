@@ -112,7 +112,7 @@ function drawFrame(ctx: CanvasRenderingContext2D, img: MosaicImage, m: Mosaic, f
   const fade = (a: number, b: number) => clamp((p - a) / (b - a));
   ctx.fillStyle = `rgba(245,245,247,${0.4 + 0.6 * (1 - fade(0.3, 0.42))})`;
   ctx.font = `500 26px ${sans}`;
-  ctx.fillText("Tessera · a hidden mosaic", W / 2, 190);
+  ctx.fillText("Tessera · a digital mosaic", W / 2, 190);
   const early = p < 0.42;
   ctx.fillStyle = `rgba(239,227,204,${early ? 1 - fade(0.3, 0.42) : fade(0.55, 0.7)})`;
   ctx.font = `600 60px ${serif}`;

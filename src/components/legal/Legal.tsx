@@ -42,11 +42,11 @@ export function Contact() {
 export function Refunds() {
   return (
     <Doc eyebrow="Refunds and cancellations" title="Changing your mind">
-      <p>A Tessera mosaic is made for you, by the people you invite, over the weeks before your reveal date. Here is what happens if you cancel or something goes wrong.</p>
+      <p>A Tessera mosaic is digital content, made for you by the people you invite over the weeks before your reveal date. Here is what happens if you cancel or something goes wrong.</p>
       <h2>Before anyone paints</h2>
       <p>If you cancel within 14 days of paying and no tile has been sent to your mosaic yet, we refund you in full. Email <Mail /> with your order email.</p>
       <h2>Once painting has started</h2>
-      <p>When you share your invite link, you’re asking us to start straight away, during those 14 days. If you then cancel within the 14 days, we refund the price minus a fair amount for the work already done: the share of squares already painted and reviewed. After 14 days the order can’t be cancelled, because the work is under way.</p>
+      <p>At checkout you ask us to start straight away and agree that your right to cancel ends once painting has started. If you then cancel within the 14 days, we refund the price minus a fair amount for the work already done: the share of squares already painted and reviewed. After 14 days the order can’t be cancelled, because the work is under way.</p>
       <h2>If something goes wrong on our side</h2>
       <p>We promise your reveal happens on the date you chose. If it doesn’t, or the finished mosaic is faulty, tell us within 30 days of the reveal. We’ll fix it, or refund you if we can’t. This doesn’t affect your legal rights.</p>
       <h2>Contributors</h2>
@@ -65,7 +65,7 @@ export function Terms() {
       <h2>1. Who we are</h2>
       <p>Tessera (“we”) is run by {b.legalName}, {b.address}, {b.country}. Contact: <Mail />. {b.vatRegistered ? `VAT number ${b.vatNumber}.` : "We are not VAT registered, so prices include no VAT."}</p>
       <h2>2. What you buy</h2>
-      <p>A hidden mosaic: we turn your photo into a grid of colour slots, the people you invite (and, if you allow it, Tessera artists) each paint a square in its colour, and the finished picture is revealed on the date you choose. You get the finished mosaic online, a reveal video and a link to every square. Prints are extra, if offered at checkout.</p>
+      <p>A digital mosaic: we turn your photo into a grid of colour slots, the people you invite (and, if you allow it, Tessera artists) each paint a square in its colour, the Tessera studio finishes any squares still open, and the finished picture is revealed on the date you choose. You get the finished mosaic online, a reveal video and a link to every square. It is digital only: nothing is posted to you.</p>
       <p>The sizes, prices and number of squares are shown before you pay. The price you see is the price you pay.</p>
       <h2>3. Your order</h2>
       <p>Your order is accepted when payment goes through and we show your mosaic’s page. You must be 18 or over, and you must own the photo or have permission from the people in it and whoever took it.</p>

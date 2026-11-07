@@ -41,6 +41,7 @@ export interface Campaign {
 const slides = (post: number, count: number) => Array.from({ length: count }, (_, i) => `post${post}-${i + 1}.jpg`);
 
 const COMMON_FAQS = [
+  { q: "Is it a physical gift?", a: "No. It’s a digital mosaic: a picture you can zoom into square by square, a reveal video to share, and a link to keep. Nothing is posted, so it arrives on the day, wherever they live." },
   { q: "Do people need an app?", a: "No. Everyone gets one link that opens on any phone or computer." },
   { q: "Do they need to be good at art?", a: "No. Any mark in their colour works: a heart, a scribble, their initials. It takes about a minute." },
   { q: "Can they see the picture?", a: "No. Each person only sees their own colour. Nobody sees the whole picture until the reveal." },
@@ -291,9 +292,31 @@ export const campaignAsset = (c: Campaign, file: string) => `${process.env.NEXT_
 /** End of the order-by day, UK time (close enough to treat as 23:59 London). */
 const endOfDay = (d: string) => Date.parse(`${d}T23:59:59Z`);
 
-/** "open" until the order-by date passes, then "closed". Occasions without a date are always open. */
+/** The real last day to order: the reveal needs at least a week of painting (ORDER_RULES.minRevealDays).
+ * The orderBy date is the one we promote, because three weeks gives everyone time to paint. */
+export function lastOrderDay(c: Campaign): string | null {
+  if (!c.revealOn) return c.orderBy ?? null;
+  const d = new Date(`${c.revealOn}T12:00:00Z`); d.setUTCDate(d.getUTCDate() - 7);
+  return d.toISOString().slice(0, 10);
+}
+
+/** Whole days from today (UK calendar date) to a YYYY-MM-DD date. */
+export function daysUntil(day: string, now: number): number {
+  const today = new Date(now).toLocaleDateString("en-CA", { timeZone: "Europe/London" });
+  return Math.round((Date.parse(`${day}T12:00:00Z`) - Date.parse(`${today}T12:00:00Z`)) / 86400_000);
+}
+
+/** If you order today: how many days everyone gets to paint, and how many days until last orders. Null when it doesn't apply. */
+export function urgency(c: Campaign, now: number): { paint: number; last: number } | null {
+  const last = lastOrderDay(c);
+  if (!c.revealOn || !last || campaignState(c, now) === "closed") return null;
+  return { paint: daysUntil(c.revealOn, now), last: daysUntil(last, now) };
+}
+
+/** "open" until the last order day passes, then "closed". Occasions without a date are always open. */
 export function campaignState(c: Campaign, now: number): "open" | "closed" {
-  return c.orderBy && now > endOfDay(c.orderBy) ? "closed" : "open";
+  const last = lastOrderDay(c);
+  return last && now > endOfDay(last) ? "closed" : "open";
 }
 
 /** The dated campaign to promote right now, if any: promotion has started and orders haven't closed. */

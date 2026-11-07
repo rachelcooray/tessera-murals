@@ -161,3 +161,18 @@ test("an email failure never fails the order", async () => {
   assert.equal(r.status, 200);
   assert.equal(r.body.mock, true);
 });
+
+test("a discount code lowers the price charged, and a bad code stops the order", async () => {
+  const s = fakeStripe();
+  const handle = makeOrdersHandler({ db, stripe: s.api, webhookSecret: WHSEC, testMode: false, allowedOrigins: [], now: () => Date.parse("2026-11-10T12:00:00Z") });
+  const b = await buyer();
+  const r = await order(handle, b, { promoCode: "founding15", revealAt: "2026-12-25T12:00:00Z" });
+  assert.equal(r.status, 200, JSON.stringify(r.body));
+  const expected = Math.round(small.priceCents * 0.85);
+  assert.equal(s.calls[0].params!.amount, String(expected));
+  const { data: m } = await db.from("mosaics").select("price_cents, promo_code").eq("id", r.body.mosaicId).single();
+  assert.deepEqual(m, { price_cents: expected, promo_code: "FOUNDING15" });
+  const bad = await order(handle, b, { promoCode: "NOPE", revealAt: "2026-12-25T12:00:00Z" });
+  assert.equal(bad.status, 400);
+  assert.match(bad.body.error, /recognised/);
+});

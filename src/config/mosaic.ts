@@ -5,6 +5,7 @@
  */
 
 import { ORDER_RULES, POOL_RULES, TIERS, artistCapFor, type MosaicTier } from "../../supabase/functions/_shared/tiers.ts";
+export { PROMO_CODES, applyPromo, type PromoCode } from "../../supabase/functions/_shared/tiers.ts";
 
 export type { MosaicTier };
 

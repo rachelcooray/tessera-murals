@@ -36,7 +36,7 @@ export function FoundingList() {
     <Page narrow>
       <span className="eyebrow">You’re on the list</span>
       <h1 style={{ fontSize: 44, margin: "10px 0 16px" }}>Thank you{name.trim() ? `, ${name.trim()}` : ""}.</h1>
-      <p className="lede" style={{ marginBottom: 24 }}>We’ll email {email.trim()} as soon as founding mosaics open{wants !== "order" ? ", and when slots open for artists" : ""}. Nothing else, and you can unsubscribe from any email.</p>
+      <p className="lede" style={{ marginBottom: 24 }}>We’ll email {email.trim()} as soon as founding mosaics open, with your code for 15% off{wants !== "order" ? ", and when slots open for artists" : ""}. Nothing else, and you can unsubscribe from any email.</p>
       <div className="row"><Link className="btn btn--primary" href="/reveal?id=sample-dusk">Watch a reveal</Link><Link className="btn" href="/">See how it works</Link></div>
     </Page>
   );
@@ -44,8 +44,8 @@ export function FoundingList() {
   return (
     <Page narrow>
       <span className="eyebrow">Founding mosaics</span>
-      <h1 style={{ fontSize: "clamp(36px, 6vw, 52px)", lineHeight: 1.04, margin: "10px 0 14px" }}>Your photo, made from other people’s art.</h1>
-      <p className="lede" style={{ marginBottom: 28 }}>Everyone paints one square. Nobody sees the picture until the reveal. Join the list and we’ll tell you the moment orders open.</p>
+      <h1 style={{ fontSize: "clamp(36px, 6vw, 52px)", lineHeight: 1.04, margin: "10px 0 14px" }}>Your photo, painted square by square by everyone who loves you.</h1>
+      <p className="lede" style={{ marginBottom: 28 }}>A digital mosaic: everyone paints one square, and nobody sees the picture until the reveal. Join the list and we’ll email you the moment orders open, with a founding code for 15% off your first mosaic (until 31 December).</p>
       <form onSubmit={(e) => void submit(e)} style={{ display: "grid", gap: 18, maxWidth: 520 }}>
         <div className="field"><label htmlFor="fl-email">Your email</label><input id="fl-email" className="input" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" /></div>
         <div className="field"><label htmlFor="fl-name">First name <span className="faint">(optional)</span></label><input id="fl-name" className="input" autoComplete="given-name" maxLength={60} value={name} onChange={(e) => setName(e.target.value)} /></div>
